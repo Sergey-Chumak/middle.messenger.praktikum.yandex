@@ -1,0 +1,19 @@
+.client-error {
+  width: 160px;
+  align-self: center;
+  margin: auto;
+  text-align: center;
+
+  &__title {
+    font-size: 44px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  &__info {
+    font-size: 22px;
+    margin-bottom: 49px;
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,9 @@
+.chat {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  &__chat-list {
+    height: 100%;
+  }
+}

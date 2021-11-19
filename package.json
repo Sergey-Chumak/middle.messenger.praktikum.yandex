@@ -1,0 +1,31 @@
+{
+  "name": "messenger",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel src/index.html --open --port 3000 --cache-dir build/cache",
+    "build": "parcel build src/index.html"
+  },
+  "engines": {
+    "node": ">= 12"
+  },
+  "targets": {
+    "browser": {
+      "includeNodeModules": true
+    }
+  },
+  "author": "Sergey Chumak",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.1",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "parcel": "*",
+    "sass": "^1.43.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7"
+  }
+}

@@ -1,0 +1,24 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin: auto;
+  width: 400px;
+  padding: 32px;
+  background: rgba(255, 232, 111, 0.14);
+  box-sizing: border-box;
+  border-radius: 12px;
+
+  &__login {
+    margin-top: 11px;
+  }
+
+  &__link {
+    text-align: center;
+  }
+
+  &__button {
+    margin-top: 10px;
+    margin-bottom: 60px;
+  }
+}

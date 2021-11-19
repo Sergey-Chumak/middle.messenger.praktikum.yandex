@@ -1,0 +1,95 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: -288px;
+  width: 228px;
+  height: 100%;
+  background: linear-gradient(11.34deg, #FFB443 41.65%, #F9DDA7 99.39%);
+  z-index: 2;
+  transition: all 0.3s;
+  padding: 15px;
+
+  &__user-data {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #8A8A8A;
+
+    &_avatar {
+      width: 47px;
+      height: 47px;
+      background: #FFA800;
+      border-radius: 50%;
+      margin-right: 18px;
+    }
+
+    &_name {
+      font-size: 13px;
+      margin: 7px 0;
+
+    }
+
+    &_phone {
+      font-size: 12px;
+      color: #8A8A8A;
+      margin: 0;
+
+    }
+  }
+
+  &__user {
+    margin: 0;
+  }
+
+  &__action-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding-top: 15px;
+    font-size: 13px;
+  }
+
+  &__action {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    cursor: pointer;
+    width: fit-content;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #F44A25;
+    }
+  }
+
+  &__action-name {
+    align-self: center;
+    font-size: 14px;
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+
+    &_new-chat {
+      background: url("../../../assets/images/new-chat.svg");
+    }
+
+    &_chat-list {
+      background: url("../../../assets/images/chat-list.svg");
+    }
+
+    &_setting {
+      background: url("../../../assets/images/setting.svg");
+    }
+
+    &_logout {
+      background: url("../../../assets/images/logout.svg");
+    }
+  }
+}

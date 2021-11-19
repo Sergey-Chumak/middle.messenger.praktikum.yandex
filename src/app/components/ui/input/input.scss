@@ -1,0 +1,37 @@
+.ui-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: start;
+
+  &__label {
+    margin-bottom: 6px;
+    font-size: 10px;
+    color: #999999;
+  }
+
+  &__input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #F44A25;
+    width: 335px;
+    padding: 0;
+    margin-bottom: 16px;
+
+    &_error {
+      color: #FF2F2F;
+      margin-bottom: 0;
+    }
+
+    &:focus {
+      outline:none;
+    }
+  }
+
+  &__error {
+    height: 8px;
+    font-size: 10px;
+    margin: 4px 0;
+    color: #FF2F2F;
+  }
+}
