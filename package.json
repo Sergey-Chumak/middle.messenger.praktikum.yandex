@@ -10,8 +10,9 @@
     "node": ">= 12"
   },
   "targets": {
-    "browser": {
-      "includeNodeModules": true
+    "default": {
+      "includeNodeModules": ["handlebars", "fs"],
+      "context": "browser"
     }
   },
   "author": "Sergey Chumak",
