@@ -1,0 +1,105 @@
+.profile {
+  margin: auto;
+
+  &__avatar {
+    display: flex;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 21px auto;
+    background: #FFD480;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      .profile__avatar_hover {
+        visibility: visible;
+      }
+    }
+
+    &_hover {
+      box-sizing: border-box;
+      position: absolute;
+      visibility: hidden;
+      text-align: center;
+      top: 0;
+      left: 0;
+      padding: 51px 39px;
+      border-radius: 50%;
+      width: 130px;
+      height: 130px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 13px;
+     }
+  }
+
+  &__icon {
+    margin: auto;
+    align-self: center;
+    width: 40px;
+    height: 40px;
+    background: url("../../../assets/images/avatar.svg") no-repeat;
+  }
+
+  &__user-name {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 60px;
+  }
+
+  &__user-data {
+    margin-bottom: 60px;
+  }
+
+  &__option-field {
+    display: flex;
+    justify-content: space-between;
+    width: 510px;
+    border-bottom: 1px solid #F44A25;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__field-label {
+    font-size: 13px;
+  }
+
+  &__field-input {
+    border: none;
+    background: transparent;
+    text-align: right;
+
+    &:disabled {
+      color: #999;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__link-action {
+    text-decoration: none;
+    cursor: pointer;
+    color: #3369F3;
+
+    &_logout {
+      text-decoration: none;
+      cursor: pointer;
+      color: #FF0000;
+    }
+  }
+
+  &__save-button {
+    text-align: center;
+  }
+
+  &__user-password {
+    margin-bottom: 160px;
+  }
+}

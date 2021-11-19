@@ -1,0 +1,34 @@
+.ui-button {
+  background: #FFA800;
+  border-radius: 8px;
+  width: 276px;
+  height: 37px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+
+  &_s {
+    width: 131px;
+  }
+
+  &_l {
+    width: 336px;
+  }
+
+  &_m {
+    width: 276px;
+  }
+
+  &_primary {
+    background: #FFA800;
+  }
+
+  &_secondary {
+    background: #F44A25;
+  }
+
+  &:active {
+    box-shadow: 0 4px 7px rgba(106, 105, 105, 0.30);
+  }
+}
