@@ -12,7 +12,7 @@ const $pageWrapper = document.querySelector('#page-wrapper');
 
 if (last(document.location.href.split('/')) === ('profile')) {
   $pageWrapper.innerHTML = profile;
-} else if (last(document.location.href.split('/')) === 'auth' || document.location.href === 'http://localhost:3000/') {
+} else if (last(document.location.href.split('/')) === 'auth' || document.location.href === `${document.location.origin}/`) {
   $pageWrapper.innerHTML = auth;
 } else if (last(document.location.href.split('/')) === 'registration') {
   $pageWrapper.innerHTML = registration;
