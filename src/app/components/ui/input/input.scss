@@ -1,0 +1,38 @@
+.ui-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: start;
+
+  &__label {
+    margin-bottom: 6px;
+    font-size: 10px;
+    color: var(--color-text-primary);
+  }
+
+  &__input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-border-default);
+    width: 335px;
+    padding: 0;
+    margin-bottom: 16px;
+
+    &_error {
+      color: var(--color-text-error);
+      margin-bottom: 0;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: var(--shadow-primary)
+    }
+  }
+
+  &__error {
+    height: 8px;
+    font-size: 10px;
+    margin: 4px 0;
+    color: var(--color-text-error);
+  }
+}
