@@ -4,6 +4,8 @@ export const tmpl = `
         <input type="{{ type }}" 
                id="{{ name }}"
                autocomplete="{{ autocomplete }}"
+               value="{{ value }}"
+               {{#if disabled}}disabled{{/if}}
                class="ui-input__input {{#if isError}}ui-input__input_error{{/if}}"/>
         {{#if isError}}
         <p class="ui-input__error">{{ errorMessage }}</p>
