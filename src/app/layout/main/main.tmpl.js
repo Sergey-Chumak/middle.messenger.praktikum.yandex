@@ -1,6 +1,6 @@
 export const tmpl = `
     <main class="main">
-        <page-wrapper class="main__page-wrapper" id="page-wrapper"></page-wrapper>
+        <div class="main__page-wrapper" id="page-wrapper"></div>
         {{#if showMenu}}
         {{>sidebar }}
         <div id="icon-menu" class="main__icon-menu"></div>
