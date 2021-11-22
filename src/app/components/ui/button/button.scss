@@ -1,9 +1,9 @@
 .ui-button {
-  background: #FFA800;
+  background: var(--color-button-primary);
   border-radius: 8px;
   width: 276px;
   height: 37px;
-  color: white;
+  color: var(--color-text-secondary);
   border: none;
   cursor: pointer;
   font-size: 14px;
@@ -21,14 +21,14 @@
   }
 
   &_primary {
-    background: #FFA800;
+    background: var(--color-button-primary);
   }
 
   &_secondary {
-    background: #F44A25;
+    background: var(--color-button-secondary);
   }
 
   &:active {
-    box-shadow: 0 4px 7px rgba(106, 105, 105, 0.30);
+    box-shadow: var(--shadow-primary);
   }
 }

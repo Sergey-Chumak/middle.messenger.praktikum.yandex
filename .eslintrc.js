@@ -15,5 +15,6 @@ module.exports = {
     'prefer-arrow-callback': 'off',
     'func-names': 'off',
     'no-use-before-define': 'off',
+    'linebreak-style': 'off',
   },
 };

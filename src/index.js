@@ -1,5 +1,5 @@
 import './app/layout/main';
-import './styles.scss';
+import './styles/styles.scss';
 import last from './app/utils/last';
 import { profile } from './app/pages/profile';
 import { auth } from './app/pages/auth';

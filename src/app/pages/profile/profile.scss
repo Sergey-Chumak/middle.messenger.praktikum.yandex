@@ -6,7 +6,7 @@
     width: 130px;
     height: 130px;
     margin: 0 auto 21px auto;
-    background: #FFD480;
+    background: var(--color-empty-avatar-light);
     border-radius: 50%;
     position: relative;
     cursor: pointer;
@@ -28,8 +28,8 @@
       border-radius: 50%;
       width: 130px;
       height: 130px;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
+      background: var(--color-backdrop);
+      color: var(--color-text-secondary);
       font-size: 13px;
      }
   }
@@ -56,7 +56,7 @@
     display: flex;
     justify-content: space-between;
     width: 510px;
-    border-bottom: 1px solid #F44A25;
+    border-bottom: 1px solid var(--color-border-default);
     padding-bottom: 5px;
     margin-bottom: 10px;
 
@@ -75,7 +75,7 @@
     text-align: right;
 
     &:disabled {
-      color: #999;
+      color: var(--color-text-primary);
     }
 
     &:focus {
@@ -86,12 +86,12 @@
   &__link-action {
     text-decoration: none;
     cursor: pointer;
-    color: #3369F3;
+    color: var(--color-link-primary);
 
     &_logout {
       text-decoration: none;
       cursor: pointer;
-      color: #FF0000;
+      color: var(--color-link-secondary);
     }
   }
 

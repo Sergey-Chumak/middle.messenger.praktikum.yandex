@@ -7,24 +7,25 @@
   &__label {
     margin-bottom: 6px;
     font-size: 10px;
-    color: #999999;
+    color: var(--color-text-primary);
   }
 
   &__input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid #F44A25;
+    border-bottom: 1px solid var(--color-border-default);
     width: 335px;
     padding: 0;
     margin-bottom: 16px;
 
     &_error {
-      color: #FF2F2F;
+      color: var(--color-text-error);
       margin-bottom: 0;
     }
 
     &:focus {
-      outline:none;
+      outline: none;
+      box-shadow: var(--shadow-primary)
     }
   }
 
@@ -32,6 +33,6 @@
     height: 8px;
     font-size: 10px;
     margin: 4px 0;
-    color: #FF2F2F;
+    color: var(--color-text-error);
   }
 }

@@ -11,7 +11,10 @@
   },
   "targets": {
     "default": {
-      "includeNodeModules": ["handlebars", "fs"],
+      "includeNodeModules": [
+        "handlebars",
+        "fs"
+      ],
       "context": "browser"
     }
   },
