@@ -5,51 +5,58 @@ import { button } from '../../components/ui/button';
 
 Handlebars.registerPartial('email', input({
   type: 'email',
-  name: 'email',
+  id: 'email',
   labelName: 'Email',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('login', input({
   type: 'text',
-  name: 'login',
+  id: 'login',
   labelName: 'Login',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('name', input({
   type: 'text',
-  name: 'first_name',
+  id: 'first_name',
   labelName: 'Name',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('lastName', input({
   type: 'text',
-  name: 'second_name',
+  id: 'second_name',
   labelName: 'Last name',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('phone', input({
   type: 'email',
-  name: 'phone',
+  id: 'phone',
   labelName: 'Phone',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('password', input({
   type: 'password',
-  name: 'password',
+  id: 'password',
   labelName: 'Password',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('repeatPassword', input({
   type: 'password',
-  name: 'repeat_password',
+  id: 'repeat_password',
   labelName: 'Password (repeat)',
   autocomplete: 'off',
+  value: '',
 }));
 
 Handlebars.registerPartial('submitBtn', button({
@@ -61,7 +68,7 @@ Handlebars.registerPartial('submitBtn', button({
 
 export const registration = Handlebars.compile(tmpl)({});
 
-new Promise((resolve) => {
+new Promise<void>((resolve) => {
   resolve();
 }).then(() => {
   document.querySelector('#registration-btn')

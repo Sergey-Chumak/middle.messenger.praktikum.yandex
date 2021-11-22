@@ -1,12 +1,12 @@
 .ui-button {
-  background: var(--color-button-primary);
-  border-radius: 8px;
   width: 276px;
   height: 37px;
-  color: var(--color-text-secondary);
+  border-radius: 8px;
   border: none;
-  cursor: pointer;
   font-size: 14px;
+  background: var(--color-button-primary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
 
   &_s {
     width: 131px;

@@ -5,19 +5,23 @@ import { button } from '../../components/ui/button';
 
 Handlebars.registerPartial('login', input({
   type: 'text',
-  name: 'login',
+  id: 'login',
   labelName: 'Login',
+  value: '',
   autocomplete: 'off',
   class: 'auth__login',
 }));
 
+
+
 Handlebars.registerPartial('password', input({
-  name: 'pass',
+  id: 'pass',
   type: 'password',
   labelName: 'Password',
   autocomplete: 'off',
   isError: true,
   errorMessage: 'error password',
+  value: ''
 }));
 
 Handlebars.registerPartial('submitBtn', button({
@@ -28,9 +32,9 @@ Handlebars.registerPartial('submitBtn', button({
   id: 'auth-btn',
 }));
 
-export const auth = Handlebars.compile(tmpl)({});
+export const auth: string = Handlebars.compile(tmpl)({});
 
-new Promise((resolve) => {
+new Promise<void>((resolve) => {
   resolve();
 }).then(() => {
   document.querySelector('#auth-btn')

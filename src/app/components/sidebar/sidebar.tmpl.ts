@@ -21,9 +21,6 @@ export const tmpl = `
                     <div class="sidebar__icon sidebar__icon_setting"></div>
                     <span class="sidebar__action-name">Profile settings</span>
                 </div>
-                <a href="/server-error">page 500 test</a>
-                <br>
-                <a href="/client-error">page 404 test</a>
             </div>
             
             <div id="logout-sidebar" class="sidebar__action">
