@@ -12,8 +12,6 @@ Handlebars.registerPartial('login', input({
   class: 'auth__login',
 }));
 
-
-
 Handlebars.registerPartial('password', input({
   id: 'pass',
   type: 'password',
@@ -21,7 +19,7 @@ Handlebars.registerPartial('password', input({
   autocomplete: 'off',
   isError: true,
   errorMessage: 'error password',
-  value: ''
+  value: '',
 }));
 
 Handlebars.registerPartial('submitBtn', button({

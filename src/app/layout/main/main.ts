@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './main.tmpl';
 import { sidebar } from '../../components/sidebar';
-import {IMainContext} from "./main.types";
+import { IMainContext } from './main.types';
 
 const context: IMainContext = {
   showMenuBtn: document.location.href.includes('chat-page') || document.location.href.includes('profile'),
@@ -12,7 +12,7 @@ Handlebars.registerPartial('sidebar', sidebar({
   userPhone: '+7 (909) 967 30 30',
 }));
 
-(document.querySelector('#app') as HTMLDivElement ).innerHTML = Handlebars.compile(tmpl)(context);
+(document.querySelector('#app') as HTMLDivElement).innerHTML = Handlebars.compile(tmpl)(context);
 
 const $iconMenu: HTMLDivElement | null = document.querySelector('#icon-menu') as HTMLDivElement;
 const $backdrop: HTMLDivElement | null = document.querySelector('#main-backdrop') as HTMLDivElement;
@@ -46,4 +46,4 @@ new Promise<void>((resolve) => {
   $logoutSidebar?.addEventListener('click', () => {
     document.location.href = 'auth';
   });
-}).catch(e => console.log(e))
+}).catch((e) => console.log(e));

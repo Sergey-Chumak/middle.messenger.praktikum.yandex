@@ -1,5 +1,5 @@
 export const tmpl = `
-    <div class="ui-input {{ class }}">
+    <div class="ui-input {{ class }} ui-input_{{from}}">
         <label class="ui-input__label" for="{{ id }}">{{ labelName }}</label>
         <input type="{{ type }}" 
                id="{{ id }}"

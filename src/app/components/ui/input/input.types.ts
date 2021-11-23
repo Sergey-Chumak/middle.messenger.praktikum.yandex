@@ -8,4 +8,5 @@ export interface IInputContext {
     disabled?: boolean;
     isError?: boolean;
     errorMessage?: string;
+    from?: string;
 }

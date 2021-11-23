@@ -1,4 +1,3 @@
-export default function last<T = string>(arr: T[]): T | void {
-  if (!Array.isArray(arr)) return;
+export default function last<T = string>(arr: T[]): T {
   return arr[arr.length - 1];
 }

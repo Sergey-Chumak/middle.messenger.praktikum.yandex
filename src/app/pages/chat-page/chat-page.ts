@@ -5,11 +5,11 @@ import { chat } from '../../components/chat';
 import { plugDialog } from '../../components/plug-dialog';
 
 Handlebars.registerPartial('chatList', chatList({
-    class: 'chat__chat-list'
+  class: 'chat__chat-list',
 }));
 
 Handlebars.registerPartial('chat', chat({
-    class: 'chat__dialog'
+  class: 'chat__dialog',
 }));
 
 Handlebars.registerPartial('plugDialog', plugDialog({}));

@@ -48,7 +48,7 @@ function initHandlers() {
 }
 
 function goToChangesData() {
-    (document.querySelector('#link-change-data') as HTMLLinkElement)
+  (document.querySelector('#link-change-data') as HTMLLinkElement)
     .addEventListener('click', () => {
       context.nonAvailableChanges = false;
       $pageWrapper.innerHTML = Handlebars.compile(tmpl)(context);
@@ -57,7 +57,7 @@ function goToChangesData() {
 }
 
 function goToChangesPass() {
-    (document.querySelector('#link-change-pass') as HTMLLinkElement)
+  (document.querySelector('#link-change-pass') as HTMLLinkElement)
     .addEventListener('click', () => {
       context.changePassword = false;
       $pageWrapper.innerHTML = Handlebars.compile(tmpl)(context);
@@ -66,7 +66,7 @@ function goToChangesPass() {
 }
 
 function saveDataChanges() {
-    (document.querySelector('#profile-save-button') as HTMLButtonElement)
+  (document.querySelector('#profile-save-button') as HTMLButtonElement)
     .addEventListener('click', () => {
       context.nonAvailableChanges = true;
       $pageWrapper.innerHTML = Handlebars.compile(tmpl)(context);
@@ -75,7 +75,7 @@ function saveDataChanges() {
 }
 
 function savePassChanges() {
-    (document.querySelector('#profile-save-pass-button') as HTMLButtonElement)
+  (document.querySelector('#profile-save-pass-button') as HTMLButtonElement)
     .addEventListener('click', () => {
       context.changePassword = true;
       $pageWrapper.innerHTML = Handlebars.compile(tmpl)(context);
