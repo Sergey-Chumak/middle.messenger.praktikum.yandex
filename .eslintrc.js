@@ -20,5 +20,10 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
     'no-use-before-define': 'off',
+    'no-underscore-dangle': 'off',
+    'lines-between-class-members': 'off',
+    'class-methods-use-this': 'off',
+    'no-param-reassign': 'off',
+    'no-unused-vars': 'off',
   },
 };

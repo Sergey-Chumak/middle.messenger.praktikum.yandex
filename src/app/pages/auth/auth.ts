@@ -2,6 +2,10 @@ import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './auth.tmpl';
 import { input } from '../../components/ui/input';
 import { button } from '../../components/ui/button';
+import { Button } from '../../components/ui/test-button';
+import { render } from '../../utils/renderDOM';
+import Block from '../../services/block';
+import { IProps } from '../../services/types';
 
 Handlebars.registerPartial('login', input({
   type: 'text',
@@ -31,6 +35,36 @@ Handlebars.registerPartial('submitBtn', button({
 }));
 
 export const auth: string = Handlebars.compile(tmpl)({});
+
+const profileTemplate = `
+    <div>
+    {{ userName }}
+        {{{ button }}}
+    </div>
+`;
+
+class UserProfile extends Block {
+  constructor(props: IProps) {
+    super('div', props);
+  }
+  render() {
+    console.log(this.compile(profileTemplate, {
+      userName: this.props.userName,
+      button: this.props.button,
+    }));
+    return this.compile(profileTemplate, {
+      userName: this.props.userName,
+      button: this.props.button,
+    });
+  }
+}
+
+const profile = new UserProfile({
+  userName: 'John Doe',
+  button: new Button({ child: 'Change name', settings: { withInternalID: true } }),
+});
+
+render('#app', profile);
 
 new Promise<void>((resolve) => {
   resolve();
