@@ -1,6 +1,13 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './button.tmpl';
-import { TCompileTemplate } from '../../../services/types';
 import { IButtonContext } from './button.types';
+import Block from '../../../services/block';
 
-export const button: TCompileTemplate<IButtonContext> = Handlebars.compile(tmpl);
+export class Button extends Block {
+  constructor(props: IButtonContext) {
+    super('div', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(tmpl, this.props);
+  }
+}

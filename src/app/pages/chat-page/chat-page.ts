@@ -1,17 +1,30 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './chat-page.tmpl';
-import { chatList } from '../../components/chat-list';
-import { chat } from '../../components/chat';
-import { plugDialog } from '../../components/plug-dialog';
+import Block from '../../services/block';
+import { IPropsAndChildren } from '../../services/types';
+import { ChatList } from '../../components/chat-list';
+import { Dialog } from '../../components/dialog';
 
-Handlebars.registerPartial('chatList', chatList({
-  class: 'chat__chat-list',
-}));
+export class ChatPage extends Block {
+  constructor(props: IPropsAndChildren) {
+    super('div', props);
 
-Handlebars.registerPartial('chat', chat({
-  class: 'chat__dialog',
-}));
+    this.children.chatList = new ChatList({
+      class: 'chat__chat-list',
+    });
 
-Handlebars.registerPartial('plugDialog', plugDialog({}));
+    this.children.plugDialog = new Dialog({});
+  }
 
-export const chatPage: string = Handlebars.compile(tmpl)({});
+  componentDidMount() {
+    this.children.plugDialog.setProps({
+      test: 'test',
+    });
+  }
+
+  render(): DocumentFragment {
+    return this.compile(tmpl, {
+      chatList: this.children.chatList,
+      plugDialog: this.children.plugDialog,
+    });
+  }
+}

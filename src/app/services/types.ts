@@ -2,17 +2,16 @@ import Block from './block';
 
 export type TCompileTemplate<T = {}> = (context: T) => string;
 
-export interface IProps {
-    [key: string]: unknown;
+export type IPropsAndChildren<T> = T & {
     __id?: string;
     settings?: ISettings;
     events?: IEvents;
+    children?: IChildrenBlock
+
 }
 
-export interface IPropsAndChildren extends IProps{
-    children?: {
-        [key: string]: unknown;
-    }
+export interface IChildrenBlock {
+    [key: string]: Block<unknown>;
 }
 
 interface ISettings {
@@ -20,16 +19,18 @@ interface ISettings {
 }
 
 interface IEvents {
-    [key: string]: (event: Event) => void;
+    [key: string]: (event?: Event) => void;
 }
 
 export interface IMeta {
     tagName: string;
-    props: IProps;
+    props: IPropsAndChildren<unknown>;
 }
 
+// eslint-disable-next-line no-shadow
 export enum EventsBusEvents {
     INIT = 'init',
     FLOW_CDM = 'flow:component-did-mount',
+    FLOW_CDU = 'flow:component-did-update',
     FLOW_RENDER = 'flow:render',
 }

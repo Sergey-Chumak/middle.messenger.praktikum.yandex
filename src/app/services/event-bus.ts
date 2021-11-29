@@ -1,5 +1,5 @@
 export class EventBus {
-  private listeners: {};
+  private readonly listeners: Object;
 
   constructor() {
     this.listeners = {};
@@ -12,13 +12,22 @@ export class EventBus {
     this.listeners[event].push(callback);
   }
 
-  emit(event) {
+  emit(event, ...args) {
+    if (!this.listeners[event]) {
+      throw new Error(`Нет события: ${event}`);
+    }
+
     this.listeners[event].forEach((listener) => {
-      listener();
+      listener(...args);
     });
   }
 
-  // Можно называть detach, как больше нравится
   detach(event, callback) {
+    if (!this.listeners[event]) {
+      throw new Error(`Нет события: ${event}`);
+    }
+
+    this.listeners[event] = this.listeners[event]
+      .filter((item) => item !== callback);
   }
 }

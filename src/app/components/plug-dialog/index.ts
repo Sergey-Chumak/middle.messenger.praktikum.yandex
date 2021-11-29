@@ -1,3 +1,3 @@
 import './plug-dialog.scss';
 
-export { plugDialog } from './plug-dialog';
+export { PlugDialog } from './plug-dialog';

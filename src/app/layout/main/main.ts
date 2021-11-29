@@ -1,49 +1,87 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './main.tmpl';
-import { sidebar } from '../../components/sidebar';
-import { IMainContext } from './main.types';
+import Block from '../../services/block';
+import { IPropsAndChildren } from '../../services/types';
+import { Auth } from '../../pages/auth';
+import { Registration } from '../../pages/registration';
+import { ClientError } from '../../pages/client-error';
+import { ServerError } from '../../pages/server-error';
+import { Profile } from '../../pages/profile';
+import { ChatPage } from '../../pages/chat-page';
+import { Sidebar } from '../../components/sidebar';
 
-const context: IMainContext = {
-  showMenuBtn: document.location.href.includes('chat-page') || document.location.href.includes('profile'),
-};
+const auth = new Auth({});
+const registration = new Registration({});
+const clientError = new ClientError({});
+const serverError = new ServerError({});
+const profile = new Profile({});
+const chatPage = new ChatPage({});
 
-Handlebars.registerPartial('sidebar', sidebar({
-  userName: 'Ivan',
-  userPhone: '+7 (909) 967 30 30',
-}));
+auth.setProps({ test: 'test' });
+registration.setProps({ test: 'test' });
+clientError.setProps({ test: 'test' });
+serverError.setProps({ test: 'test' });
+serverError.setProps({ test: 'test' });
+profile.setProps({ test: 'test' });
+chatPage.setProps({ test: 'test' });
 
-(document.querySelector('#app') as HTMLDivElement).innerHTML = Handlebars.compile(tmpl)(context);
+export class Main extends Block {
+  constructor(props: IPropsAndChildren) {
+    super('div', props);
 
-const $iconMenu: HTMLDivElement | null = document.querySelector('#icon-menu') as HTMLDivElement;
-const $backdrop: HTMLDivElement | null = document.querySelector('#main-backdrop') as HTMLDivElement;
-const $sidebar: HTMLDivElement | null = document.querySelector('#sidebar') as HTMLDivElement;
-const $chatListSidebar: HTMLDivElement | null = document.querySelector('#chat-list-sidebar');
-const $profileSidebar: HTMLDivElement | null = document.querySelector('#profile-sidebar');
-const $logoutSidebar: HTMLDivElement | null = document.querySelector('#logout-sidebar');
-
-new Promise<void>((resolve) => {
-  resolve();
-}).then(() => {
-  if (context.showMenuBtn) {
-    $iconMenu.addEventListener('click', () => {
-      $sidebar.style.left = '0';
-      $backdrop.style.visibility = 'visible';
-    });
-
-    $backdrop.addEventListener('click', () => {
-      $sidebar.style.left = '-228px';
-      $backdrop.style.visibility = 'hidden';
+    this.children.page = this.initPage();
+    this.children.sidebar = new Sidebar({
+      userName: 'Sergey',
+      userPhone: '+7895478475',
     });
   }
-  $chatListSidebar?.addEventListener('click', () => {
-    document.location.href = 'chat-page';
-  });
 
-  $profileSidebar?.addEventListener('click', () => {
-    document.location.href = 'profile';
-  });
+  componentDidMount() {
+    if (document.location.href === `${document.location.origin}/chat-page`
+        || document.location.href === `${document.location.origin}/profile`) {
+      this.setProps({
+        isMenu: true,
+      });
+    } else {
+      this.setProps({
+        isMenu: false,
+      });
+    }
 
-  $logoutSidebar?.addEventListener('click', () => {
-    document.location.href = 'auth';
-  });
-}).catch((e) => console.log(e));
+    this.children.sidebar.setProps({
+      events: {
+        click: (event: Event) => {
+          if ((event.target as HTMLElement).id !== 'sidebar-backdrop') return;
+          this.children.sidebar.getContent().classList.remove('sidebar_open');
+        },
+      },
+    });
+    this.setProps({
+      events: {
+        click: (event: Event) => {
+          if ((event.target as HTMLElement).id !== 'icon-menu') return;
+          this.children.sidebar.getContent().classList.add('sidebar_open');
+        },
+      },
+    });
+  }
+
+  initPage(): Block {
+    if (
+      document.location.href === `${document.location.origin}/auth`
+        || document.location.href === `${document.location.origin}/`
+    ) return auth;
+    if (document.location.href === `${document.location.origin}/registration`) return registration;
+    if (document.location.href === `${document.location.origin}/server-error`) return serverError;
+    if (document.location.href === `${document.location.origin}/profile`) return profile;
+    if (document.location.href === `${document.location.origin}/chat-page`) return chatPage;
+    return clientError;
+  }
+
+  render(): DocumentFragment {
+    return this.compile(tmpl, {
+      page: this.children.page,
+      sidebar: this.children.sidebar,
+      isMenu: this.props.isMenu,
+    });
+  }
+}

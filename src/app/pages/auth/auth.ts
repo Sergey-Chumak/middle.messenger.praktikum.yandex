@@ -1,76 +1,103 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './auth.tmpl';
-import { input } from '../../components/ui/input';
-import { button } from '../../components/ui/button';
-import { Button } from '../../components/ui/test-button';
-import { render } from '../../utils/renderDOM';
+import { Button } from '../../components/ui/button';
 import Block from '../../services/block';
-import { IProps } from '../../services/types';
+import { IPropsAndChildren } from '../../services/types';
+import { Input } from '../../components/ui/input';
+import { isValidLogin, isValidPassword } from '../../utils/validate';
+import { ISignInFormValue } from './types';
 
-Handlebars.registerPartial('login', input({
-  type: 'text',
-  id: 'login',
-  labelName: 'Login',
-  value: '',
-  autocomplete: 'off',
-  class: 'auth__login',
-}));
+export class Auth extends Block {
+  signInFormValue: ISignInFormValue = {
+    login: '',
+    password: '',
+  };
 
-Handlebars.registerPartial('password', input({
-  id: 'pass',
-  type: 'password',
-  labelName: 'Password',
-  autocomplete: 'off',
-  isError: true,
-  errorMessage: 'error password',
-  value: '',
-}));
-
-Handlebars.registerPartial('submitBtn', button({
-  color: 'secondary',
-  name: 'Sign in',
-  size: 'l',
-  class: 'auth__button',
-  id: 'auth-btn',
-}));
-
-export const auth: string = Handlebars.compile(tmpl)({});
-
-const profileTemplate = `
-    <div>
-    {{ userName }}
-        {{{ button }}}
-    </div>
-`;
-
-class UserProfile extends Block {
-  constructor(props: IProps) {
-    super('div', props);
+  get isValidSignInForm(): boolean {
+    return isValidLogin(this.signInFormValue.login)
+        && isValidPassword(this.signInFormValue.password);
   }
+
+  constructor(props: IPropsAndChildren) {
+    super('div', props);
+    this.initChildren();
+  }
+
+  submit() {
+    console.log('form', this.isValidSignInForm);
+    if (!this.isValidSignInForm) return;
+    console.log(this.signInFormValue);
+    setTimeout(() => { document.location.href = 'chat-page'; }, 2000);
+  }
+
   render() {
-    console.log(this.compile(profileTemplate, {
-      userName: this.props.userName,
-      button: this.props.button,
-    }));
-    return this.compile(profileTemplate, {
-      userName: this.props.userName,
-      button: this.props.button,
+    return this.compile(tmpl, {
+      loginInput: this.children.loginInput,
+      passwordInput: this.children.passwordInput,
+      button: this.children.button,
     });
+  }
+
+  initChildren() {
+    this.children.loginInput = new Input({
+      value: this.signInFormValue.login,
+      id: 'login',
+      labelName: 'Login',
+      type: 'text',
+      errorMessage: 'Login is invalid',
+      events: {
+        ...this.initInputEvents('loginInput', 'login', isValidLogin),
+      },
+    });
+
+    this.children.passwordInput = new Input({
+      value: this.signInFormValue.password,
+      id: 'password',
+      labelName: 'Password',
+      errorMessage: 'Password is invalid',
+      type: 'password',
+      events: {
+        ...this.initInputEvents('passwordInput', 'password', isValidPassword),
+      },
+    });
+
+    this.children.button = new Button({
+      name: 'Sign in',
+      color: 'secondary',
+      size: 'l',
+      class: 'auth__button',
+      type: 'button',
+      settings: { withInternalID: true },
+      events: {
+        click: (event) => {
+          this.submit();
+        },
+      },
+    });
+  }
+
+  initInputEvents(inputName: string, formField: string, validator: (text: string) => boolean) {
+    return {
+      input: (event) => {
+        const target = event.target as HTMLInputElement;
+        if (target.tagName !== 'INPUT') return;
+        this.signInFormValue[formField] = target.value;
+      },
+      focusout: (event) => {
+        if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+        if (validator(this.signInFormValue[formField])) {
+          this.children[inputName].getContent().classList.remove('ui-input_invalid');
+        } else {
+          this.children[inputName].getContent().classList.add('ui-input_invalid');
+        }
+      },
+      focusin: (event) => {
+        if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+        if (validator(this.signInFormValue[formField])) {
+          this.children[inputName].getContent().classList.remove('ui-input_invalid');
+        } else {
+          this.children[inputName].getContent().classList.add('ui-input_invalid');
+        }
+      },
+    };
   }
 }
-
-const profile = new UserProfile({
-  userName: 'John Doe',
-  button: new Button({ child: 'Change name', settings: { withInternalID: true } }),
-});
-
-render('#app', profile);
-
-new Promise<void>((resolve) => {
-  resolve();
-}).then(() => {
-  document.querySelector('#auth-btn')
-    ?.addEventListener('click', () => {
-      document.location.href = 'chat-page';
-    });
-});

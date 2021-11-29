@@ -1,6 +1,13 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './input.tmpl';
-import { TCompileTemplate } from '../../../services/types';
 import { IInputContext } from './input.types';
+import Block from '../../../services/block';
 
-export const input: TCompileTemplate<IInputContext> = Handlebars.compile(tmpl);
+export class Input extends Block {
+  constructor(props: IInputContext) {
+    super('div', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(tmpl, this.props);
+  }
+}

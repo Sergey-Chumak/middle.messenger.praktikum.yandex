@@ -1,4 +1,4 @@
 import './sidebar.scss';
 
-export { sidebar } from './sidebar';
+export { Sidebar } from './sidebar';
 export { ISidebarContext } from './sidebar.types';

@@ -1,5 +1,12 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './plug-dialog.tmpl';
-import { TCompileTemplate } from '../../services/types';
+import Block from '../../services/block';
 
-export const plugDialog: TCompileTemplate = Handlebars.compile(tmpl);
+export class PlugDialog extends Block {
+  constructor() {
+    super('div');
+  }
+
+  render(): DocumentFragment {
+    return this.compile(tmpl, {});
+  }
+}

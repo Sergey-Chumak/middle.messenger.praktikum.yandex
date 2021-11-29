@@ -4,6 +4,21 @@
   justify-content: flex-start;
   text-align: start;
 
+  &_invalid {
+    .ui-input__input_error{
+      color: var(--color-text-error);
+      margin-bottom: 0;
+    }
+
+    .ui-input__error {
+      height: 8px;
+      font-size: 10px;
+      margin: 4px 0;
+      color: var(--color-text-error);
+      display: block;
+    }
+  }
+
   &__label {
     margin-bottom: 6px;
     font-size: 10px;
@@ -19,11 +34,6 @@
     padding: 0;
     margin-bottom: 16px;
 
-    &_error {
-      color: var(--color-text-error);
-      margin-bottom: 0;
-    }
-
     &:focus {
       outline: none;
       box-shadow: var(--shadow-primary)
@@ -31,13 +41,10 @@
   }
 
   &__error {
-    height: 8px;
-    font-size: 10px;
-    margin: 4px 0;
-    color: var(--color-text-error);
+    display: none;
   }
 
-  &_profile {
+  &__profile {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -45,6 +52,10 @@
     border-bottom: 1px solid var(--color-border-default);
     padding-bottom: 5px;
     margin-bottom: 10px;
+
+    &_invalid > div > input {
+      color: var(--color-text-error) !important;
+    }
 
     & > label {
       font-size: 13px !important;
@@ -57,7 +68,7 @@
       margin-bottom: 0;
       text-align: right;
       border-bottom: none;
-      width: 80%;
+      width: 70%;
 
       &:focus {
         box-shadow: var(--shadow-primary);

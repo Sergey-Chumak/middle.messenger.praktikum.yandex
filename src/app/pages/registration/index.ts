@@ -1,3 +1,3 @@
 import './registration.scss';
 
-export * from './registration';
+export { Registration } from './registration';

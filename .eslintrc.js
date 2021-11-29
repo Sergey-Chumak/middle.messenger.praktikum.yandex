@@ -25,5 +25,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-param-reassign': 'off',
     'no-unused-vars': 'off',
+    'max-len': ['error', { code: 120, tabWidth: 4 }],
   },
 };

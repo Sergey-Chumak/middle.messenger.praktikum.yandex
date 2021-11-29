@@ -1,12 +1,13 @@
 export const tmpl = `
     <div class="registration">
-        {{>email }}
-        {{>login }}
-        {{>name }}
-        {{>lastName }}
-        {{>phone }}
-        {{>password }}
-        {{>repeatPassword }}
-        {{>submitBtn }}
+        {{{ emailInput }}}
+        {{{ loginInput }}}
+        {{{ nameInput }}}
+        {{{ lastNameInput }}}
+        {{{ phoneInput }}}
+        {{{ passwordInput }}}
+        {{{ passwordRepeatInput }}}
+        {{{ submitBtn }}}
+        <a href="/auth" class="registration__link">I have a profile</a>
     </div>
 `;

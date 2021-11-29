@@ -1,3 +1,3 @@
 import './client-error.scss';
 
-export * from './client-error';
+export { ClientError } from './client-error';

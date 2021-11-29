@@ -1,6 +1,6 @@
 export const tmpl = `
     <div class="chat">
-        {{>chatList}}
-        {{>plugDialog}}
+        {{{ chatList }}}
+        {{{ plugDialog }}}
     </div>
 `;

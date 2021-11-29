@@ -1,3 +1,3 @@
 import './server-error.scss';
 
-export * from './server-error';
+export { ServerError } from './server-error';

@@ -1,6 +1,15 @@
-import Handlebars from 'handlebars/dist/handlebars';
 import { tmpl } from './server-error.tmpl';
+import Block from '../../services/block';
+import { IPropsAndChildren } from '../../services/types';
 
-const context = { error: 500 };
+export class ServerError extends Block {
+  constructor(props: IPropsAndChildren) {
+    super('div', props);
+  }
 
-export const serverError = Handlebars.compile(tmpl)(context);
+  render(): DocumentFragment {
+    return this.compile(tmpl, {
+      error: '500',
+    });
+  }
+}

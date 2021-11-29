@@ -1,3 +1,3 @@
 import './chat-page.scss';
 
-export * from './chat-page';
+export { ChatPage } from './chat-page';
