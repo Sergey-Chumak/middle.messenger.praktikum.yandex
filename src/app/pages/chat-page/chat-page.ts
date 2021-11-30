@@ -1,18 +1,18 @@
 import { tmpl } from './chat-page.tmpl';
 import Block from '../../services/block';
-import { IPropsAndChildren } from '../../services/types';
+import { TPropsAndChildren } from '../../services/types';
 import { ChatList } from '../../components/chat-list';
-import { Dialog } from '../../components/dialog';
+import { Chat } from '../../components/dialog';
 
 export class ChatPage extends Block {
-  constructor(props: IPropsAndChildren) {
+  constructor(props: TPropsAndChildren) {
     super('div', props);
 
     this.children.chatList = new ChatList({
-      class: 'chat__chat-list',
+      class: 'chat-page__chat-list',
     });
 
-    this.children.plugDialog = new Dialog({});
+    this.children.plugDialog = new Chat({});
   }
 
   componentDidMount() {

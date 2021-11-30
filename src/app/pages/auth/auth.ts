@@ -1,7 +1,7 @@
 import { tmpl } from './auth.tmpl';
 import { Button } from '../../components/ui/button';
 import Block from '../../services/block';
-import { IPropsAndChildren } from '../../services/types';
+import { TPropsAndChildren } from '../../services/types';
 import { Input } from '../../components/ui/input';
 import { isValidLogin, isValidPassword } from '../../utils/validate';
 import { ISignInFormValue } from './types';
@@ -17,7 +17,7 @@ export class Auth extends Block {
         && isValidPassword(this.signInFormValue.password);
   }
 
-  constructor(props: IPropsAndChildren) {
+  constructor(props: TPropsAndChildren) {
     super('div', props);
     this.initChildren();
   }

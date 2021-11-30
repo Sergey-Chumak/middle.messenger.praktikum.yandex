@@ -1,6 +1,6 @@
 import { tmpl } from './profile.tmpl';
 import Block from '../../services/block';
-import { IPropsAndChildren } from '../../services/types';
+import { TPropsAndChildren } from '../../services/types';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import {
@@ -43,7 +43,7 @@ export class Profile extends Block {
         && isValidEqualPasswords(this.userPassFormValue.oldPassword, this.userPassFormValue.oldPassword);
   }
 
-  constructor(props: IPropsAndChildren) {
+  constructor(props: TPropsAndChildren) {
     super('div', props);
     this.initChildren();
     this.userDataInputs = [

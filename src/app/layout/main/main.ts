@@ -1,6 +1,6 @@
 import { tmpl } from './main.tmpl';
 import Block from '../../services/block';
-import { IPropsAndChildren } from '../../services/types';
+import { TPropsAndChildren } from '../../services/types';
 import { Auth } from '../../pages/auth';
 import { Registration } from '../../pages/registration';
 import { ClientError } from '../../pages/client-error';
@@ -25,7 +25,7 @@ profile.setProps({ test: 'test' });
 chatPage.setProps({ test: 'test' });
 
 export class Main extends Block {
-  constructor(props: IPropsAndChildren) {
+  constructor(props: TPropsAndChildren) {
     super('div', props);
 
     this.children.page = this.initPage();

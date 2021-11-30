@@ -1,5 +1,10 @@
-export interface IMessagesContext {
-    messages: IMessage[]
+export interface IDialoguesProps {
+    dialogues: IDialog[];
+}
+
+export interface IDialog {
+    date: string;
+    messages: IMessage[];
 }
 
 export interface IMessage {

@@ -1,4 +1,4 @@
-.messages-wrapper {
+.dialogues {
   position: absolute;
   overflow-y: auto;
   height: 100%;
@@ -7,36 +7,34 @@
   left: 0;
   padding: 0 15px;
   box-sizing: border-box;
-}
-
-.message-wrapper {
-  width: 100%;
   display: flex;
-  justify-content: flex-end;
-  margin: 5px 0;
+  flex-direction: column-reverse;
 
-  &:last-child {
-    margin-bottom: 10px;
-  }
-
-  &_me {
+  &__message-wrapper {
+    width: 100%;
+    display: flex;
     justify-content: flex-end;
+    margin: 5px 0;
 
-    .message {
-      border-top-right-radius: 0;
-    }
-  }
+    &_me {
+      justify-content: flex-end;
 
-  &_friend {
-    justify-content: flex-start;
-
-    .message {
-      border-top-left-radius: 0;
-      background: #F8F8F8;
+      .message {
+        border-top-right-radius: 0;
+      }
     }
 
-    .message__status {
-      display: none;
+    &_friend {
+      justify-content: flex-start;
+
+      .message {
+        border-top-left-radius: 0;
+        background: #F8F8F8;
+      }
+
+      .message__status {
+        display: none;
+      }
     }
   }
 }
@@ -46,7 +44,7 @@
   background: var(--color-background-chat);
   border-radius: 12px;
   box-sizing: border-box;
-  padding: 11px;
+  padding: 11px 11px 5px;
   max-width: 40%;
   width: fit-content;
   font-weight: 500;
@@ -55,6 +53,7 @@
   display: flex;
   flex-direction: column;
   align-self: end;
+  word-break: break-all;
 
   &__info {
     align-self: end;
@@ -64,6 +63,7 @@
     align-items: baseline;
     width: 38px;
     height: 9px;
+    margin-top: 5px;
   }
 
   &__status {
@@ -79,11 +79,18 @@
     }
   }
 
-  &__date {
+  &__time {
     margin: 0;
     font-weight: 500;
     font-size: 9px;
     line-height: 9px;
     color: #FFA800;
+  }
+
+  &__date {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 12px;
+    color: var(--color-text-primary)
   }
 }

@@ -1,9 +1,9 @@
 import { tmpl } from './sidebar.tmpl';
-import { IPropsAndChildren } from '../../services/types';
+import { TPropsAndChildren } from '../../services/types';
 import Block from '../../services/block';
 
 export class Sidebar extends Block {
-  constructor(props: IPropsAndChildren) {
+  constructor(props: TPropsAndChildren) {
     super('div', props);
   }
 

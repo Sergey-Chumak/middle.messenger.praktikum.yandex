@@ -1,17 +1,18 @@
 import Block from './block';
+import extend = Handlebars.Utils.extend;
 
 export type TCompileTemplate<T = {}> = (context: T) => string;
 
-export type IPropsAndChildren<T> = T & {
+export type TPropsAndChildren<T> = T & {
     __id?: string;
     settings?: ISettings;
     events?: IEvents;
-    children?: IChildrenBlock
+    children?: IChildrenBlock<unknown>
 
 }
 
-export interface IChildrenBlock {
-    [key: string]: Block<unknown>;
+export type IChildrenBlock<T> = {
+    [key in keyof T]: Block<T>;
 }
 
 interface ISettings {
@@ -24,10 +25,9 @@ interface IEvents {
 
 export interface IMeta {
     tagName: string;
-    props: IPropsAndChildren<unknown>;
+    props: TPropsAndChildren<unknown>;
 }
 
-// eslint-disable-next-line no-shadow
 export enum EventsBusEvents {
     INIT = 'init',
     FLOW_CDM = 'flow:component-did-mount',

@@ -1,54 +1,63 @@
-import { IMessage } from '../components/dialog/message/message.types';
+import { IDialog, IMessage } from '../components/dialog/dialogues/message.types';
 
-export function getMessages(): IMessage[] {
-  return [
+export function getMessages(): IDialog[] {
+  const messages: IMessage[] = [
     {
-      id: '1', message: 'Hewdw dwadw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'me',
+      id: '1',
+      message: 'Hi! How’re you?',
+      time: '13:00',
+      from: 'friend',
+      status: 'sent',
     },
     {
-      id: '2', message: 'Hewdw dwadw s d aw as dwdw wjwkhduih dw uhuawh', time: '14:00', from: 'me',
+      id: '2',
+      message: 'I’m good, thanks. Yourself?',
+      time: '14:00',
+      from: 'me',
+      status: 'sent',
     },
     {
-      id: '3', message: 'Hewdw dwadw  3 as wa w aasd aws 223dwdw wjwkhduih dw uhuawh', time: '15:25', from: 'friend',
-    },
-    {
-      id: '4', message: 'Hewdw dwadwd aw aw a dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'me',
-    },
-    {
-      id: '5', message: 'Hewdw dwadw dwdw wjwkhduih dwawadawdwaddw uhuawh', time: '13:00', from: 'friend',
-    },
-    {
-      id: '6', message: 'Hewdw dwadw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'friend',
-    },
-    {
-      id: '7', message: 'Hewdw dwadw w adwa dwa wjwkhduih dw uhuawh', time: '13:00', from: 'me',
-    },
-    {
-      id: '8', message: 'Hewdw dwaddaw dw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'me',
-    },
-    {
-      id: '9', message: 'Hewdw dwas dw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'friend',
-    },
-    {
-      id: '10', message: 'Hewdw dwadw  wa wadwdwawdawdw adw daw adw  wjwkhduih dw uhuawh', time: '13:00', from: 'me',
-    },
-    {
-      id: '11', message: 'Hewdw dwadw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'friend',
-    },
-    {
-      id: '12', message: 'Hewdw dwadwad as dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'me',
-    },
-    {
-      id: '13', message: 'Hewdw dwadwaw daw aw daw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'friend',
-    },
-    {
-      id: '14', message: 'Hewdw dwadw  das sd ad wadwdw wjwkhduih dw uhuawh', time: '13:00', from: 'me',
-    },
-    {
-      id: '15', message: 'Hewdw dwadw dwdw wjwkhduih dw uhuawh', time: '13:00', from: 'friend',
-    },
-    {
-      id: '16', message: 'Dima chiksec', time: '13:00', from: 'friend',
+      id: '3',
+      message: 'I’m also good. Thank you.',
+      time: '15:25',
+      from: 'friend',
+      status: 'sent',
     },
   ];
+
+  const messages2: IMessage[] = [
+    {
+      id: '1',
+      message: 'Hi! How are you?',
+      time: '18:37',
+      from: 'me',
+      status: 'sent',
+    },
+    {
+      id: '2',
+      message: 'Good, thanks. You look great! It’s been ages since I last saw you.',
+      time: '19:24',
+      from: 'friend',
+      status: 'sent',
+    },
+    {
+      id: '3',
+      message: 'Three years exactly.',
+      time: '20:25',
+      from: 'me',
+      status: 'sent',
+    },
+    {
+      id: '4',
+      message: 'Right.',
+      time: '20:26',
+      from: 'me',
+      status: 'sent',
+    },
+  ];
+  const chat: IDialog[] = [
+    { date: 'Jule 19', messages: messages.reverse() },
+    { date: 'September 24', messages: messages2.reverse() },
+  ];
+  return chat;
 }

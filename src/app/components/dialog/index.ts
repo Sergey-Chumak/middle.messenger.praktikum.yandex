@@ -1,4 +1,4 @@
-import './dialog.scss';
+import './chat.scss';
 
-export { Dialog } from './dialog';
-export { IDialogContext } from './dialog.types';
+export { Chat } from './chat';
+export { IChatProps } from './chat.types';

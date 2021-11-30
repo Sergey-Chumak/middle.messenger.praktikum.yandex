@@ -2,7 +2,7 @@ import { tmpl } from './registration.tmpl';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import Block from '../../services/block';
-import { IPropsAndChildren } from '../../services/types';
+import { TPropsAndChildren } from '../../services/types';
 import {
   isValidEmail, isValidEqualPasswords, isValidLogin, isValidName, isValidPassword, isValidPhone,
 } from '../../utils/validate';
@@ -29,7 +29,7 @@ export class Registration extends Block {
         && isValidName(this.signUpFormValue.lastName);
   }
 
-  constructor(props: IPropsAndChildren) {
+  constructor(props: TPropsAndChildren) {
     super('div', props);
 
     this.initChildren();
