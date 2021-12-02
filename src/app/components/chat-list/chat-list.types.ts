@@ -1,5 +1,11 @@
-import { TPropsAndChildren } from '../../services/types';
+import { ChatCards, IChatCard } from './chat-cards';
 
-export interface IChatListContext extends TPropsAndChildren{
-    class?: string;
+export interface IChatListProps {
+    search?: any;
+    chatCards?: IChatCard[];
+    value?: string;
+}
+
+export interface IChatListChildren {
+    chatCards: ChatCards;
 }

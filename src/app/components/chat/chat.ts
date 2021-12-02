@@ -3,8 +3,9 @@ import { tmpl } from './chat.tmpl';
 import Block from '../../services/block';
 import { Dialogues, IDialog, IMessage } from './dialogues';
 import { IChatChildren, IChatProps } from './chat.types';
-import { getMessages } from '../../services/server-data';
+import { getUserData } from '../../services/server-data';
 import { getDateNow, getTimeNow } from '../../utils/date';
+import last from '../../utils/last';
 
 export class Chat extends Block<IChatProps, IChatChildren> {
   dialogues: IDialog[] = [];
@@ -16,7 +17,6 @@ export class Chat extends Block<IChatProps, IChatChildren> {
   }
 
   componentDidMount(): void {
-    this.initFocusEventOnInput();
     this.initChat();
   }
 
@@ -37,7 +37,6 @@ export class Chat extends Block<IChatProps, IChatChildren> {
 
   initChat(): void {
     this.setProps({
-      name: 'Vadim',
       disabled: true,
       events: {
         click: (event: Event) => {
@@ -59,12 +58,15 @@ export class Chat extends Block<IChatProps, IChatChildren> {
         },
       },
     });
-    setTimeout(() => {
-      this.dialogues = getMessages().reverse();
 
-      this.setProps({ disabled: false });
+    setTimeout(() => {
+      const user = getUserData().find((item) => item.id === last(document.location.href.split('/')));
+
+      this.dialogues = user?.chat.reverse() as IDialog[];
+
+      this.setProps({ disabled: false, name: user!.name });
       this.children.dialogues?.setProps({ dialogues: this.dialogues });
-    }, 1000);
+    }, 500);
   }
 
   sendMessage(): void {
@@ -91,16 +93,19 @@ export class Chat extends Block<IChatProps, IChatChildren> {
         }],
       });
     }
-
-    this.children.dialogues.setProps({ messages: this.dialogues });
+    this.children.dialogues.setProps({ dialogues: this.dialogues });
 
     this.currentMessage = '';
     this.setProps({ value: '' });
     (document.querySelector('#input-message') as HTMLElement)?.focus();
 
+    this.messageDelivered(id);
+  }
+
+  messageDelivered(id: string) {
     setTimeout(() => {
       (this.dialogues[0].messages.find((item) => item.id === id) as IMessage).status = 'sent';
-      this.children.dialogues.setProps({ messages: this.dialogues });
+      this.children.dialogues.setProps({ dialogues: this.dialogues });
     }, 1000);
   }
 }

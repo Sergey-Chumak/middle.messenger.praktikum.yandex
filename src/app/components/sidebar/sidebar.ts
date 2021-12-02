@@ -9,15 +9,15 @@ export class Sidebar extends Block {
 
   componentDidMount() {
     (document.querySelector('#chat-list-sidebar') as HTMLElement).addEventListener('click', () => {
-      document.location.href = 'chat-page';
+      document.location.href = '/chat-page';
     });
 
     (document.querySelector('#profile-sidebar') as HTMLElement).addEventListener('click', () => {
-      document.location.href = 'profile';
+      document.location.href = '/profile';
     });
 
     (document.querySelector('#logout-sidebar') as HTMLElement).addEventListener('click', () => {
-      document.location.href = 'auth';
+      document.location.href = '/auth';
     });
   }
 

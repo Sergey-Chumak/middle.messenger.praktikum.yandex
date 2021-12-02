@@ -8,7 +8,7 @@ export function getTimeNow(): string {
 export function getDateNow(): string {
   const date: Date = new Date(Date.now());
   const month: string = DateMonth[date.getMonth()];
-  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  const day = date.getDate();
   return `${month} ${day}`;
 }
 

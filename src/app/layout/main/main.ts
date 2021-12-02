@@ -36,7 +36,7 @@ export class Main extends Block {
   }
 
   componentDidMount() {
-    if (document.location.href === `${document.location.origin}/chat-page`
+    if (document.location.href.includes(`${document.location.origin}/chat-page`)
         || document.location.href === `${document.location.origin}/profile`) {
       this.setProps({
         isMenu: true,
@@ -73,7 +73,7 @@ export class Main extends Block {
     if (document.location.href === `${document.location.origin}/registration`) return registration;
     if (document.location.href === `${document.location.origin}/server-error`) return serverError;
     if (document.location.href === `${document.location.origin}/profile`) return profile;
-    if (document.location.href === `${document.location.origin}/chat-page`) return chatPage;
+    if (document.location.href.includes(`${document.location.origin}/chat-page`)) return chatPage;
     return clientError;
   }
 
