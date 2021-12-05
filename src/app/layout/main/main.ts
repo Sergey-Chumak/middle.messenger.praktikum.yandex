@@ -8,6 +8,7 @@ import { Profile } from '../../pages/profile';
 import { ChatPage } from '../../pages/chat-page';
 import { Sidebar } from '../../components/sidebar';
 import { IChildrenMain, IPropsMain } from './main.types';
+import { getUserProfile } from '../../services/users-data';
 
 export class Main extends Block<IPropsMain, IChildrenMain> {
   constructor(props: IPropsMain) {
@@ -43,8 +44,8 @@ export class Main extends Block<IPropsMain, IChildrenMain> {
     if (document.location.href.includes(`${document.location.origin}/chat-page`)
         || document.location.href === `${document.location.origin}/profile`) {
       this.children.sidebar = new Sidebar({
-        userName: 'Sergey',
-        userPhone: '+7895478475',
+        userName: '',
+        userPhone: '',
       });
 
       this.setProps({
@@ -65,10 +66,23 @@ export class Main extends Block<IPropsMain, IChildrenMain> {
           },
         },
       });
+
+      this.loadUserData();
     } else {
       this.setProps({
         isMenu: false,
       });
     }
+  }
+
+  loadUserData() {
+    setTimeout(() => {
+      const { name, phone } = getUserProfile();
+
+      this.children.sidebar.setProps({
+        userName: name,
+        userPhone: phone,
+      });
+    }, 700);
   }
 }

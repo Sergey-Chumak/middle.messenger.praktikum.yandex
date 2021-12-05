@@ -4,7 +4,7 @@ import Block from '../../services/block';
 import { ChatList } from '../../components/chat-list';
 import { Chat } from '../../components/chat';
 import last from '../../utils/last';
-import { getUsersData, updateUserData } from '../../services/users-data';
+import { getUsersData, updateUsersData } from '../../services/users-data';
 import { PlugDialog } from '../../components/plug-dialog';
 import { IChatPageChildren, IChatPageProps } from './chat-page.types';
 import { IChatCard } from '../../components/chat-list/chat-cards';
@@ -126,7 +126,7 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
 
     console.log(this.dialogues[0].messages.find((item) => item.id === id));
 
-    updateUserData(this.chatCards);
+    updateUsersData(this.chatCards);
 
     this.currentMessage = '';
     const filteredChatCards = this.chatCards.filter((item) => item.name.toLowerCase()
