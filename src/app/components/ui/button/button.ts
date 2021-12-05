@@ -1,9 +1,9 @@
 import { tmpl } from './button.tmpl';
-import { IButtonContext } from './button.types';
+import { IPropsButton } from './button.types';
 import Block from '../../../services/block';
 
-export class Button extends Block {
-  constructor(props: IButtonContext) {
+export class Button extends Block<IPropsButton, void> {
+  constructor(props: IPropsButton) {
     super('div', props);
   }
 

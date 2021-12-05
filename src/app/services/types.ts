@@ -13,7 +13,7 @@ interface ISettings {
     withInternalID?: boolean;
 }
 
-interface IEvents {
+export interface IEvents {
     [key: string]: (event?: Event) => void;
 }
 

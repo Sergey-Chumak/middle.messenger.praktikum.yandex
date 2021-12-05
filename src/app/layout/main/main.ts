@@ -22,7 +22,7 @@ export class Main extends Block<IPropsMain, IChildrenMain> {
   render(): DocumentFragment {
     return this.compile(tmpl, {
       page: this.children.page,
-      sidebar: this.props.sidebar,
+      sidebar: this.children.sidebar,
       isMenu: this.props.isMenu,
     });
   }

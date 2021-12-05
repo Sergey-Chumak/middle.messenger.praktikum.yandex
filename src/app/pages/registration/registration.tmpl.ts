@@ -8,6 +8,6 @@ export const tmpl = `
         {{{ passwordInput }}}
         {{{ passwordRepeatInput }}}
         {{{ submitBtn }}}
-        <a href="/auth" class="registration__link">I have a profile</a>
+        <a id="registration-link" class="registration__link">I have a profile</a>
     </div>
 `;

@@ -1,15 +1,18 @@
 import { tmpl } from './server-error.tmpl';
 import Block from '../../services/block';
-import { TPropsAndChildren } from '../../services/types';
+import { IPropsServerError } from './server-error.types';
 
-export class ServerError extends Block {
-  constructor(props: TPropsAndChildren) {
+export class ServerError extends Block<IPropsServerError, void > {
+  constructor(props) {
     super('div', props);
+    this.setProps({
+      error: '500',
+    });
   }
 
   render(): DocumentFragment {
     return this.compile(tmpl, {
-      error: '500',
+      error: this.props.error,
     });
   }
 }

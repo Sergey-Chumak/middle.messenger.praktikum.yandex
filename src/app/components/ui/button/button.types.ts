@@ -1,6 +1,4 @@
-import { TPropsAndChildren } from '../../../services/types';
-
-export interface IButtonContext extends TPropsAndChildren{
+export interface IPropsButton {
     name: string;
     class?: string;
     id?: string;

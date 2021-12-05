@@ -1,9 +1,9 @@
 import { tmpl } from './input.tmpl';
-import { IInputContext } from './input.types';
+import { IPropsInput } from './input.types';
 import Block from '../../../services/block';
 
-export class Input extends Block {
-  constructor(props: IInputContext) {
+export class Input extends Block<IPropsInput, void> {
+  constructor(props: IPropsInput) {
     super('div', props);
   }
 

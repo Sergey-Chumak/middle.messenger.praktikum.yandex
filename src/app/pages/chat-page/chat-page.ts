@@ -4,7 +4,7 @@ import Block from '../../services/block';
 import { ChatList } from '../../components/chat-list';
 import { Chat } from '../../components/chat';
 import last from '../../utils/last';
-import { getUsersData, updateUserData } from '../../services/server-data';
+import { getUsersData, updateUserData } from '../../services/users-data';
 import { PlugDialog } from '../../components/plug-dialog';
 import { IChatPageChildren, IChatPageProps } from './chat-page.types';
 import { IChatCard } from '../../components/chat-list/chat-cards';

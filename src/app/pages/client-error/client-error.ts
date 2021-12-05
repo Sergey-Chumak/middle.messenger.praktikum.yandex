@@ -1,9 +1,8 @@
 import Block from '../../services/block';
-import { TPropsAndChildren } from '../../services/types';
 import { tmpl } from './client-error.tmpl';
 
-export class ClientError extends Block {
-  constructor(props: TPropsAndChildren) {
+export class ClientError extends Block<{}, void> {
+  constructor(props) {
     super('div', props);
   }
 

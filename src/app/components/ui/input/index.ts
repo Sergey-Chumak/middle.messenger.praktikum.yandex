@@ -1,4 +1,4 @@
 import './input.scss';
 
 export { Input } from './input';
-export { IInputContext } from './input.types';
+export { IPropsInput } from './input.types';

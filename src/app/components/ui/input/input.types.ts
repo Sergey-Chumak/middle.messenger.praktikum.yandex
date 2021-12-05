@@ -1,6 +1,4 @@
-import { TPropsAndChildren } from '../../../services/types';
-
-export interface IInputContext extends TPropsAndChildren{
+export interface IPropsInput {
     labelName: string;
     id: string;
     type: string;

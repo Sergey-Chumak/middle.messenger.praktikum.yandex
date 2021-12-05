@@ -13,6 +13,6 @@ export interface IPropsMain {
 }
 
 export interface IChildrenMain {
-    sidebar?: Sidebar;
-    page?: ChatPage | ClientError | ServerError | Auth | Registration | Profile
+    sidebar: Sidebar;
+    page: ChatPage | ClientError | ServerError | Auth | Registration | Profile
 }

@@ -1,5 +1,4 @@
 import { getDateCustomFormat } from '../utils/date';
-import last from '../utils/last';
 
 const usersData = [
   {

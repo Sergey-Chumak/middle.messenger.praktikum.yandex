@@ -1,3 +1,3 @@
 import './auth.scss';
 
-export * from './auth';
+export { Auth } from './auth';

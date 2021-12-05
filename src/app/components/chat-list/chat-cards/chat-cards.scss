@@ -10,11 +10,11 @@
   transition: background 0.2s;
 
   &:hover {
-    background: rgba(199, 199, 199, 0.25);
+    background: var(--color-background-hover-chat);
   }
 
   &_active {
-    background: #FFE0BC !important;
+    background: var(--color-background-active-chat) !important;
   }
 
   &__avatar {

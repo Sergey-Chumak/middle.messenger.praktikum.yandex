@@ -1,4 +1,4 @@
 import './button.scss';
 
 export { Button } from './button';
-export { IButtonContext } from './button.types';
+export { IPropsButton } from './button.types';

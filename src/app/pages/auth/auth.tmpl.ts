@@ -3,8 +3,8 @@ export const tmpl = `
     <form id="sign-in-form">
         {{{ loginInput }}}
         {{{ passwordInput }}}
-        {{{ button }}}
+        {{{ submitBtn }}}
     </form>
-    <a class="auth__link" href="/registration">Create account</a>
+    <a id="create-account-link" class="auth__link">Create account</a>
     </div>
 `;
