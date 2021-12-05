@@ -1,0 +1,97 @@
+.dialogues {
+  position: absolute;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 0 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column-reverse;
+
+  &__message-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px 0;
+
+    &_me {
+      justify-content: flex-end;
+
+      .message {
+        border-top-right-radius: 0;
+      }
+    }
+
+    &_friend {
+      justify-content: flex-start;
+
+      .message {
+        border-top-left-radius: 0;
+        background: #F8F8F8;
+      }
+
+      .message__status {
+        display: none;
+      }
+    }
+  }
+}
+
+.message {
+  text-align: left;
+  background: var(--color-background-chat);
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 11px 11px 5px;
+  max-width: 40%;
+  width: fit-content;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  flex-direction: column;
+  align-self: end;
+  word-break: break-all;
+
+  &__info {
+    align-self: end;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    width: 38px;
+    height: 9px;
+    margin-top: 5px;
+  }
+
+  &__status {
+    width: 9px;
+    height: 5px;
+
+    &_sending{
+      background: url("../../../../assets/images/sending-status.svg") no-repeat center;
+    }
+
+    &_sent{
+      background: url("../../../../assets/images/status-sent.svg") no-repeat center;
+    }
+  }
+
+  &__time {
+    margin: 0 0 0 5px;
+    white-space: nowrap;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 9px;
+    color: #FFA800;
+  }
+
+  &__date {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 12px;
+    color: var(--color-text-primary)
+  }
+}

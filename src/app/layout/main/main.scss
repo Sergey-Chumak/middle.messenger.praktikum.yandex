@@ -4,7 +4,7 @@
   height: 100%;
   width: 100%;
 
-  &__page-wrapper {
+  & > div:first-child {
     height: 100%;
     width: 100%;
     display: flex;
