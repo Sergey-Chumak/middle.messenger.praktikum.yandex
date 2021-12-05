@@ -1,4 +1,4 @@
-export interface ISidebarContext {
+export interface IPropsSidebar {
     userName: string;
     userPhone: string;
 }

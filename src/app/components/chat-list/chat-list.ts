@@ -5,32 +5,26 @@ import { ChatCards, IChatCard } from './chat-cards';
 
 export class ChatList extends Block<IChatListProps, IChatListChildren> {
   chatCards = this.props.chatCards as IChatCard[];
-  search = this.props.search;
+
   constructor(props: IChatListProps) {
     super('div', props);
   }
 
   componentDidMount() {
-    this.children.chatCards = new ChatCards({
-      chatCards: this.chatCards,
-    });
-
-    this.setProps({
-      chatCards: this.chatCards,
-    });
+    this.children.chatCards = new ChatCards({ chatCards: this.chatCards });
+    this.setProps({ chatCards: this.chatCards });
   }
 
-  componentDidUpdate(oldProps, newProps): boolean {
-    this.children.chatCards.setProps({
-      chatCards: newProps.chatCards,
-    });
-    return oldProps.chatCards === newProps.chatCards;
+  componentDidUpdate(oldProps: IChatListProps, newProps: IChatListProps): boolean {
+    this.children.chatCards?.setProps({ chatCards: newProps.chatCards });
+    if (oldProps.chatCards !== newProps.chatCards) return false;
+    return true;
   }
 
   render(): DocumentFragment {
     return this.compile(tmpl, {
       chatCards: this.props.chatCards,
-      search: this.props.search,
+      value: this.props.value,
     });
   }
 }

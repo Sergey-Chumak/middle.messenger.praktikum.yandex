@@ -1,7 +1,7 @@
-import { getDateNow } from '../utils/date';
+import { getDateCustomFormat } from '../utils/date';
 import last from '../utils/last';
 
-const userData = [
+const usersData = [
   {
     id: '1',
     name: 'Vadim',
@@ -11,7 +11,7 @@ const userData = [
     notifications: '12',
     chat: [
       {
-        date: 'November 30',
+        date: '2021-07-26T13:51:50.417Z',
         messages: [
           {
             id: '1',
@@ -27,10 +27,10 @@ const userData = [
             from: 'friend',
             status: 'sent',
           },
-        ].reverse(),
+        ],
       },
       {
-        date: getDateNow(),
+        date: `${new Date(Date.now())}`,
         messages: [
           {
             id: '3',
@@ -46,9 +46,8 @@ const userData = [
             from: 'me',
             status: 'sent',
           },
-        ].reverse(), // add sort later
+        ],
       },
-
     ],
   },
   {
@@ -59,7 +58,7 @@ const userData = [
     time: '',
     notifications: '8',
     chat: [{
-      date: 'Jule 30',
+      date: '2021-08-30T13:51:50.417Z',
       messages: [
         {
           id: '1',
@@ -82,7 +81,7 @@ const userData = [
           from: 'friend',
           status: 'sent',
         },
-      ].reverse(),
+      ],
     }],
   },
   {
@@ -91,7 +90,7 @@ const userData = [
     status: 'passive',
     lastMessage: '',
     time: '',
-    chat: [].reverse(),
+    chat: [],
   },
   {
     id: '4',
@@ -99,37 +98,168 @@ const userData = [
     status: 'passive',
     lastMessage: '',
     time: '',
-    chat: [{
-      date: 'December 30',
-      messages: [
-        {
-          id: '3',
-          message: 'Hi!',
-          time: '15:25',
-          from: 'friend',
-          status: 'sent',
-        },
-      ].reverse(),
-    }],
+    chat: [
+      {
+        date: '2021-01-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-02-28T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-03-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-04-14T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-05-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-06-01T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-07-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-08-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-09-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+      {
+        date: '2021-10-26T13:51:50.417Z',
+        messages: [
+          {
+            id: '3',
+            message: 'Hi!',
+            time: '15:25',
+            from: 'friend',
+            status: 'sent',
+          },
+        ],
+      },
+    ],
   },
 ];
 
-userData.forEach((user) => {
-  const messages = last(user.chat)?.messages;
-  const time = last(user.chat)?.date;
+usersData.forEach((user) => {
+  user.chat.sort((item, item2) => {
+    if (item.date > item2.date) return -1;
+    if (item.date < item2.date) return 1;
+    return 0;
+  });
 
-  if (messages) {
-    messages[0].from === 'me'
-      ? user.lastMessage = `Me: ${messages[0].message}`
-      : user.lastMessage = messages[0].message;
-    if (getDateNow() === time) {
-      user.time = messages[0].time;
-    } else {
-      user.time = time;
-    }
-  }
+  user.chat.forEach((dialog) => {
+    dialog.messages.sort((item, item2) => {
+      if (item.time > item2.time) return -1;
+      if (item.time < item2.time) return 1;
+      return 0;
+    });
+  });
 });
 
-export function getUserData() {
-  return userData;
+export function updateUserData(usersData) {
+  usersData.forEach((user) => {
+    user.chat.forEach((item) => item.date = getDateCustomFormat(new Date(Date.parse(item.date))));
+    const messages = user.chat[0]?.messages;
+    const time = user.chat[0]?.date;
+
+    if (messages) {
+      messages[0].from === 'me'
+        ? user.lastMessage = `Me: ${messages[0].message}`
+        : user.lastMessage = messages[0].message;
+      if (getDateCustomFormat() === time) {
+        user.time = messages[0].time;
+      } else {
+        user.time = time;
+      }
+    }
+  });
+}
+
+updateUserData(usersData);
+
+export function getUsersData() {
+  return usersData;
 }

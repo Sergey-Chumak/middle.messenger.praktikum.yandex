@@ -1,9 +1,9 @@
-import { Dialogues } from './dialogues';
+import { Dialogues, IDialog } from './dialogues';
 
 export interface IChatProps {
     name: string;
     disabled: boolean;
-    dialogues?: string;
+    dialogues?: IDialog[];
     value?: string;
 }
 

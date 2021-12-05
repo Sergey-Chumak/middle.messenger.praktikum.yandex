@@ -5,8 +5,7 @@ export function getTimeNow(): string {
   return `${hours}:${minutes}`;
 }
 
-export function getDateNow(): string {
-  const date: Date = new Date(Date.now());
+export function getDateCustomFormat(date: Date = new Date(Date.now())): string {
   const month: string = DateMonth[date.getMonth()];
   const day = date.getDate();
   return `${month} ${day}`;

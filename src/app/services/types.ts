@@ -2,10 +2,10 @@ export type TPropsAndChildren<T> = T & {
     __id?: string;
     settings?: ISettings;
     events?: IEvents;
-    children?: IChildrenBlock<unknown>
+    children?: TChildrenBlock<unknown>
 }
 
-export type IChildrenBlock<T> = {
+export type TChildrenBlock<T> = {
     [P in keyof T]: T[P];
 }
 

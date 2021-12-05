@@ -2,21 +2,21 @@ import { v4 as makeUUID } from 'uuid';
 import * as Handlebars from 'handlebars';
 import { EventBus } from './event-bus';
 import {
-  EventsBusEvents, IChildrenBlock, IMeta, TPropsAndChildren,
+  EventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,
 } from './types';
 
-export default abstract class Block<T, P> {
+export default abstract class Block<Props, Children> {
   abstract render (): DocumentFragment;
 
-  protected props: TPropsAndChildren<T>;
-  protected children: IChildrenBlock<P>;
+  protected props: TPropsAndChildren<Props>;
+  protected children: TChildrenBlock<Children>;
 
   private readonly id: string;
   private element: HTMLElement;
   private meta: IMeta | null = null;
   private eventBus: EventBus = new EventBus();
 
-  protected constructor(tagName: string, propsAndChildren: TPropsAndChildren<T>) {
+  protected constructor(tagName: string, propsAndChildren: TPropsAndChildren<Props>) {
     const { children, props } = this.getChildren(propsAndChildren);
     this.id = makeUUID();
     this.children = children;
@@ -72,7 +72,7 @@ export default abstract class Block<T, P> {
   }
 
   private getChildren(propsAndChildren) {
-    const children = {} as IChildrenBlock<P>;
+    const children = {} as TChildrenBlock<Children>;
     const props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
@@ -85,17 +85,17 @@ export default abstract class Block<T, P> {
     return { children, props };
   }
 
-  protected compile(template: string, props: TPropsAndChildren<T>): DocumentFragment {
+  protected compile(template: string, props: TPropsAndChildren<Props>): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${(child as Block<T, unknown>).id}"></div>`;
+      propsAndStubs[key] = `<div data-id="${(child as Block<Props, unknown>).id}"></div>`;
     });
 
     const fragment = this.createDocumentElement('template') as HTMLTemplateElement;
     fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
 
-    Object.values(this.children).forEach((child: Block<T, unknown>) => {
+    Object.values(this.children).forEach((child: Block<Props, unknown>) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`) as Element;
       stub.replaceWith(child.getContent());
     });
@@ -105,7 +105,7 @@ export default abstract class Block<T, P> {
 
   _componentDidMount() {
     this.componentDidMount();
-    Object.values(this.children).forEach((child: Block<T, unknown>) => {
+    Object.values(this.children).forEach((child: Block<Props, unknown>) => {
       child.dispatchComponentDidMount();
     });
   }
@@ -116,17 +116,19 @@ export default abstract class Block<T, P> {
     this.eventBus.emit(EventsBusEvents.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps, newProps) {
+  _componentDidUpdate(oldProps: Props, newProps: Props) {
     const isReRender = this.componentDidUpdate(oldProps, newProps);
     if (isReRender) this.eventBus.emit(EventsBusEvents.FLOW_RENDER);
   }
 
-  componentDidUpdate(oldProps, newProps): boolean {
+  componentDidUpdate(oldProps:Props, newProps: Props): boolean {
     return true;
   }
 
   setProps = (
-    nextProps: { [key in keyof TPropsAndChildren<T>]?: TPropsAndChildren<T>[keyof TPropsAndChildren<T>] },
+    nextProps: {
+      [key in keyof TPropsAndChildren<Props>]?: TPropsAndChildren<Props>[keyof TPropsAndChildren<Props>]
+    },
   ) => {
     if (!nextProps) return;
     Object.assign(this.props, nextProps);
@@ -140,7 +142,7 @@ export default abstract class Block<T, P> {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set(target: TPropsAndChildren<T>, prop: string, value) {
+      set(target: TPropsAndChildren<Props>, prop: string, value) {
         const oldValue = { ...target };
         target[prop] = value;
         self.eventBus.emit(EventsBusEvents.FLOW_CDU, oldValue, target);
