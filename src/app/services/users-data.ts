@@ -238,7 +238,7 @@ usersData.forEach((user) => {
   });
 });
 
-export function updateUserData(usersData) {
+export function updateUsersData(usersData) {
   usersData.forEach((user) => {
     user.chat.forEach((item) => item.date = getDateCustomFormat(new Date(Date.parse(item.date))));
     const messages = user.chat[0]?.messages;
@@ -257,8 +257,22 @@ export function updateUserData(usersData) {
   });
 }
 
-updateUserData(usersData);
+updateUsersData(usersData);
 
 export function getUsersData() {
   return usersData;
+}
+
+const userProfile = {
+  email: 'test@test.ru',
+  login: 'Login42',
+  name: 'Sergey',
+  lastName: 'Chumak',
+  nickname: 'Test21',
+  phone: '+79526985744',
+  password: '123123A',
+};
+
+export function getUserProfile() {
+  return userProfile;
 }

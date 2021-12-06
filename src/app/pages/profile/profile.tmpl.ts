@@ -19,6 +19,14 @@ export const tmpl = `
             {{{ newPasswordRepeatInput }}}
         </div>
         
+        <div class="profile__save-button">
+            {{{ saveDataBtn }}}
+        </div>
+        
+         <div class="profile__save-button">
+            {{{ savePassBtn }}}
+        </div>
+        
         {{#if nonAvailableChangeData}}
         <div class="profile__actions">
              <div class="profile__option-field">
@@ -31,14 +39,10 @@ export const tmpl = `
                 <a href="/auth" class="profile__link-action_logout">Logout</a>
             </div>
         </div>
+        {{else}}
+        <div class="profile__cancel-wrapper">
+            <a id="cancel-link" class="profile__cancel-link">Cancel</a>
+        </div>
         {{/if}}
-        
-         <div class="profile__save-button">
-            {{{ saveDataBtn }}}
-        </div>
-        
-         <div class="profile__save-button">
-            {{{ savePassBtn }}}
-        </div>
     </div>
 `;
