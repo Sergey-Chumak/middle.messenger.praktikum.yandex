@@ -13,7 +13,8 @@
     "default": {
       "includeNodeModules": [
         "handlebars",
-        "fs"
+        "fs",
+        "uuid"
       ],
       "context": "browser"
     }

@@ -9,18 +9,20 @@ import {
 import {
   IChildrenProfile, IPropsProfile, IUserDataFormValue, IUserPassFormValue,
 } from './profile.types';
+import { getUserProfile } from '../../services/users-data';
 
 export class Profile extends Block<IPropsProfile, IChildrenProfile> {
+  userDataProfile;
   userDataInputs: Input[] = [];
   userPasswordInputs: Input[] = [];
 
   userDataFormValue: IUserDataFormValue = {
-    email: 'adwdaw@wdawd.ru',
-    login: 'wdawdaw342',
-    name: 'Sergey',
-    lastName: 'Chumak',
-    nickname: 'awdw23',
-    phone: '1231241234',
+    email: '',
+    login: '',
+    name: '',
+    lastName: '',
+    nickname: '',
+    phone: '',
   };
 
   userPassFormValue: IUserPassFormValue = {
@@ -47,6 +49,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   constructor(props: IPropsProfile) {
     super('div', props);
     this.initChildren();
+
     this.userDataInputs = [
       this.children.emailInput,
       this.children.loginInput,
@@ -64,7 +67,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
   componentDidMount() {
     this.initComponentEvents();
-    this.initChildrenEvent();
+    this.initChildrenEvents();
+    this.loadDataProfile();
     this.children.saveDataBtn.hide();
     this.children.savePassBtn.hide();
     this.userPasswordInputs.forEach((input) => input.hide());
@@ -72,7 +76,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
   render(): DocumentFragment {
     return this.compile(tmpl, {
-      userName: 'Sergey',
+      userName: this.props.userName,
       emailInput: this.children.emailInput,
       loginInput: this.children.loginInput,
       nameInput: this.children.nameInput,
@@ -108,9 +112,27 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
             this.userPasswordInputs.forEach((input) => input.show());
             this.children.savePassBtn.show();
           }
+
+          if ((event.target as HTMLElement).id === 'cancel-link') {
+            this.cancelChanges();
+          }
         },
       },
     });
+  }
+
+  cancelChanges() {
+    this.setProps({ nonAvailableChangeData: true });
+
+    this.children.saveDataBtn.hide();
+    this.children.savePassBtn.hide();
+    this.userPasswordInputs.forEach((input) => input.hide());
+    this.userDataInputs.forEach((input) => input.show());
+
+    this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
+    this.userPasswordInputs.forEach((input) => input.setProps({ value: '' }));
+
+    this.userDataFormValue = { ...this.userDataProfile };
   }
 
   initChildren() {
@@ -208,7 +230,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
   }
 
-  initChildrenEvent() {
+  initChildrenEvents(): void {
     this.children.emailInput.setProps({
       events: this.initUserDataInputEvents('emailInput', 'email', isValidEmail),
     });
@@ -243,89 +265,87 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.newPasswordInput.setProps({
       events: {
+        focusout: this.initValidatePasswordEvent(),
+        focusin: this.initValidatePasswordEvent(),
         input: (event) => {
           const target = event?.target as HTMLInputElement;
           if (target.tagName !== 'INPUT') return;
           this.userPassFormValue.newPassword = target.value;
-        },
-        focusout: (event: Event) => {
-          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidPassword(this.userPassFormValue.newPassword)) {
-            this.children.newPasswordInput.getContent().classList.remove('ui-input__profile_invalid');
-          } else {
-            this.children.newPasswordInput.getContent().classList.add('ui-input__profile_invalid');
-          }
-          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
-            this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
-          } else {
-            this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
-          }
-        },
-        focusin: (event: Event) => {
-          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidPassword(this.userPassFormValue.newPassword)) {
-            this.children.newPasswordInput.getContent().classList.remove('ui-input__profile_invalid');
-          } else {
-            this.children.newPasswordInput.getContent().classList.add('ui-input__profile_invalid');
-          }
-          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
-            this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
-          } else {
-            this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
-          }
         },
       },
     });
 
     this.children.saveDataBtn.setProps({
       events: {
-        click: () => {
-          console.log('form', this.isValidUserDataForm);
-
-          if (this.isValidUserDataForm) {
-            console.log(this.userDataFormValue);
-
-            this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
-            this.setProps({ nonAvailableChangeData: true });
-
-            this.children.emailInput.setProps({ value: this.userDataFormValue.email });
-            this.children.loginInput.setProps({ value: this.userDataFormValue.login });
-            this.children.nameInput.setProps({ value: this.userDataFormValue.name });
-            this.children.lastNameInput.setProps({ value: this.userDataFormValue.lastName });
-            this.children.nicknameInput.setProps({ value: this.userDataFormValue.nickname });
-            this.children.phoneInput.setProps({ value: this.userDataFormValue.phone });
-
-            this.children.saveDataBtn.hide();
-          }
-        },
+        click: () => this.submitUserData(),
       },
     });
 
     this.children.savePassBtn.setProps({
       events: {
-        click: () => {
-          console.log('form', this.isValidUserPassForm);
-
-          if (this.isValidUserPassForm) {
-            console.log({ password: this.userPassFormValue.newPassword });
-            this.setProps({ nonAvailableChangeData: true });
-
-            this.userPassFormValue.newRepeatPassword = '';
-            this.userPassFormValue.oldPassword = '';
-            this.userPassFormValue.newPassword = '';
-
-            this.children.oldPasswordInput.setProps({ value: '' });
-            this.children.newPasswordInput.setProps({ value: '' });
-            this.children.newPasswordRepeatInput.setProps({ value: '' });
-
-            this.children.savePassBtn.hide();
-            this.userPasswordInputs.forEach((input) => input.hide());
-
-            this.userDataInputs.forEach((input) => input.show());
-          }
-        },
+        click: () => this.submitUserPass(),
       },
     });
+  }
+
+  initValidatePasswordEvent(): (event: Event) => void {
+    return (event: Event) => {
+      if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+      if (isValidPassword(this.userPassFormValue.newPassword)) {
+        this.children.newPasswordInput.getContent().classList.remove('ui-input__profile_invalid');
+      } else {
+        this.children.newPasswordInput.getContent().classList.add('ui-input__profile_invalid');
+      }
+      if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+        this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
+      } else {
+        this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
+      }
+    };
+  }
+
+  submitUserData(): void {
+    console.log('form', this.isValidUserDataForm);
+
+    if (this.isValidUserDataForm) {
+      console.log(this.userDataFormValue);
+
+      this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
+      this.setProps({ nonAvailableChangeData: true });
+
+      this.children.emailInput.setProps({ value: this.userDataFormValue.email });
+      this.children.loginInput.setProps({ value: this.userDataFormValue.login });
+      this.children.nameInput.setProps({ value: this.userDataFormValue.name });
+      this.children.lastNameInput.setProps({ value: this.userDataFormValue.lastName });
+      this.children.nicknameInput.setProps({ value: this.userDataFormValue.nickname });
+      this.children.phoneInput.setProps({ value: this.userDataFormValue.phone });
+
+      this.userDataProfile = { ...this.userDataFormValue };
+
+      this.children.saveDataBtn.hide();
+    }
+  }
+
+  submitUserPass(): void {
+    console.log('form', this.isValidUserPassForm);
+
+    if (this.isValidUserPassForm) {
+      console.log({ password: this.userPassFormValue.newPassword });
+      this.setProps({ nonAvailableChangeData: true });
+
+      this.userPassFormValue.newRepeatPassword = '';
+      this.userPassFormValue.oldPassword = '';
+      this.userPassFormValue.newPassword = '';
+
+      this.children.oldPasswordInput.setProps({ value: '' });
+      this.children.newPasswordInput.setProps({ value: '' });
+      this.children.newPasswordRepeatInput.setProps({ value: '' });
+
+      this.children.savePassBtn.hide();
+      this.userPasswordInputs.forEach((input) => input.hide());
+
+      this.userDataInputs.forEach((input) => input.show());
+    }
   }
 
   initUserDataInputEvents(inputName: string, formField: string, validator: (text: string) => boolean): IEvents {
@@ -378,5 +398,24 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
         }
       },
     };
+  }
+
+  loadDataProfile(): void {
+    setTimeout(() => {
+      this.userDataProfile = getUserProfile();
+
+      this.userDataFormValue = { ...this.userDataProfile };
+
+      this.setProps({
+        userName: this.userDataProfile.name,
+      });
+
+      this.children.emailInput.setProps({ value: this.userDataProfile.email });
+      this.children.loginInput.setProps({ value: this.userDataProfile.login });
+      this.children.nameInput.setProps({ value: this.userDataProfile.name });
+      this.children.lastNameInput.setProps({ value: this.userDataProfile.lastName });
+      this.children.nicknameInput.setProps({ value: this.userDataProfile.nickname });
+      this.children.phoneInput.setProps({ value: this.userDataProfile.phone });
+    }, 700);
   }
 }
