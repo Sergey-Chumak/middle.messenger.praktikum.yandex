@@ -9,10 +9,10 @@ import {
 import {
   IChildrenProfile, IPropsProfile, IUserDataFormValue, IUserPassFormValue,
 } from './profile.types';
-import { getUserProfile } from '../../services/users-data';
+import { getUserProfile, IUserProfile } from '../../services/users-data';
 
 export class Profile extends Block<IPropsProfile, IChildrenProfile> {
-  userDataProfile;
+  userDataProfile: IUserProfile;
   userDataInputs: Input[] = [];
   userPasswordInputs: Input[] = [];
 
@@ -132,7 +132,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
     this.userPasswordInputs.forEach((input) => input.setProps({ value: '' }));
 
-    this.userDataFormValue = { ...this.userDataProfile };
+    this.userDataFormValue = { ...this.userDataProfile } as IUserDataFormValue;
   }
 
   initChildren() {
@@ -320,7 +320,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       this.children.nicknameInput.setProps({ value: this.userDataFormValue.nickname });
       this.children.phoneInput.setProps({ value: this.userDataFormValue.phone });
 
-      this.userDataProfile = { ...this.userDataFormValue };
+      this.userDataProfile = { ...this.userDataFormValue } as IUserProfile;
 
       this.children.saveDataBtn.hide();
     }
@@ -404,7 +404,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     setTimeout(() => {
       this.userDataProfile = getUserProfile();
 
-      this.userDataFormValue = { ...this.userDataProfile };
+      this.userDataFormValue = { ...this.userDataProfile } as IUserDataFormValue;
 
       this.setProps({
         userName: this.userDataProfile.name,

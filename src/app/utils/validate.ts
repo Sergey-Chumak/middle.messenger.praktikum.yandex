@@ -21,7 +21,7 @@ export function isValidPassword(password: string): boolean {
   return REG_EXP_VALIDATE_PASSWORD.test(password);
 }
 
-export function isValidEqualPasswords(password: string, repeatPassword): boolean {
+export function isValidEqualPasswords(password: string, repeatPassword: string): boolean {
   return repeatPassword === password;
 }
 

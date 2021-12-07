@@ -2,7 +2,7 @@ import Block from '../../services/block';
 import { tmpl } from './client-error.tmpl';
 
 export class ClientError extends Block<{}, void> {
-  constructor(props) {
+  constructor(props: {}) {
     super('div', props);
   }
 

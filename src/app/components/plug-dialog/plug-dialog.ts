@@ -2,7 +2,7 @@ import { tmpl } from './plug-dialog.tmpl';
 import Block from '../../services/block';
 
 export class PlugDialog extends Block<{}, void> {
-  constructor(props) {
+  constructor(props: {}) {
     super('div', props);
   }
 

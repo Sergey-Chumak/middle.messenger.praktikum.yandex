@@ -1,3 +1,3 @@
 export interface IPropsServerError {
-    error: string;
+    error?: string;
 }
