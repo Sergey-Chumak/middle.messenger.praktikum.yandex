@@ -132,6 +132,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
     this.userPasswordInputs.forEach((input) => input.setProps({ value: '' }));
 
+    this.userDataInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
+
     this.userDataFormValue = { ...this.userDataProfile } as IUserDataFormValue;
   }
 
