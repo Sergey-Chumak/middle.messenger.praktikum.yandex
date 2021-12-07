@@ -23,7 +23,7 @@ export class Registration extends Block<IPropsRegistration, IChildrenRegistratio
     return isValidLogin(this.signUpFormValue.login)
         && isValidEmail(this.signUpFormValue.email)
         && isValidPassword(this.signUpFormValue.password)
-        && isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat)
+        && isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat as string)
         && isValidPhone(this.signUpFormValue.phone)
         && isValidName(this.signUpFormValue.name)
         && isValidName(this.signUpFormValue.lastName);
@@ -160,7 +160,7 @@ export class Registration extends Block<IPropsRegistration, IChildrenRegistratio
           } else {
             this.children.passwordInput.getContent().classList.add('ui-input_invalid');
           }
-          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat)) {
+          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat as string)) {
             this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
           } else {
             this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
@@ -173,7 +173,7 @@ export class Registration extends Block<IPropsRegistration, IChildrenRegistratio
           } else {
             this.children.passwordInput.getContent().classList.add('ui-input_invalid');
           }
-          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat)) {
+          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat as string)) {
             this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
           } else {
             this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
@@ -191,7 +191,7 @@ export class Registration extends Block<IPropsRegistration, IChildrenRegistratio
         },
         focusout: (event: Event) => {
           if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat)) {
+          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat as string)) {
             this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
           } else {
             this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
@@ -199,7 +199,7 @@ export class Registration extends Block<IPropsRegistration, IChildrenRegistratio
         },
         focusin: (event: Event) => {
           if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat)) {
+          if (isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat as string)) {
             this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
           } else {
             this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');

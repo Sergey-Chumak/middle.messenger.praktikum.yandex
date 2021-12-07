@@ -3,7 +3,7 @@ import Block from '../../services/block';
 import { IPropsServerError } from './server-error.types';
 
 export class ServerError extends Block<IPropsServerError, void > {
-  constructor(props) {
+  constructor(props: IPropsServerError) {
     super('div', props);
     this.setProps({
       error: '500',

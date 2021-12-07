@@ -1,3 +1,4 @@
+// @ts-ignore
 import { v4 as makeUUID } from 'uuid';
 import * as Handlebars from 'handlebars';
 import { EventBus } from './event-bus';
@@ -5,18 +6,18 @@ import {
   EventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,
 } from './types';
 
-export default abstract class Block<Props, Children> {
+export default abstract class Block<TProps, TChildren> {
   abstract render (): DocumentFragment;
 
-  protected props: TPropsAndChildren<Props>;
-  protected children: TChildrenBlock<Children>;
+  protected props: TPropsAndChildren<TProps>;
+  protected children: TChildrenBlock<TChildren>;
 
   private readonly id: string;
   private element: HTMLElement;
   private meta: IMeta | null = null;
   private eventBus: EventBus = new EventBus();
 
-  protected constructor(tagName: string, propsAndChildren: TPropsAndChildren<Props>) {
+  protected constructor(tagName: string, propsAndChildren: TPropsAndChildren<TProps>) {
     const { children, props } = this.getChildren(propsAndChildren);
     this.id = makeUUID();
     this.children = children;
@@ -71,8 +72,8 @@ export default abstract class Block<Props, Children> {
     });
   }
 
-  private getChildren(propsAndChildren) {
-    const children = {} as TChildrenBlock<Children>;
+  private getChildren(propsAndChildren: TPropsAndChildren<TProps>) {
+    const children = {} as TChildrenBlock<TChildren>;
     const props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
@@ -85,17 +86,17 @@ export default abstract class Block<Props, Children> {
     return { children, props };
   }
 
-  protected compile(template: string, props: TPropsAndChildren<Props>): DocumentFragment {
+  protected compile(template: string, props: TPropsAndChildren<TProps>): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${(child as Block<Props, unknown>).id}"></div>`;
+      propsAndStubs[key] = `<div data-id="${(child as Block<TProps, unknown>).id}"></div>`;
     });
 
     const fragment = this.createDocumentElement('template') as HTMLTemplateElement;
     fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
 
-    Object.values(this.children).forEach((child: Block<Props, unknown>) => {
+    Object.values(this.children).forEach((child: Block<TProps, unknown>) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`) as Element;
       stub.replaceWith(child.getContent());
     });
@@ -105,7 +106,7 @@ export default abstract class Block<Props, Children> {
 
   _componentDidMount() {
     this.componentDidMount();
-    Object.values(this.children).forEach((child: Block<Props, unknown>) => {
+    Object.values(this.children).forEach((child: Block<TProps, unknown>) => {
       child.dispatchComponentDidMount();
     });
   }
@@ -116,18 +117,18 @@ export default abstract class Block<Props, Children> {
     this.eventBus.emit(EventsBusEvents.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: Props, newProps: Props) {
+  _componentDidUpdate(oldProps: TProps, newProps: TProps) {
     const isReRender = this.componentDidUpdate(oldProps, newProps);
     if (isReRender) this.eventBus.emit(EventsBusEvents.FLOW_RENDER);
   }
 
-  componentDidUpdate(oldProps:Props, newProps: Props): boolean {
+  componentDidUpdate(oldProps:TProps, newProps: TProps): boolean {
     return true;
   }
 
   setProps = (
     nextProps: {
-      [key in keyof TPropsAndChildren<Props>]?: TPropsAndChildren<Props>[keyof TPropsAndChildren<Props>]
+      [key in keyof TPropsAndChildren<TProps>]?: TPropsAndChildren<TProps>[keyof TPropsAndChildren<TProps>]
     },
   ) => {
     if (!nextProps) return;
@@ -142,7 +143,7 @@ export default abstract class Block<Props, Children> {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set(target: TPropsAndChildren<Props>, prop: string, value) {
+      set(target: TPropsAndChildren<TProps>, prop: string, value) {
         const oldValue = { ...target };
         target[prop] = value;
         self.eventBus.emit(EventsBusEvents.FLOW_CDU, oldValue, target);

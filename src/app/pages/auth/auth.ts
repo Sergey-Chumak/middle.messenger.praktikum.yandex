@@ -17,7 +17,7 @@ export class Auth extends Block<IPropsAuth, IChildrenAuth> {
         && isValidPassword(this.signInFormValue.password);
   }
 
-  constructor(props) {
+  constructor(props: IPropsAuth) {
     super('div', props);
     this.initChildren();
   }
@@ -97,7 +97,7 @@ export class Auth extends Block<IPropsAuth, IChildrenAuth> {
       },
       focusout: (event) => {
         if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
-        if (validator(this.signInFormValue[formField])) {
+        if (validator((this.signInFormValue[formField]))) {
           this.children[inputName].getContent().classList.remove('ui-input_invalid');
         } else {
           this.children[inputName].getContent().classList.add('ui-input_invalid');

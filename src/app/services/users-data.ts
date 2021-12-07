@@ -1,6 +1,6 @@
 import { getDateCustomFormat } from '../utils/date';
 
-const usersData = [
+const usersData: IUsersData[] = [
   {
     id: '1',
     name: 'Vadim',
@@ -238,9 +238,9 @@ usersData.forEach((user) => {
   });
 });
 
-export function updateUsersData(usersData) {
+export function updateUsersData(usersData: IUsersData[]) {
   usersData.forEach((user) => {
-    user.chat.forEach((item) => item.date = getDateCustomFormat(new Date(Date.parse(item.date))));
+    user.chat.forEach((item) => item.date = getDateCustomFormat(new Date(Date.parse(item.date as string))));
     const messages = user.chat[0]?.messages;
     const time = user.chat[0]?.date;
 
@@ -251,7 +251,7 @@ export function updateUsersData(usersData) {
       if (getDateCustomFormat() === time) {
         user.time = messages[0].time;
       } else {
-        user.time = time;
+        user.time = time as string;
       }
     }
   });
@@ -273,6 +273,35 @@ const userProfile = {
   password: '123123A',
 };
 
-export function getUserProfile() {
+export function getUserProfile(): IUserProfile {
   return userProfile;
+}
+
+export interface IUserProfile {
+  email: string,
+  login: string,
+  name: string,
+  lastName: string,
+  nickname: string,
+  phone: string,
+  password: string,
+}
+
+export interface IUsersData {
+  id: string;
+  name: string,
+  status: string,
+  lastMessage: string,
+  time: string,
+  notifications?: string,
+  chat: {
+    date: string | Date,
+    messages: {
+      id: string;
+      message: string;
+      time: string;
+      from: string;
+      status: string;
+    }[]
+  }[]
 }

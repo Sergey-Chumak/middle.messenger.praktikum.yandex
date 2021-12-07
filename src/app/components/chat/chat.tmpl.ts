@@ -12,7 +12,7 @@ export const tmpl = `
             <div class="chat__file"></div>
             <input value="{{ value }}"
                 {{#if disabled}}disabled{{/if}}
-                 id="input-message" 
+                 id="message" 
                  placeholder="Message" 
                  class="chat__message-input"
              />

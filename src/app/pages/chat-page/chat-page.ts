@@ -1,10 +1,11 @@
+// @ts-ignore
 import { v4 as makeUUID } from 'uuid';
 import { tmpl } from './chat-page.tmpl';
 import Block from '../../services/block';
 import { ChatList } from '../../components/chat-list';
 import { Chat } from '../../components/chat';
 import last from '../../utils/last';
-import { getUsersData, updateUsersData } from '../../services/users-data';
+import { getUsersData, IUsersData, updateUsersData } from '../../services/users-data';
 import { PlugDialog } from '../../components/plug-dialog';
 import { IChatPageChildren, IChatPageProps } from './chat-page.types';
 import { IChatCard } from '../../components/chat-list/chat-cards';
@@ -84,14 +85,14 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
           }
         },
         keydown: (event: KeyboardEvent) => {
-          if ((event.target as HTMLElement).id === 'input-message') {
+          if ((event.target as HTMLElement).id === 'message') {
             if ((event.code === 'Enter' || event.code === 'NumpadEnter') && this.currentMessage) {
               this.sendMessage();
             }
           }
         },
         input: (event: Event) => {
-          if ((event.target as HTMLInputElement).id === 'input-message') {
+          if ((event.target as HTMLInputElement).id === 'message') {
             this.currentMessage = (event.target as HTMLInputElement)?.value;
           }
         },
@@ -126,14 +127,14 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
 
     console.log(this.dialogues[0].messages.find((item) => item.id === id));
 
-    updateUsersData(this.chatCards);
+    updateUsersData(this.chatCards as IUsersData[]); // Временный тип
 
     this.currentMessage = '';
     const filteredChatCards = this.chatCards.filter((item) => item.name.toLowerCase()
       .includes(this.searchValue));
     this.children.chatList.setProps({ chatCards: filteredChatCards, value: this.searchValue });
     this.children.chat.setProps({ value: '', dialogues: [...this.dialogues] });
-    (document.querySelector('#input-message') as HTMLElement)?.focus();
+    (document.querySelector('#message') as HTMLElement)?.focus();
 
     this.messageDelivered(id);
   }
