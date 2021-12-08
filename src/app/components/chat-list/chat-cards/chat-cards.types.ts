@@ -1,7 +1,7 @@
 import { IDialog } from '../../chat/dialogues';
 
 export interface IChatCardsProps {
-    chatCards: IChatCard[],
+    chatCards: IChatCard[];
 }
 
 export interface IChatCard {

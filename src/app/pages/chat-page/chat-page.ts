@@ -9,7 +9,7 @@ import { getUsersData, IUsersData, updateUsersData } from '../../services/users-
 import { PlugDialog } from '../../components/plug-dialog';
 import { IChatPageChildren, IChatPageProps } from './chat-page.types';
 import { IChatCard } from '../../components/chat-list/chat-cards';
-import { getElementWithId } from '../../utils/get-element';
+import { getElementId } from '../../utils/get-element-id';
 import { getDateCustomFormat, getTimeNow } from '../../utils/date';
 import { IDialog, IMessage } from '../../components/chat/dialogues';
 
@@ -51,9 +51,9 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.setProps({
       events: {
         click: (event: Event) => {
-          if (!this.chatCards.find(((item) => item.id === getElementWithId(event.target as HTMLElement)))) return;
+          if (!this.chatCards.find(((item) => item.id === getElementId(event.target as HTMLElement)))) return;
           this.chatCards.forEach((item) => {
-            item.id === getElementWithId(event.target as HTMLElement)
+            item.id === getElementId(event.target as HTMLElement)
               ? item.status = 'active'
               : item.status = 'passive';
           });
@@ -124,8 +124,6 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
         }],
       });
     }
-
-    console.log(this.dialogues[0].messages.find((item) => item.id === id));
 
     updateUsersData(this.chatCards as IUsersData[]); // Временный тип
 

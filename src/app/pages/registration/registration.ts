@@ -5,7 +5,7 @@ import Block from '../../services/block';
 import {
   isValidEmail, isValidEqualPasswords, isValidLogin, isValidName, isValidPassword, isValidPhone,
 } from '../../utils/validate';
-import { IChildrenRegistration, IPropsRegistration, ISignUpFormValue } from './types';
+import { IChildrenRegistration, IPropsRegistration, ISignUpFormValue } from './registration.types';
 import { IEvents } from '../../services/types';
 
 export class Registration extends Block<IPropsRegistration, IChildrenRegistration> {
@@ -244,10 +244,36 @@ export class Registration extends Block<IPropsRegistration, IChildrenRegistratio
   }
 
   submit(): void {
-    console.log('form', this.isValidSignUpForm);
+    if (!isValidEmail(this.signUpFormValue.email)) {
+      this.children.emailInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidLogin(this.signUpFormValue.login)) {
+      this.children.loginInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidName(this.signUpFormValue.name)) {
+      this.children.nameInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidName(this.signUpFormValue.lastName)) {
+      this.children.lastNameInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidPhone(this.signUpFormValue.phone)) {
+      this.children.phoneInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidPassword(this.signUpFormValue.password)) {
+      this.children.passwordInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidEqualPasswords(this.signUpFormValue.password, this.signUpFormValue.passwordRepeat as string)) {
+      this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
+    }
+
     if (!this.isValidSignUpForm) return;
     const form: ISignUpFormValue = { ...this.signUpFormValue };
     delete form.passwordRepeat;
-    console.log(form);
   }
 }

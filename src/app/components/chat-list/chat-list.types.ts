@@ -1,7 +1,7 @@
 import { ChatCards, IChatCard } from './chat-cards';
 
 export interface IChatListProps {
-    chatCards?: IChatCard[];
+    chatCards: IChatCard[];
     value?: string;
 }
 

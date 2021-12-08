@@ -133,6 +133,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     this.userPasswordInputs.forEach((input) => input.setProps({ value: '' }));
 
     this.userDataInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
+    this.userPasswordInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
 
     this.userDataFormValue = { ...this.userDataProfile } as IUserDataFormValue;
   }
@@ -145,6 +146,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Email',
       from: 'profile',
       disabled: true,
+      errorMessage: 'Email is invalid',
     });
 
     this.children.loginInput = new Input({
@@ -154,6 +156,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Login',
       from: 'profile',
       disabled: true,
+      errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
     });
 
     this.children.nameInput = new Input({
@@ -163,6 +166,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Name',
       from: 'profile',
       disabled: true,
+      errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
     this.children.lastNameInput = new Input({
@@ -172,6 +176,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Last name',
       from: 'profile',
       disabled: true,
+      errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
     this.children.nicknameInput = new Input({
@@ -181,6 +186,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Nickname',
       from: 'profile',
       disabled: true,
+      errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
     });
 
     this.children.phoneInput = new Input({
@@ -190,6 +196,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Phone',
       from: 'profile',
       disabled: true,
+      errorMessage: 'Phone is invalid',
     });
 
     this.children.oldPasswordInput = new Input({
@@ -199,6 +206,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'Old password',
       from: 'profile',
       placeholder: 'Enter old password',
+      errorMessage: 'Password incorrect',
     });
 
     this.children.newPasswordInput = new Input({
@@ -208,6 +216,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'New password',
       from: 'profile',
       placeholder: 'Enter new password',
+      errorMessage: 'Must contain 1 number and 1 capital letter. 8 to 40 characters.',
     });
 
     this.children.newPasswordRepeatInput = new Input({
@@ -217,6 +226,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       labelName: 'New password (repeat)',
       from: 'profile',
       placeholder: 'Enter new password',
+      errorMessage: 'Password mismatch',
     });
 
     this.children.saveDataBtn = new Button({
@@ -258,11 +268,59 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.oldPasswordInput.setProps({
-      events: this.initPassRepeatInputEvent('oldPasswordInput', 'oldPassword', 'oldPassword'),
+      events: {
+        input: (event: Event) => {
+          const target = event.target as HTMLInputElement;
+          if (target.tagName !== 'INPUT') return;
+          this.userPassFormValue.oldPassword = target.value;
+        },
+        focusout: (event: Event) => {
+          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+          if (isValidEqualPasswords(this.userPassFormValue.oldPassword, this.userPassFormValue.oldPassword)
+              && this.userPassFormValue.oldPassword) {
+            this.children.oldPasswordInput.getContent().classList.remove('ui-input__profile_invalid');
+          } else {
+            this.children.oldPasswordInput.getContent().classList.add('ui-input__profile_invalid');
+          }
+        },
+        focusin: (event: Event) => {
+          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+
+          if (isValidEqualPasswords(this.userPassFormValue.oldPassword, this.userPassFormValue.oldPassword)
+              && this.userPassFormValue.oldPassword) {
+            this.children.oldPasswordInput.getContent().classList.remove('ui-input__profile_invalid');
+          } else {
+            this.children.oldPasswordInput.getContent().classList.add('ui-input__profile_invalid');
+          }
+        },
+      },
     });
 
     this.children.newPasswordRepeatInput.setProps({
-      events: this.initPassRepeatInputEvent('newPasswordRepeatInput', 'newRepeatPassword', 'newPassword'),
+      events: {
+        input: (event: Event) => {
+          const target = event.target as HTMLInputElement;
+          if (target.tagName !== 'INPUT') return;
+          this.userPassFormValue.newRepeatPassword = target.value;
+        },
+        focusout: (event: Event) => {
+          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+            this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
+          } else {
+            this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
+          }
+        },
+        focusin: (event: Event) => {
+          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
+
+          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+            this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
+          } else {
+            this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
+          }
+        },
+      },
     });
 
     this.children.newPasswordInput.setProps({
@@ -307,11 +365,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   }
 
   submitUserData(): void {
-    console.log('form', this.isValidUserDataForm);
-
     if (this.isValidUserDataForm) {
-      console.log(this.userDataFormValue);
-
       this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
       this.setProps({ nonAvailableChangeData: true });
 
@@ -329,10 +383,20 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   }
 
   submitUserPass(): void {
-    console.log('form', this.isValidUserPassForm);
+    if (!isValidEqualPasswords(this.userPassFormValue.oldPassword, this.userPassFormValue.oldPassword)
+        || !this.userPassFormValue.oldPassword) {
+      this.children.oldPasswordInput.getContent().classList.add('ui-input__profile_invalid');
+    }
 
-    if (this.isValidUserPassForm) {
-      console.log({ password: this.userPassFormValue.newPassword });
+    if (!isValidPassword(this.userPassFormValue.newPassword)) {
+      this.children.newPasswordInput.getContent().classList.add('ui-input__profile_invalid');
+    }
+
+    if (!isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+      this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
+    }
+
+    if (this.isValidUserPassForm && this.userPassFormValue.oldPassword) {
       this.setProps({ nonAvailableChangeData: true });
 
       this.userPassFormValue.newRepeatPassword = '';
@@ -347,6 +411,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       this.userPasswordInputs.forEach((input) => input.hide());
 
       this.userDataInputs.forEach((input) => input.show());
+
+      this.userPasswordInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
     }
   }
 
@@ -368,32 +434,6 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       focusin: (event) => {
         if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
         if (validator(this.userDataFormValue[formField])) {
-          this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
-        } else {
-          this.children[inputName].getContent().classList.add('ui-input__profile_invalid');
-        }
-      },
-    };
-  }
-
-  initPassRepeatInputEvent(inputName: string, formField: string, fieldRepeat: string): IEvents {
-    return {
-      input: (event: Event) => {
-        const target = event.target as HTMLInputElement;
-        if (target.tagName !== 'INPUT') return;
-        this.userPassFormValue[formField] = target.value;
-      },
-      focusout: (event: Event) => {
-        if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-        if (isValidEqualPasswords(this.userPassFormValue[formField], this.userPassFormValue[fieldRepeat])) {
-          this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
-        } else {
-          this.children[inputName].getContent().classList.add('ui-input__profile_invalid');
-        }
-      },
-      focusin: (event: Event) => {
-        if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-        if (isValidEqualPasswords(this.userPassFormValue[formField], this.userPassFormValue[fieldRepeat])) {
           this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
         } else {
           this.children[inputName].getContent().classList.add('ui-input__profile_invalid');

@@ -136,17 +136,15 @@ export default abstract class Block<TProps, TChildren> {
   };
 
   private makePropsProxy(props) {
-    const self = this;
-
     return new Proxy(props, {
       get(target, prop) {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set(target: TPropsAndChildren<TProps>, prop: string, value) {
+      set: (target: TPropsAndChildren<TProps>, prop: string, value) => {
         const oldValue = { ...target };
         target[prop] = value;
-        self.eventBus.emit(EventsBusEvents.FLOW_CDU, oldValue, target);
+        this.eventBus.emit(EventsBusEvents.FLOW_CDU, oldValue, target);
         return true;
       },
     });

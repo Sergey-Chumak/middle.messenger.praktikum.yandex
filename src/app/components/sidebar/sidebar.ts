@@ -1,7 +1,7 @@
 import { tmpl } from './sidebar.tmpl';
 import Block from '../../services/block';
 import { IPropsSidebar } from './sidebar.types';
-import { getElementWithId } from '../../utils/get-element';
+import { getElementId } from '../../utils/get-element-id';
 
 export class Sidebar extends Block<IPropsSidebar, void> {
   constructor(props: IPropsSidebar) {
@@ -23,13 +23,13 @@ export class Sidebar extends Block<IPropsSidebar, void> {
     this.setProps({
       events: {
         click: (event: Event) => {
-          if (getElementWithId(event.target as HTMLElement) === 'profile-sidebar') {
+          if (getElementId(event.target as HTMLElement) === 'profile-sidebar') {
             document.location.href = '/profile';
           }
-          if (getElementWithId(event.target as HTMLElement) === 'chat-list-sidebar') {
+          if (getElementId(event.target as HTMLElement) === 'chat-list-sidebar') {
             document.location.href = '/chat-page';
           }
-          if (getElementWithId(event.target as HTMLElement) === 'logout-sidebar') {
+          if (getElementId(event.target as HTMLElement) === 'logout-sidebar') {
             document.location.href = '/auth';
           }
         },

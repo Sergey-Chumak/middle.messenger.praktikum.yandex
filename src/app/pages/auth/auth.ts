@@ -115,9 +115,15 @@ export class Auth extends Block<IPropsAuth, IChildrenAuth> {
   }
 
   submit(): void {
-    console.log('form', this.isValidSignInForm);
+    if (!isValidLogin(this.signInFormValue.login)) {
+      this.children.loginInput.getContent().classList.add('ui-input_invalid');
+    }
+
+    if (!isValidPassword(this.signInFormValue.password)) {
+      this.children.passwordInput.getContent().classList.add('ui-input_invalid');
+    }
+
     if (!this.isValidSignInForm) return;
-    console.log(this.signInFormValue);
     setTimeout(() => { document.location.href = 'chat-page'; }, 2000);
   }
 }
