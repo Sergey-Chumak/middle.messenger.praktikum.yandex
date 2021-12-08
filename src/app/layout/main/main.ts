@@ -40,8 +40,8 @@ export class Main extends Block<IPropsMain, IChildrenMain> {
   }
 
   initSidebar(): void {
-    if (document.location.href.includes(`${document.location.origin}/chat-page`)
-        || document.location.href === `${document.location.origin}/profile`) {
+    if (document.location.pathname.includes('/chat-page')
+        || document.location.pathname === '/profile') {
       this.children.sidebar = new Sidebar({
         userName: '',
         userPhone: '',
