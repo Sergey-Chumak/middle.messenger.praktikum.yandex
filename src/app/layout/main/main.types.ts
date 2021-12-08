@@ -9,10 +9,10 @@ import { Profile } from '../../pages/profile';
 export interface IPropsMain {
     isMenu?: boolean;
     sidebar?: Sidebar;
-    page?: ChatPage | ClientError | ServerError | Auth | Registration | Profile
+    page?: ChatPage | ClientError | ServerError | Auth | Registration | Profile;
 }
 
 export interface IChildrenMain {
     sidebar: Sidebar;
-    page: ChatPage | ClientError | ServerError | Auth | Registration | Profile
+    page: ChatPage | ClientError | ServerError | Auth | Registration | Profile;
 }

@@ -1,4 +1,4 @@
-export function getElementWithId(targetEl: HTMLElement): string | undefined {
+export function getElementId(targetEl: HTMLElement): string | undefined {
   let current: HTMLElement | null | undefined = targetEl;
   while (current) {
     if (current.id) {

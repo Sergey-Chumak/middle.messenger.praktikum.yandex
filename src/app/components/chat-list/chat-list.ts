@@ -4,7 +4,7 @@ import { IChatListChildren, IChatListProps } from './chat-list.types';
 import { ChatCards, IChatCard } from './chat-cards';
 
 export class ChatList extends Block<IChatListProps, IChatListChildren> {
-  chatCards = this.props.chatCards as IChatCard[];
+  chatCards: IChatCard[] = this.props.chatCards;
 
   constructor(props: IChatListProps) {
     super('div', props);

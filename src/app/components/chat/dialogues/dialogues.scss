@@ -29,7 +29,7 @@
 
       .message {
         border-top-left-radius: 0;
-        background: #F8F8F8;
+        background: var(--color-background-message);
       }
 
       .message__status {
@@ -85,7 +85,7 @@
     font-weight: 500;
     font-size: 9px;
     line-height: 9px;
-    color: #FFA800;
+    color: var(--color-text-time);
   }
 
   &__date {

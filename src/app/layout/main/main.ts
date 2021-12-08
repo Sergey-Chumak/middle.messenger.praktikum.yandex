@@ -29,20 +29,19 @@ export class Main extends Block<IPropsMain, IChildrenMain> {
   }
 
   initPage() {
-    const isAuth = document.location.href === `${document.location.origin}/auth`
-        || document.location.href === `${document.location.origin}/`;
+    const isAuth = document.location.pathname === '/' || document.location.pathname === '/auth';
 
     if (isAuth) return new Auth({});
-    if (document.location.href === `${document.location.origin}/registration`) return new Registration({});
-    if (document.location.href === `${document.location.origin}/server-error`) return new ServerError({});
-    if (document.location.href === `${document.location.origin}/profile`) return new Profile({});
-    if (document.location.href.includes(`${document.location.origin}/chat-page`)) return new ChatPage({});
+    if (document.location.pathname === '/registration') return new Registration({});
+    if (document.location.pathname === '/server-error') return new ServerError({});
+    if (document.location.pathname === '/profile') return new Profile({});
+    if (document.location.pathname.includes('/chat-page')) return new ChatPage({});
     return new ClientError({});
   }
 
   initSidebar(): void {
-    if (document.location.href.includes(`${document.location.origin}/chat-page`)
-        || document.location.href === `${document.location.origin}/profile`) {
+    if (document.location.pathname.includes('/chat-page')
+        || document.location.pathname === '/profile') {
       this.children.sidebar = new Sidebar({
         userName: '',
         userPhone: '',

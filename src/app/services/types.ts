@@ -2,7 +2,7 @@ export type TPropsAndChildren<T> = T & {
     __id?: string;
     settings?: ISettings;
     events?: IEvents;
-    children?: TChildrenBlock<unknown>
+    children?: TChildrenBlock<unknown>;
 }
 
 export type TChildrenBlock<T> = {

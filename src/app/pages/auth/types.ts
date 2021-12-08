@@ -7,13 +7,13 @@ export interface ISignInFormValue {
 }
 
 export interface IChildrenAuth {
-    loginInput: Input,
-    passwordInput: Input,
-    submitBtn: Button
+    loginInput: Input;
+    passwordInput: Input;
+    submitBtn: Button;
 }
 
 export interface IPropsAuth {
-    loginInput?: Input,
-    passwordInput?: Input,
-    submitBtn?: Button
+    loginInput?: Input;
+    passwordInput?: Input;
+    submitBtn?: Button;
 }

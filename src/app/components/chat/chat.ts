@@ -7,7 +7,7 @@ export class Chat extends Block<IChatProps, IChatChildren> {
   dialogues: IDialog[] = this.props.dialogues || [];
 
   constructor(props: IChatProps) {
-    super('div', props);
+    super('div', { ...props, disabled: true });
     this.children.dialogues = new Dialogues({ dialogues: this.dialogues });
   }
 
