@@ -1,8 +1,5 @@
 import './styles/styles.scss';
 
-import { Main } from './app/layout/main';
-import { render } from './app/utils/renderDOM';
+import { router } from './app/routing';
 
-const main = new Main({});
-
-render('#app', main);
+router.start();

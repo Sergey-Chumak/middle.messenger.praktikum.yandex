@@ -1,11 +1,5 @@
 import { tmpl } from './main.tmpl';
 import Block from '../../services/block';
-import { Auth } from '../../pages/auth';
-import { Registration } from '../../pages/registration';
-import { ClientError } from '../../pages/client-error';
-import { ServerError } from '../../pages/server-error';
-import { Profile } from '../../pages/profile';
-import { ChatPage } from '../../pages/chat-page';
 import { Sidebar } from '../../components/sidebar';
 import { IChildrenMain, IPropsMain } from './main.types';
 import { getUserProfile } from '../../services/users-data';
@@ -13,7 +7,6 @@ import { getUserProfile } from '../../services/users-data';
 export class Main extends Block<IPropsMain, IChildrenMain> {
   constructor(props: IPropsMain) {
     super('div', props);
-    this.children.page = this.initPage();
   }
 
   componentDidMount() {
@@ -26,17 +19,6 @@ export class Main extends Block<IPropsMain, IChildrenMain> {
       sidebar: this.children.sidebar,
       isMenu: this.props.isMenu,
     });
-  }
-
-  initPage() {
-    const isAuth = document.location.pathname === '/' || document.location.pathname === '/auth';
-
-    if (isAuth) return new Auth({});
-    if (document.location.pathname === '/registration') return new Registration({});
-    if (document.location.pathname === '/server-error') return new ServerError({});
-    if (document.location.pathname === '/profile') return new Profile({});
-    if (document.location.pathname.includes('/chat-page')) return new ChatPage({});
-    return new ClientError({});
   }
 
   initSidebar(): void {
