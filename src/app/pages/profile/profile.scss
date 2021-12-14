@@ -99,7 +99,19 @@
     text-align: center;
   }
 
+  &__cancel-wrapper {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  &__cancel-link {
+    cursor: pointer;
+  }
+
   &__user-password {
     margin-bottom: 160px;
   }
+
+
 }

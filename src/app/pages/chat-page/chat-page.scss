@@ -1,7 +1,11 @@
-.chat {
+.chat-page {
   display: flex;
   flex-direction: row;
   width: 100%;
+
+  & > div:last-child {
+    width: 100%;
+  }
 
   &__chat-list {
     height: 100%;
