@@ -1,0 +1,22 @@
+.snackbar {
+  box-sizing: border-box;
+  top: 20px;
+  text-align: center;
+  left: calc(50% - 150px);
+  width: 300px;
+  position: absolute;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 77, 77, 0.5);
+  color: red;
+
+  &__success {
+    background: rgba(116, 250, 95, 0.3);
+    color: #2d950a;
+  }
+
+  &__error {
+    background: rgba(255, 77, 77, 0.5);
+    color: red;
+  }
+}

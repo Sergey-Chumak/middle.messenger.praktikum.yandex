@@ -30,4 +30,5 @@ export const tmpl = `
         </nav>
     </div>
     <div id="sidebar-backdrop" class="sidebar__backdrop"></div>
+    <div id="sidebar-icon-menu" class="sidebar__icon-menu"></div>
 `;

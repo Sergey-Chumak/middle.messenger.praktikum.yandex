@@ -5,10 +5,9 @@ import { EventBus } from './event-bus';
 import {
   EventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,
 } from './types';
+import { IState } from '../store/store.types';
 
-export default abstract class Block<TProps, TChildren> {
-  abstract render (): DocumentFragment;
-
+export default class Block<TProps, TChildren> {
   protected props: TPropsAndChildren<TProps>;
   protected children: TChildrenBlock<TChildren>;
 
@@ -56,6 +55,8 @@ export default abstract class Block<TProps, TChildren> {
     this.addEvents();
   }
 
+  render() {}
+
   private addEvents() {
     const { events = {} } = this.props;
 
@@ -92,7 +93,6 @@ export default abstract class Block<TProps, TChildren> {
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${(child as Block<TProps, unknown>).id}"></div>`;
     });
-
     const fragment = this.createDocumentElement('template') as HTMLTemplateElement;
     fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
 
@@ -117,19 +117,19 @@ export default abstract class Block<TProps, TChildren> {
     this.eventBus.emit(EventsBusEvents.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: TProps, newProps: TProps) {
+  _componentDidUpdate(oldProps: TPropsAndChildren<TProps>, newProps: TPropsAndChildren<TProps>) {
     const isReRender = this.componentDidUpdate(oldProps, newProps);
     if (isReRender) this.eventBus.emit(EventsBusEvents.FLOW_RENDER);
   }
 
-  componentDidUpdate(oldProps:TProps, newProps: TProps): boolean {
+  componentDidUpdate(_oldProps:TPropsAndChildren<TProps>, _newProps: TPropsAndChildren<TProps>): boolean {
     return true;
   }
 
   setProps = (
     nextProps: {
       [key in keyof TPropsAndChildren<TProps>]?: TPropsAndChildren<TProps>[keyof TPropsAndChildren<TProps>]
-    },
+    } | IState,
   ) => {
     if (!nextProps) return;
     Object.assign(this.props, nextProps);

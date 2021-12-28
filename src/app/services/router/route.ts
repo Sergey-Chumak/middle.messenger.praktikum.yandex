@@ -1,33 +1,49 @@
 import Block from '../block';
 import isEqual from '../../utils/isEqual';
 import { render } from '../../utils/renderDOM';
+import { IPropsRoute } from './router.types';
+import { router } from '../../routing/routing';
 
 export default class Route {
-  private readonly blockClass: any;
-  private readonly pathname: string;
+  private readonly component: any;
+  private readonly path: string;
 
   private block: Block<unknown, unknown> | null;
-  private props: any;
+  private props: IPropsRoute;
 
-  constructor(pathname: string, view: any, props: any) {
-    this.pathname = pathname;
-    this.blockClass = view;
+  constructor(path: string, component: Function, props: IPropsRoute) {
+    this.path = path;
+    this.component = component;
     this.block = null;
     this.props = props;
   }
 
   render(): void {
-    if (!this.block) {
-      this.block = new this.blockClass({});
-      render(this.props.rootQuery, this.block as Block<unknown, unknown>);
-      return;
-    }
+    if (!this.props.canActivate) {
+      if (!this.block) {
+        this.block = new this.component({});
+        render(this.props.rootQuery, this.block as Block<unknown, unknown>);
+        return;
+      }
 
-    this.block.show();
+      this.block.show();
+    } else {
+      this.props.canActivate().then((data) => {
+        if (data) {
+          if (!this.block) {
+            this.block = new this.component({});
+            render(this.props.rootQuery, this.block as Block<unknown, unknown>);
+            return;
+          }
+
+          this.block.show();
+        } else if (this.props.redirectTo) router.go(this.props.redirectTo);
+      });
+    }
   }
 
-  navigate(pathname: string): void {
-    if (this.match(pathname)) {
+  navigate(path: string): void {
+    if (this.match(path)) {
       this.render();
     }
   }
@@ -38,7 +54,7 @@ export default class Route {
     }
   }
 
-  match(pathname: string): boolean {
-    return isEqual(pathname, this.pathname);
+  match(path: string): boolean {
+    return isEqual(path, this.path);
   }
 }

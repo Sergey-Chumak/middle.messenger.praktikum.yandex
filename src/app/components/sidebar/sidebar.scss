@@ -23,7 +23,31 @@
       width: 100%;
       height: 100%;
       background: var(--color-backdrop);
+      visibility: visible;
+      cursor: pointer;
     }
+  }
+
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-backdrop);
+    visibility: hidden;
+    z-index: 1;
+  }
+
+  &__icon-menu {
+    position: fixed;
+    top: 25px;
+    left: 15px;
+    width: 26px;
+    height: 18px;
+    background: url("../../../assets/images/menu.svg") no-repeat;
+    cursor: pointer;
+    z-index: 1;
   }
 
   &__user-data {

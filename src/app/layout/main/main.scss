@@ -4,11 +4,15 @@
   height: 100%;
   width: 100%;
 
-  & > div:first-child {
+  & > div {
     height: 100%;
     width: 100%;
-    display: flex;
     position: relative;
+
+    &:first-child {
+      height: fit-content;
+      width: fit-content;
+    }
   }
 
   &__icon-menu {

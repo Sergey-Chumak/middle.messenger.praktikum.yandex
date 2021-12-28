@@ -5,9 +5,9 @@ export default class Router {
 
   private readonly rootQuery: string;
 
-  routes: any;
+  routes: Route[];
   history: History;
-  currentRoute: null | any;
+  currentRoute: null | Route;
 
   constructor(rootQuery: string) {
     if (Router.__instance) {
@@ -22,8 +22,8 @@ export default class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, block: any) {
-    const route = new Route(pathname, block, { rootQuery: this.rootQuery });
+  use(path: string, component: Function, canActivate?: () => Promise<boolean>, redirectTo?: string) {
+    const route = new Route(path, component, { canActivate, rootQuery: this.rootQuery, redirectTo });
 
     this.routes.push(route);
 
@@ -32,14 +32,14 @@ export default class Router {
 
   start() {
     window.onpopstate = ((event) => {
-      this.onRoute(event.currentTarget.location.pathname);
+      this.onRoute((event.currentTarget as Window).location.pathname);
     });
 
     this.onRoute(window.location.pathname);
   }
 
-  private onRoute(pathname: string) {
-    const route = this.getRoute(pathname);
+  private onRoute(path: string) {
+    const route = this.getRoute(path) || this.getRoute('**');
     if (!route) {
       return;
     }
@@ -52,9 +52,9 @@ export default class Router {
     route.render();
   }
 
-  go(pathname: string) {
-    this.history.pushState({}, '', pathname);
-    this.onRoute(pathname);
+  go(path: string) {
+    this.history.pushState({}, '', path);
+    this.onRoute(path);
   }
 
   back() {
@@ -65,7 +65,7 @@ export default class Router {
     window.history.forward();
   }
 
-  getRoute(pathname: string): Route {
-    return this.routes.find((route: Route) => route.match(pathname));
+  private getRoute(path: string): Route {
+    return this.routes.find((route: Route) => route.match(path)) as Route;
   }
 }
