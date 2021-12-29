@@ -1,7 +1,7 @@
 import { EventBus } from '../services/event-bus';
-import { IState, StoreEvents } from './store.types';
+import { Indexed, IState, StoreEvents } from './store.types';
 
-function set(state: any, path: string, value: IState | null): void {
+function set(state: any, path: string, value: Indexed): void {
   const keys = path.split('.');
   keys.reduce((acc, key, index) => {
     if (index < keys.length - 1) {
@@ -25,7 +25,7 @@ class Store extends EventBus {
     this.emit(StoreEvents.Updated);
   }
 
-  public set(path: string, value: IState | null): void {
+  public set(path: string, value: Indexed): void {
     set(this.state, path, value);
     this.emit(StoreEvents.Updated);
   }

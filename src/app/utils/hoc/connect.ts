@@ -2,7 +2,7 @@ import Block from '../../services/block';
 import { IState, StoreEvents } from '../../store/store.types';
 import store from '../../store/store';
 
-export default function connect<Props, Children>(mapStateToProps:(state: IState)=> IState) {
+export default function connect<Props, Children>(mapStateToProps:(state: IState) => { [key: string]: any }) {
   return function (Component: typeof Block) {
     return class extends Component<Props, Children> {
       constructor(props: Props) {

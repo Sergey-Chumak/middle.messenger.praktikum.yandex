@@ -1,7 +1,11 @@
 export const tmpl = `
     <div id="sidebar" class="sidebar">
         <div class="sidebar__user-data">
-            <div class="sidebar__user-data_avatar"></div>
+            <div class="sidebar__user-data_avatar">
+                {{#if userAvatar}}
+                <img src="{{ userAvatar }}" alt="">
+                {{/if}}
+            </div>
             <div>
                 <p class="sidebar__user-data_name">{{ userName }}</p>
                 <p class="sidebar__user-data_phone">{{ userPhone }}</p>

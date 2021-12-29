@@ -12,8 +12,11 @@ import { IChatCard } from '../../components/chat-list/chat-cards';
 import { getElementId } from '../../utils/get-element-id';
 import { getDateCustomFormat, getTimeNow } from '../../utils/date';
 import { IDialog, IMessage } from '../../components/chat/dialogues';
+import { router } from '../../routing/routing';
+import { chatsService } from '../../services/chats/chats.service';
+import connect from '../../utils/hoc/connect';
 
-export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
+class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   searchValue = '';
   chatCards: IChatCard[] = [];
   dialogues: IDialog[] = [];
@@ -38,6 +41,16 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.initComponent();
     this.initChildren();
     this.loadUserData();
+
+    chatsService.getChats();
+  }
+
+  componentDidUpdate(oldProps, newProps): boolean {
+    this.chatCards = this.props.chat;
+    this.children.chatList.setProps({
+      chatCards: this.chatCards,
+    });
+    return true;
   }
 
   render(): DocumentFragment {
@@ -51,7 +64,7 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.setProps({
       events: {
         click: (event: Event) => {
-          if (!this.chatCards.find(((item) => item.id === getElementId(event.target as HTMLElement)))) return;
+          if (!this.chatCards?.find(((item) => item.id === getElementId(event.target as HTMLElement)))) return;
           this.chatCards.forEach((item) => {
             item.id === getElementId(event.target as HTMLElement)
               ? item.status = 'active'
@@ -59,7 +72,7 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
           });
 
           const currentId = this.chatCards.find((item) => item.status === 'active')?.id;
-          document.location.href = `${document.location.origin}/chat-page/${currentId}`;
+          router.go(`/messenger/${currentId}`);
 
           this.children.chatList.setProps({ chatCards: this.chatCards });
         },
@@ -145,22 +158,22 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   }
 
   loadUserData(): void {
-    setTimeout(() => {
-      const userData = getUsersData();
-      const user = userData.find((item) => item.id === last(document.location.href.split('/')));
-
-      this.dialogues = user?.chat as IDialog[];
-      this.chatCards = userData as IChatCard[];
-
-      this.initActiveChat();
-
-      this.children.chatList.setProps({ chatCards: this.chatCards });
-      this.children.chat.setProps({
-        disabled: false,
-        name: user?.name,
-        dialogues: this.dialogues,
-      });
-    }, 700);
+    // setTimeout(() => {
+    //   const userData = getUsersData();
+    //   const user = userData.find((item) => item.id === last(document.location.href.split('/')));
+    //
+    //   this.dialogues = user?.chat as IDialog[];
+    //   this.chatCards = userData as IChatCard[];
+    //
+    //   this.initActiveChat();
+    //
+    //   this.children.chatList.setProps({ chatCards: this.chatCards });
+    //   this.children.chat.setProps({
+    //     disabled: false,
+    //     name: user?.name,
+    //     dialogues: this.dialogues,
+    //   });
+    // }, 700);
   }
 
   initActiveChat(): void {
@@ -171,3 +184,7 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     });
   }
 }
+
+export const ChatPageWrap = connect((state) => ({
+  chats: state?.chats,
+}))(ChatPage as typeof Block);

@@ -6,8 +6,13 @@ import { getElementId } from '../../utils/get-element-id';
 import { router } from '../../routing/routing';
 import connect from '../../utils/hoc/connect';
 import { authService } from '../../services/auth/auth.service';
+import { Modal } from '../../components/ui/modal';
+import trim from '../../utils/trim';
+import { chatsService } from '../../services/chats/chats.service';
 
 class Main extends Block<IPropsMain, IChildrenMain> {
+  chatName: string;
+
   constructor(props: IPropsMain) {
     super('div', props);
 
@@ -17,7 +22,13 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       userAvatar: undefined,
     });
 
-    authService.getUserData();
+    this.children.modal = new Modal({
+      cancel: 'Cancel',
+      message: '',
+      confirm: 'Create',
+      header: 'Create a new chat?',
+      buttonId: 'create-chat-btn',
+    });
   }
 
   componentDidMount() {
@@ -32,6 +43,18 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       userAvatar: this.props.avatar,
     });
 
+    this.children.modal.setProps({
+      events: {
+        input: (event:Event) => {
+          const target = event.target as HTMLInputElement;
+          if (target.id === 'new-chat-input') {
+            if (!target.value) return;
+            this.chatName = trim(target.value);
+          }
+        },
+      },
+    });
+
     if (oldProps.events !== newProps.events) return true;
     return false;
   }
@@ -43,6 +66,7 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       phone: this.props.phone,
       avatar: this.props.avatar,
       name: this.props.name,
+      modal: this.children.modal,
     });
   }
 
@@ -52,8 +76,13 @@ class Main extends Block<IPropsMain, IChildrenMain> {
     this.setProps({
       events: {
         click: (event: Event) => {
-          if ((event.target as HTMLElement).id !== 'icon-menu') return;
-          this.children.sidebar?.getContent().classList.add('sidebar_open');
+          if ((event.target as HTMLElement).id === 'create-chat-btn') {
+            console.log(this.chatName);
+            chatsService.createChat({ title: this.chatName })
+              .then(() => {
+                this.children.modal.close();
+              });
+          }
         },
       },
     });
@@ -74,13 +103,17 @@ class Main extends Block<IPropsMain, IChildrenMain> {
           if (getElementId(event.target as HTMLElement) === 'logout-sidebar') {
             this.getContent().classList.remove('sidebar_open');
             authService.logout()
-              .then(() => router.go('/signin'))
-              .catch((e) => console.log(e));
+              .then(() => router.go('/signin'));
           }
           if ((event.target as HTMLElement).id === 'sidebar-icon-menu') {
             this.getContent().classList.add('sidebar_open');
           }
           if ((event.target as HTMLElement).id === 'sidebar-backdrop') {
+            this.getContent().classList.remove('sidebar_open');
+          }
+          if (getElementId((event.target as HTMLElement)) === 'new-chat-sidebar') {
+            router.go('/messenger');
+            this.children.modal.open();
             this.getContent().classList.remove('sidebar_open');
           }
         },
@@ -89,8 +122,8 @@ class Main extends Block<IPropsMain, IChildrenMain> {
   }
 }
 
-export const main = connect<IPropsMain, IChildrenMain>((state) => ({
-  name: state?.user?.display_name || state?.user?.first_name,
-  avatar: state?.user?.avatar,
-  phone: state?.user?.phone,
+export const MainWrap = connect<IPropsMain, IChildrenMain>((state) => ({
+  name: state?.user?.display_name || state?.user?.first_name as string,
+  avatar: state?.user?.avatar as string,
+  phone: state?.user?.phone as string,
 }))(Main as typeof Block);

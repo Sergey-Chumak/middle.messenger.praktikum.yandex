@@ -1,9 +1,14 @@
 export const tmpl = `
     <div class="profile-wrapper">
+    {{{ snackbar }}}
+    {{{ modal }}}
         <div class="profile" id="profile">
             <div class="profile__avatar">
+                {{#if avatar}}
+                <img class="profile__avatar_img" src="{{ avatar }}" alt="">
+                {{/if}}
                 <div class="profile__icon"></div>
-                <div class="profile__avatar_hover">Change avatar</div>
+                <div class="profile__avatar_hover" id="profile-avatar">Change avatar</div>
             </div>
             <div class="profile__user-name">{{ userName }}</div>
                 
@@ -37,7 +42,7 @@ export const tmpl = `
                     <a id="link-change-pass" class="profile__link-action">Change password</a>
                 </div>
                 <div class="profile__option-field">
-                    <a href="/signin" class="profile__link-action_logout">Logout</a>
+                    <a id="profile-logout" class="profile__link-action_logout">Logout</a>
                 </div>
             </div>
             {{else}}
