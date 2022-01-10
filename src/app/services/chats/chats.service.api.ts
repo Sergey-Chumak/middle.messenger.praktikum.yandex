@@ -1,6 +1,9 @@
 import BaseAPI from '../api/base-api';
 import HTTPTransport from '../api/http-transport';
-import { IChat, ITitleChat } from './chats.types';
+import {
+  IAddUsersData, IChat, ITitleChat,
+} from './chats.types';
+import { IUserData } from '../auth/auth.types';
 
 export class ChatsServiceApi extends BaseAPI {
   private chatApiInstance: HTTPTransport = new HTTPTransport('/chats');
@@ -10,6 +13,26 @@ export class ChatsServiceApi extends BaseAPI {
   }
 
   createChat(data: ITitleChat) {
-    return this.chatApiInstance.post<'OK'>('', { data });
+    return this.chatApiInstance.post<{id: number}>('', { data });
+  }
+
+  deleteChat(id: number) {
+    return this.chatApiInstance.delete('', { data: { chatId: id } });
+  }
+
+  addUsers(data: IAddUsersData) {
+    return this.chatApiInstance.put('/users', { data });
+  }
+
+  changeChatAvatar(data: FormData) {
+    return this.chatApiInstance.put('/avatar', { data });
+  }
+
+  getChatUsers(id: number) {
+    return this.chatApiInstance.get<IUserData[]>(`/${id}/users`);
+  }
+
+  getChatToken(chatId: number) {
+    return this.chatApiInstance.post<{token: string}>(`/token/${chatId}`);
   }
 }

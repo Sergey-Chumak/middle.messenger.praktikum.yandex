@@ -8,7 +8,10 @@ class ProfileService {
   private profileApi: ProfileServiceApi = new ProfileServiceApi();
 
   public changeUserData(data: IUserDataFormValue) {
-    return this.profileApi.changeUserData(data).then((data: IUserData) => store.set('user', data));
+    return this.profileApi.changeUserData(data).then((data: IUserData) => {
+      store.set('user', data);
+      store.set('user.avatar', `${BASE_URL}/Resources${data.avatar}`);
+    });
   }
 
   public changeUserPassword(data: IUserPassFormValue) {
@@ -16,9 +19,15 @@ class ProfileService {
   }
 
   public changeUserAvatar(data: File) {
-    return this.profileApi.changeUserAvatar(data).then((data: IUserData) => {
+    const formData = new FormData();
+    formData.append('avatar', data);
+    return this.profileApi.changeUserAvatar(formData).then((data: IUserData) => {
       store.set('user.avatar', `${BASE_URL}/Resources${data.avatar}`);
     });
+  }
+
+  searchUsers(login: string) {
+    return this.profileApi.searchUsers({ login });
   }
 }
 

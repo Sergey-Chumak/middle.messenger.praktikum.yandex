@@ -31,3 +31,29 @@ a {
   font-size: 13px;
   color: var(--color-link-secondary);
 }
+
+* {
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(128, 128, 128, 0.4);
+    border: 2px solid var(--color-background-chat);
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.8);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: transparent;
+  }
+}

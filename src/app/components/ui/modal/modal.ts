@@ -24,9 +24,9 @@ export class Modal extends Block<IPropsModal, IChildrenModal> {
     });
 
     this.children.input = new Input({
-      id: 'new-chat-input',
+      id: '',
       type: 'text',
-      labelName: 'Title',
+      labelName: 'Name',
       value: '',
       class: 'modal__input',
     });
@@ -38,6 +38,9 @@ export class Modal extends Block<IPropsModal, IChildrenModal> {
 
   close() {
     this.hide();
+    this.children.input.setProps({
+      value: '',
+    });
   }
 
   componentDidMount() {
@@ -45,11 +48,32 @@ export class Modal extends Block<IPropsModal, IChildrenModal> {
       events: {
         click: (event: Event) => {
           if ((event.target as HTMLElement).id === 'modal-cancel') {
-            this.hide();
+            this.close();
           }
         },
       },
     });
+  }
+
+  componentDidUpdate(oldProps: IPropsModal, newProps: IPropsModal): boolean {
+    if (oldProps.confirm !== newProps.confirm) {
+      this.children.confirm.setProps({ name: newProps.confirm });
+    }
+
+    if (oldProps.buttonId !== newProps.buttonId) {
+      this.children.confirm.setProps({ id: newProps.buttonId });
+    }
+
+    if (oldProps.inputId !== newProps.inputId) {
+      this.children.input.setProps({ id: newProps.inputId });
+    }
+
+    if (newProps.isInput) {
+      this.children.input.show();
+    } else {
+      this.children.input.hide();
+    }
+    return true;
   }
 
   render(): DocumentFragment {

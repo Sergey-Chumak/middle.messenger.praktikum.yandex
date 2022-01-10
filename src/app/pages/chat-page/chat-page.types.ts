@@ -6,10 +6,11 @@ import { IChat } from '../../services/chats/chats.types';
 export interface IChatPageProps {
     chats?: IChat[]
     chatList?: ChatList;
-    chat?: Chat | PlugDialog;
+    chat?: Chat;
 }
 
 export interface IChatPageChildren {
     chatList: ChatList;
-    chat: Chat | PlugDialog;
+    chat: Chat;
+    plug: PlugDialog;
 }

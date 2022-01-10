@@ -15,8 +15,18 @@ export interface IChat {
         time: string;
         content: string;
     }
+    status?: 'active' | 'passive'
 }
 
 export interface ITitleChat {
-    title: string
+    title: string;
+}
+
+export interface IAddUsersData {
+    users: number[];
+    chatId: number
+}
+
+export interface IUsersSearch {
+    login: string;
 }

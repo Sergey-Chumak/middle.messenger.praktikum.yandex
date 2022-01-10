@@ -4,6 +4,7 @@ import store from '../../store/store';
 import { IUserData } from './auth.types';
 import { ISignupFormValue } from '../../pages/auth/signup/signup.types';
 import { BASE_URL } from '../constants';
+import { chatsService } from '../chats/chats.service';
 
 class AuthService {
   authApi: AuthServiceApi = new AuthServiceApi();
@@ -13,7 +14,10 @@ class AuthService {
   }
 
   public login(data: ISigninFormValue) {
-    return this.authApi.login(data);
+    return this.authApi.login(data).then((data) => {
+      chatsService.getChats();
+      return data;
+    });
   }
 
   public getUserData() {

@@ -7,10 +7,7 @@ export const tmpl = `
             {{else}}
             <div class="modal__message">{{ message }}</div>
             {{/if}}
-            
-            <div {{#if isInput}}hidden{{/if}}>
-                {{{input}}}
-            </div>
+            {{{input}}}
         </div>
         
         <div class="modal__buttons">

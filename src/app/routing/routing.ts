@@ -25,7 +25,7 @@ async function hasLogout() {
 export const router = new Router('#main')
   .use('/signin', Signin, hasLogout, '/messenger')
   .use('/signup', Signup, hasLogout, '/messenger')
-  .use('/messenger', ChatPage, hasAuthentication, '/signin')
+  .use('/messenger/:id', ChatPage, hasAuthentication, '/signin')
   .use('/profile', Profile, hasAuthentication, '/signin')
   .use('/server-error', ServerError)
   .use('**', ClientError);

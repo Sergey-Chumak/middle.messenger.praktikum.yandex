@@ -28,7 +28,11 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       confirm: 'Create',
       header: 'Create a new chat?',
       buttonId: 'create-chat-btn',
+      isInput: true,
+      inputId: 'new-chat-input',
     });
+
+    chatsService.getChats();
   }
 
   componentDidMount() {
@@ -77,10 +81,12 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       events: {
         click: (event: Event) => {
           if ((event.target as HTMLElement).id === 'create-chat-btn') {
-            console.log(this.chatName);
             chatsService.createChat({ title: this.chatName })
-              .then(() => {
+              .then((id) => {
                 this.children.modal.close();
+                chatsService.getChats().then(() => {
+                });
+                router.go(`/messenger/${id}`);
               });
           }
         },
@@ -112,7 +118,6 @@ class Main extends Block<IPropsMain, IChildrenMain> {
             this.getContent().classList.remove('sidebar_open');
           }
           if (getElementId((event.target as HTMLElement)) === 'new-chat-sidebar') {
-            router.go('/messenger');
             this.children.modal.open();
             this.getContent().classList.remove('sidebar_open');
           }

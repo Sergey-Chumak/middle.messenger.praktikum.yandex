@@ -55,6 +55,9 @@ export default class Route {
   }
 
   match(path: string): boolean {
+    if (this.props.withId) {
+      return path.includes(this.path);
+    }
     return isEqual(path, this.path);
   }
 }

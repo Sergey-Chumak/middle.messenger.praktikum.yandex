@@ -14,7 +14,7 @@ function set(state: any, path: string, value: Indexed): void {
 }
 
 class Store extends EventBus {
-  private state: IState = {};
+  private state: IState = { };
 
   public getState(): IState {
     return this.state;

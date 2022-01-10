@@ -10,7 +10,7 @@ export class Sidebar extends Block<IPropsSidebar, void> {
   // @ts-ignore
   componentDidUpdate(oldProps, newProps): boolean {
     if (!newProps.userName && !newProps.userPhone) {
-      this.hide();
+      // this.hide();
       return true;
     }
     this.show();

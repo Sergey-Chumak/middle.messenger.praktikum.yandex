@@ -9,6 +9,7 @@ export interface IPropsModal {
     buttonId: string;
     avatar?: boolean;
     isInput?: boolean;
+    inputId?: string;
 }
 
 export interface IChildrenModal {

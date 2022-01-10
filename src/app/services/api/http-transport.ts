@@ -46,7 +46,7 @@ export default class HTTPTransport {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(method, `${BASE_URL}${this.baseUrl}${url}`);
-      if (!(data instanceof File)) {
+      if (!(data instanceof FormData)) {
         xhr.setRequestHeader('content-type', 'application/json');
       }
       xhr.withCredentials = true;
@@ -69,11 +69,8 @@ export default class HTTPTransport {
 
       if (method === Method.GET || !data) {
         xhr.send();
-      } else if (data instanceof File) {
-        const formData = new FormData();
-        formData.append('avatar', data);
-        console.log(formData);
-        xhr.send(formData);
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }

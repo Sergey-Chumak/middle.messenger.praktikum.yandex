@@ -7,41 +7,67 @@
   max-height: 100%;
 
   &__header {
-    height: 58px;
+    height: 48px;
     background: var(--color-background-chat);
     border-bottom: 1px solid var(--color-border-primary);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     flex-shrink: 0;
   }
 
   &__user {
     display: flex;
     flex-direction: row;
-    align-items: center;
-  }
-
-  &__avatar {
-    height: 34px;
-    width: 34px;
-    border-radius: 50%;
-    background: var(--color-empty-avatar-light);
-    margin: 0 10px;
   }
 
   &__name {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 16px;
+    margin-top: 8px;
+
+    & > div:last-child {
+      font-weight: normal;
+      font-size: 12px;
+    }
   }
 
-  &__context-menu {
+  &__context-menu-icon {
     width: 20px;
     height: 20px;
     background: url("../../../assets/images/context-menu.svg") no-repeat center;
     cursor: pointer;
     margin-right: 15px;
+    align-self: center;
+    position: relative;
+  }
+
+  &__context-menu {
+    height: fit-content;
+    width: fit-content;
+    position: absolute;
+    overflow: hidden;
+    top: 50px;
+    padding: 5px 0;
+    right: 3px;
+    background-color: var(--color-background-chat);
+    border-radius: 12px;
+    visibility: hidden;
+    z-index: 2;
+
+    &_open {
+      visibility: visible;
+    }
+
+    & > div {
+      padding: 5px 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(153, 153, 153, 0.3);
+      }
+    }
   }
 
   &__footer {

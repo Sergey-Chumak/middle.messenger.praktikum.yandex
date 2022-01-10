@@ -3,11 +3,10 @@
   width: 100%;
   height: 70px;
   padding: 10px;
-  margin: 2px 0;
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color, box-shadow 0.2s;
 
   &:hover {
     background: var(--color-background-hover-chat);
@@ -22,15 +21,22 @@
     background: var(--color-empty-avatar-light);
     width: 47px;
     height: 47px;
+    overflow: hidden;
     margin-right: 10px;
     flex-shrink: 0;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &__content-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 57px);
   }
 
   &__content {
@@ -42,6 +48,8 @@
     font-weight: 600;
     color: var(--color-text-default);
     margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__last-message{
@@ -77,13 +85,5 @@
     align-items: center;
     padding: 4px;
     box-sizing: border-box;
-  }
-
-  &__divider {
-    box-sizing: border-box;
-    width: calc(100% - 20px);
-    margin: 0 10px;
-    height: 1px;
-    background: var(--color-border-primary);
   }
 }

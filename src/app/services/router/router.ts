@@ -23,6 +23,17 @@ export default class Router {
   }
 
   use(path: string, component: Function, canActivate?: () => Promise<boolean>, redirectTo?: string) {
+    if (path.includes('/:')) {
+      path = path.split('/')
+        .filter((_item, index) => index !== path.split('/').length - 1)
+        .join('/');
+
+      const route = new Route(path, component, {
+        canActivate, rootQuery: this.rootQuery, redirectTo, withId: true,
+      });
+
+      this.routes.push(route);
+    }
     const route = new Route(path, component, { canActivate, rootQuery: this.rootQuery, redirectTo });
 
     this.routes.push(route);
