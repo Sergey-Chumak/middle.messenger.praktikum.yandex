@@ -1,10 +1,10 @@
-import { Dialogues, IDialog } from './dialogues';
+import { Dialogues, IMessage } from './dialogues';
 import { Modal } from '../ui/modal';
 
 export interface IChatProps {
     name: string;
     disabled: boolean;
-    dialogues?: IDialog[];
+    dialogues?: IMessage[];
     value?: string;
     users?: string;
 }

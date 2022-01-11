@@ -5,23 +5,25 @@ import Block from '../../services/block';
 import { ChatList } from '../../components/chat-list';
 import { Chat } from '../../components/chat';
 import last from '../../utils/last';
-import { getUsersData, IUsersData, updateUsersData } from '../../services/users-data';
+import { getUsersData } from '../../services/users-data';
 import { PlugDialog } from '../../components/plug-dialog';
 import { IChatPageChildren, IChatPageProps } from './chat-page.types';
 import { getElementId } from '../../utils/get-element-id';
-import { getDateCustomFormat, getTimeNow } from '../../utils/date';
-import { IDialog, IMessage } from '../../components/chat/dialogues';
+import { getDateCustomFormat } from '../../utils/date';
+import { IDialog } from '../../components/chat/dialogues';
 import { router } from '../../routing/routing';
 import { chatsService } from '../../services/chats/chats.service';
 import connect from '../../utils/hoc/connect';
-import { IChat } from '../../services/chats/chats.types';
+import { IChatCard } from '../../services/chats/chats.types';
 import store from '../../store/store';
 
 class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   searchValue = '';
-  chatCards: IChat[] = [];
+  chatCards: IChatCard[] = [];
   dialogues: IDialog[] = [];
   currentMessage = '';
+  socket: WebSocket;
+  currentMessages = [];
 
   constructor(props: IChatPageProps) {
     super('div', props);
@@ -42,6 +44,10 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.initComponent();
     this.initChildren();
 
+    chatsService.getChatToken(+last(document.location.pathname.split('/'))).then((token) => {
+      this.initWebSocket(token);
+    });
+
     chatsService.getChats().then((data) => {
       this.loadUserData(data);
       if (data.find((chat) => chat.id === +last(document.location.href.split('/')))) {
@@ -51,24 +57,15 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     });
   }
 
-  componentDidUpdate(_oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
+  componentDidUpdate(oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
     this.loadUserData(newProps?.chats!);
     this.children.chatList.setProps({
-      chatCards: newProps?.chats
-        // .sort((a, b) => {
-        //   if (!!a?.last_message?.time && !!b?.last_message?.time) {
-        //     return a?.last_message?.time < b?.last_message?.time ? 1 : -1;
-        //   }
-        //   if (!!a?.last_message?.time && !b?.last_message?.time) return -1;
-        //   if (!a?.last_message?.time && !!b?.last_message?.time) return 1;
-        //   if (!a?.last_message?.time && !b?.last_message?.time) return 0;
-        // })
-        ?.map((i) => {
-          if (i?.last_message) {
-            i.last_message.time = getDateCustomFormat(new Date(Date.parse(i.last_message.time)));
-          }
-          return i;
-        }),
+      chatCards: newProps?.chats?.map((i) => {
+        if (i?.last_message) {
+          i.last_message.time = getDateCustomFormat(new Date(Date.parse(i.last_message.time)));
+        }
+        return i;
+      }),
     });
     if (newProps.chats?.find((chat) => chat.id === +last(document.location.href.split('/')))) {
       this.children.plug.hide();
@@ -93,6 +90,8 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       events: {
         click: (event: Event) => {
           if (!this.chatCards?.find(((item) => item.id === +getElementId(event.target as HTMLElement)!))) return;
+          if (this.chatCards?.find((item) => item.status === 'active')?.id === +getElementId(event.target as HTMLElement)!) return;
+
           this.chatCards.forEach((item) => {
             item.id === +getElementId(event.target as HTMLElement)!
               ? item.status = 'active'
@@ -111,36 +110,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
           this.children.chatList.setProps({ chatCards: this.chatCards });
 
           chatsService.getChatToken(+last(document.location.pathname.split('/'))).then((token) => {
-            const socket = new WebSocket(
-              `wss://ya-praktikum.tech/ws/chats/${store.getState().user!.id}/${chatId}/${token.token}`,
-            );
-
-            socket.addEventListener('open', () => {
-              console.log('Соединение установлено');
-
-              socket.send(JSON.stringify({
-                content: 'Моё первое сообщение миру!',
-                type: 'message',
-              }));
-            });
-
-            socket.addEventListener('close', (event) => {
-              if (event.wasClean) {
-                console.log('Соединение закрыто чисто');
-              } else {
-                console.log('Обрыв соединения');
-              }
-
-              console.log(`Код: ${event.code} | Причина: ${event.reason}`);
-            });
-
-            socket.addEventListener('message', (event) => {
-              console.log('Получены данные', event.data);
-            });
-
-            socket.addEventListener('error', (event) => {
-              console.log('Ошибка', (event as ErrorEvent).message);
-            });
+            this.initWebSocket(token);
           });
 
           chatsService.getChatUsers(+last(document.location.pathname.split('/')))
@@ -186,50 +156,25 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   }
 
   sendMessage(): void {
-    const id = makeUUID();
-    const dialog = this.dialogues.find((item) => item.date === getDateCustomFormat());
-
-    if (dialog) {
-      dialog.messages.unshift({
-        message: this.currentMessage,
-        status: 'sending',
-        time: getTimeNow(),
-        from: 'me',
-        id,
-      });
-    } else {
-      this.dialogues.unshift({
-        date: getDateCustomFormat(),
-        messages: [{
-          message: this.currentMessage,
-          status: 'sending',
-          time: getTimeNow(),
-          from: 'me',
-          id,
-        }],
-      });
-    }
-
-    updateUsersData(this.chatCards as IUsersData[]); // Временный тип
+    this.socket.send(JSON.stringify({
+      content: this.currentMessage,
+      type: 'message',
+    }));
 
     this.currentMessage = '';
-    const filteredChatCards = this.chatCards.filter((item) => item.name.toLowerCase()
-      .includes(this.searchValue));
-    this.children.chatList.setProps({ chatCards: filteredChatCards, value: this.searchValue });
-    this.children.chat.setProps({ value: '', dialogues: [...this.dialogues] });
+    this.children.chat.setProps({ value: '' });
+    // chatsService.getChats().then(() => {
+    //   this.socket.send(JSON.stringify({
+    //     content: '0',
+    //     type: 'get old',
+    //   }));
+    //
+    // });
+
     (document.querySelector('#message') as HTMLElement)?.focus();
-
-    this.messageDelivered(id);
   }
 
-  messageDelivered(id: string) {
-    setTimeout(() => {
-      (this.dialogues[0].messages.find((item) => item.id === id) as IMessage).status = 'sent';
-      this.children.chat.setProps({ dialogues: [...this.dialogues] });
-    }, 1000);
-  }
-
-  loadUserData(data: IChat[]): void {
+  loadUserData(data: IChatCard[]): void {
     if (!data) return;
     const userData = getUsersData();
     const user = userData.find((item) => item.id === last(document.location.href.split('/')));
@@ -254,6 +199,46 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       item.id === +last(document.location.href.split('/'))
         ? item.status = 'active'
         : item.status = 'passive';
+    });
+  }
+
+  initWebSocket(token) {
+    if (this.socket) this.socket.close();
+    this.socket = new WebSocket(
+      `wss://ya-praktikum.tech/ws/chats/${store.getState().user!.id}/${last(document.location.pathname.split('/'))}/${token.token}`,
+    );
+
+    this.socket.addEventListener('open', () => {
+      this.socket.send(JSON.stringify({
+        content: '0',
+        type: 'get old',
+      }));
+    });
+
+    this.socket.addEventListener('close', (event) => {
+      if (event.wasClean) {
+        console.log('Соединение закрыто чисто');
+      } else {
+        console.log('Обрыв соединения');
+      }
+
+      console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+    });
+
+    this.socket.addEventListener('message', (event) => {
+      if (Array.isArray(JSON.parse(event.data))) {
+        this.currentMessages = JSON.parse(event.data);
+      } else {
+        this.currentMessages.unshift(JSON.parse(event.data));
+      }
+
+      this.children.chat.setProps({
+        dialogues: this.currentMessages,
+      });
+    });
+
+    this.socket.addEventListener('error', (event) => {
+      console.log('Ошибка', (event as ErrorEvent).message);
     });
   }
 }

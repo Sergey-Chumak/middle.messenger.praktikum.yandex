@@ -2,10 +2,10 @@ import { tmpl } from './chat-list.tmpl';
 import Block from '../../services/block';
 import { IChatListChildren, IChatListProps } from './chat-list.types';
 import { ChatCards } from './chat-cards';
-import { IChat } from '../../services/chats/chats.types';
+import { IChatCard } from '../../services/chats/chats.types';
 
 export class ChatList extends Block<IChatListProps, IChatListChildren> {
-  chatCards: IChat[] = this.props.chatCards;
+  chatCards: IChatCard[] = this.props.chatCards;
   searchValue: string = this.props.value || '';
 
   constructor(props: IChatListProps) {

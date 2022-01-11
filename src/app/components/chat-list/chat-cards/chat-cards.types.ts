@@ -1,5 +1,5 @@
-import { IChat } from '../../../services/chats/chats.types';
+import { IChatCard } from '../../../services/chats/chats.types';
 
 export interface IChatCardsProps {
-    chatCards: IChat[];
+    chatCards: IChatCard[];
 }

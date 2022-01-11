@@ -5,6 +5,9 @@ import { IChatChildren, IChatProps } from './chat.types';
 import { Modal } from '../ui/modal';
 import { chatsService } from '../../services/chats/chats.service';
 import last from '../../utils/last';
+import { getTimeCustomFormat } from '../../utils/date';
+import store from '../../store/store';
+import isEqual from '../../utils/isEqual';
 
 export class Chat extends Block<IChatProps, IChatChildren> {
   dialogues: IDialog[] = this.props.dialogues || [];
@@ -138,8 +141,23 @@ export class Chat extends Block<IChatProps, IChatChildren> {
   }
 
   componentDidUpdate(oldProps: IChatProps, newProps: IChatProps): boolean {
-    this.children.dialogues?.setProps({ dialogues: newProps.dialogues });
-    if (oldProps.dialogues !== newProps.dialogues) return false;
+    console.log(newProps.dialogues);
+    this.children.dialogues?.setProps({
+      dialogues: [
+        {
+          messages: newProps?.dialogues?.map((m) => {
+            const user = store.getState()?.chatUsers?.find((user) => user.id === m.user_id);
+            m.from = store.getState()?.user?.id !== m.user_id ? 'me' : null;
+            m.name = user?.display_name || user?.first_name;
+            m.userAvatar = user?.avatar;
+            m.timeCustomFormat = getTimeCustomFormat(m.time);
+            return m;
+          }) || [],
+          date: 'June 18',
+        },
+      ],
+    });
+    if (!isEqual(oldProps.dialogues, newProps.dialogues)) return false;
     return true;
   }
 

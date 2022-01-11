@@ -44,7 +44,6 @@ a {
   &::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background-color: rgba(128, 128, 128, 0.4);
-    border: 2px solid var(--color-background-chat);
 
     &:hover {
       background-color: rgba(128, 128, 128, 0.8);
@@ -52,8 +51,8 @@ a {
   }
 
   &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background-color: transparent;
   }
 }

@@ -1,4 +1,4 @@
-export interface IChat {
+export interface IChatCard {
     id: number;
     title: string;
     avatar: string;

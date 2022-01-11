@@ -5,6 +5,13 @@ export function getTimeNow(): string {
   return `${hours}:${minutes}`;
 }
 
+export function getTimeCustomFormat(dateStr: string): string {
+  const date = new Date(Date.parse(dateStr));
+  const hours = date.getHours().toString().length === 1 ? `0${date.getHours()}` : date.getHours();
+  const minutes = date.getMinutes().toString().length === 1 ? `0${date.getMinutes()}` : date.getMinutes();
+  return `${hours}:${minutes}`;
+}
+
 export function getDateCustomFormat(date: Date = new Date(Date.now())): string {
   const month: string = DateMonth[date.getMonth()];
   const day = date.getDate();

@@ -51,7 +51,10 @@ class ChatsService {
 
   getChatUsers(id: number) {
     if (!id) return;
-    return this.chatsApi.getChatUsers(id);
+    return this.chatsApi.getChatUsers(id).then((data) => {
+      store.set('chatUsers', data);
+      return data;
+    });
   }
 
   getChatToken(chatId: number) {

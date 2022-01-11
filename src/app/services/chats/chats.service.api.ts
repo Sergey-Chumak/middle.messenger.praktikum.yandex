@@ -1,7 +1,7 @@
 import BaseAPI from '../api/base-api';
 import HTTPTransport from '../api/http-transport';
 import {
-  IAddUsersData, IChat, ITitleChat,
+  IAddUsersData, IChatCard, ITitleChat,
 } from './chats.types';
 import { IUserData } from '../auth/auth.types';
 
@@ -9,7 +9,7 @@ export class ChatsServiceApi extends BaseAPI {
   private chatApiInstance: HTTPTransport = new HTTPTransport('/chats');
 
   getChats() {
-    return this.chatApiInstance.get<IChat[]>('');
+    return this.chatApiInstance.get<IChatCard[]>('');
   }
 
   createChat(data: ITitleChat) {
@@ -28,7 +28,7 @@ export class ChatsServiceApi extends BaseAPI {
     return this.chatApiInstance.put('/avatar', { data });
   }
 
-  getChatUsers(id: number) {
+  getChatUsers(id: number): Promise<IUserData[]> {
     return this.chatApiInstance.get<IUserData[]>(`/${id}/users`);
   }
 
