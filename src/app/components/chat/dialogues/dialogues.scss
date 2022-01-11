@@ -13,38 +13,39 @@
   &__message-wrapper {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
     margin: 5px 0;
+    justify-content: flex-start;
 
     &_me {
-      justify-content: flex-end;
-
-      .message {
-        border-top-right-radius: 0;
-      }
-    }
-
-    &_friend {
       justify-content: flex-start;
 
       .message {
-        border-top-left-radius: 0;
         background: var(--color-background-message);
       }
-
-      .message__status {
-        display: none;
-      }
     }
+  }
+
+  &__avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    background: var(--color-empty-avatar-light);
+    margin-right: 10px;
+    overflow: hidden;
+  }
+
+  &__img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 }
 
 .message {
   text-align: left;
   background: var(--color-background-chat);
-  border-radius: 12px;
   box-sizing: border-box;
-  padding: 11px 11px 5px;
+  padding: 5px 11px;
   max-width: 40%;
   width: fit-content;
   font-weight: 500;
@@ -54,6 +55,12 @@
   flex-direction: column;
   align-self: end;
   word-break: break-all;
+  border-radius: 0 12px 12px 12px;
+
+  &__name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
 
   &__info {
     align-self: end;

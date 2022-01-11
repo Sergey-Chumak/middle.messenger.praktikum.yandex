@@ -8,9 +8,12 @@ export interface IDialog {
 }
 
 export interface IMessage {
-    message: string;
-    from: 'me' | 'friend';
-    time: string;
-    status?: 'sent' | 'sending';
-    id?: string;
+   chat_id: number;
+   content: string;
+   file: null;
+   id: number;
+   is_read: boolean;
+   time: string;
+   type: 'message';
+   user_id: number;
 }

@@ -1,4 +1,5 @@
-import { ChatCards, IChatCard } from './chat-cards';
+import { ChatCards } from './chat-cards';
+import { IChatCard } from '../../services/chats/chats.types';
 
 export interface IChatListProps {
     chatCards: IChatCard[];

@@ -1,8 +1,12 @@
 import './styles/styles.scss';
 
-import { Main } from './app/layout/main';
+import { router } from './app/routing/routing';
 import { render } from './app/utils/renderDOM';
+import { Main } from './app/layout/main';
 
-const main = new Main({});
+render('#app', new Main({}));
 
-render('#app', main);
+router.start();
+if (document.location.pathname === '/') {
+  router.go('/signin');
+}

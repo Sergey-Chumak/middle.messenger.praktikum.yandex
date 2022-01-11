@@ -1,11 +1,19 @@
 export const tmpl = `
     <div class="chat">
+    {{{ modal }}}
         <div class="chat__header">
             <div class="chat__user">
-                <div class="chat__avatar"></div>
-                <div class="chat_name">{{ name }}</div>
+                <div class="chat__name">
+                    <div>{{ name }}</div>
+                    <div>{{ users }}</div>
+                </div>
             </div>
-            <div class="chat__context-menu"></div>
+            <div id="context-menu-icon" class="chat__context-menu-icon"></div>
+            <div id="chat-context-menu" class="chat__context-menu"> 
+                <div id="option-add-user">Add user</div>
+                <div id="option-change-avatar">Change avatar</div>
+                <div id="option-delete-chat">Delete chat</div>
+            </div>
         </div>
         <div class="chat__message">{{{ dialogues }}}</div>
         <div class="chat__footer">

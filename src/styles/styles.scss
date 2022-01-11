@@ -23,7 +23,6 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
-    display: flex;
   }
 }
 
@@ -31,4 +30,29 @@ a {
   text-decoration: none;
   font-size: 13px;
   color: var(--color-link-secondary);
+}
+
+* {
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(128, 128, 128, 0.4);
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.8);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+  }
 }

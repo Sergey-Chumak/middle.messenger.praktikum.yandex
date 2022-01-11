@@ -5,45 +5,83 @@ import Block from '../../services/block';
 import { ChatList } from '../../components/chat-list';
 import { Chat } from '../../components/chat';
 import last from '../../utils/last';
-import { getUsersData, IUsersData, updateUsersData } from '../../services/users-data';
+import { getUsersData } from '../../services/users-data';
 import { PlugDialog } from '../../components/plug-dialog';
 import { IChatPageChildren, IChatPageProps } from './chat-page.types';
-import { IChatCard } from '../../components/chat-list/chat-cards';
 import { getElementId } from '../../utils/get-element-id';
-import { getDateCustomFormat, getTimeNow } from '../../utils/date';
-import { IDialog, IMessage } from '../../components/chat/dialogues';
+import { getDateCustomFormat } from '../../utils/date';
+import { IDialog } from '../../components/chat/dialogues';
+import { router } from '../../routing/routing';
+import { chatsService } from '../../services/chats/chats.service';
+import connect from '../../utils/hoc/connect';
+import { IChatCard } from '../../services/chats/chats.types';
+import store from '../../store/store';
 
-export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
+class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   searchValue = '';
   chatCards: IChatCard[] = [];
   dialogues: IDialog[] = [];
   currentMessage = '';
+  socket: WebSocket;
+  currentMessages = [];
 
   constructor(props: IChatPageProps) {
     super('div', props);
-    if (getUsersData().find((user) => user.id === last(document.location.href.split('/')))) {
-      this.children.chat = new Chat({
-        name: '',
-        value: '',
-        disabled: true,
-        dialogues: this.dialogues,
-      });
-    } else {
-      this.children.chat = new PlugDialog({});
-    }
+
+    this.children.chat = new Chat({
+      name: '',
+      value: '',
+      disabled: true,
+    });
+    this.children.plug = new PlugDialog({});
     this.children.chatList = new ChatList({ chatCards: this.chatCards });
   }
 
   componentDidMount() {
+    this.children.plug.show();
+    this.children.chat.hide();
+
     this.initComponent();
     this.initChildren();
-    this.loadUserData();
+
+    chatsService.getChatToken(+last(document.location.pathname.split('/'))).then((token) => {
+      this.initWebSocket(token);
+    });
+
+    chatsService.getChats().then((data) => {
+      this.loadUserData(data);
+      if (data.find((chat) => chat.id === +last(document.location.href.split('/')))) {
+        this.children.plug.hide();
+        this.children.chat.show();
+      }
+    });
+  }
+
+  componentDidUpdate(oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
+    this.loadUserData(newProps?.chats!);
+    this.children.chatList.setProps({
+      chatCards: newProps?.chats?.map((i) => {
+        if (i?.last_message) {
+          i.last_message.time = getDateCustomFormat(new Date(Date.parse(i.last_message.time)));
+        }
+        return i;
+      }),
+    });
+    if (newProps.chats?.find((chat) => chat.id === +last(document.location.href.split('/')))) {
+      this.children.plug.hide();
+      this.children.chat.show();
+    } else {
+      this.children.plug.show();
+      this.children.chat.hide();
+    }
+    return true;
   }
 
   render(): DocumentFragment {
     return this.compile(tmpl, {
       chatList: this.children.chatList,
       chat: this.children.chat,
+      plug: this.children.plug,
     });
   }
 
@@ -51,24 +89,41 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.setProps({
       events: {
         click: (event: Event) => {
-          if (!this.chatCards.find(((item) => item.id === getElementId(event.target as HTMLElement)))) return;
+          if (!this.chatCards?.find(((item) => item.id === +getElementId(event.target as HTMLElement)!))) return;
+          if (this.chatCards?.find((item) => item.status === 'active')?.id === +getElementId(event.target as HTMLElement)!) return;
+
           this.chatCards.forEach((item) => {
-            item.id === getElementId(event.target as HTMLElement)
+            item.id === +getElementId(event.target as HTMLElement)!
               ? item.status = 'active'
               : item.status = 'passive';
           });
 
-          const currentId = this.chatCards.find((item) => item.status === 'active')?.id;
-          document.location.href = `${document.location.origin}/chat-page/${currentId}`;
+          this.children.plug.hide();
+          this.children.chat.show();
 
+          const currentId = this.chatCards.find((item) => item.status === 'active')?.id;
+          router.go(`/messenger/${currentId}`);
+
+          this.children.chat.setProps({
+            name: this.chatCards?.find(((item) => item.id === currentId))!.title,
+          });
           this.children.chatList.setProps({ chatCards: this.chatCards });
-        },
-        input: (event: Event) => {
-          if ((event.target as HTMLElement).id !== 'input-search') return;
-          this.searchValue = (event.target as HTMLInputElement).value.toLowerCase();
-          const filteredChatCards = this.chatCards.filter((item) => item.name.toLowerCase()
-            .includes(this.searchValue));
-          this.children.chatList.setProps({ chatCards: filteredChatCards });
+
+          chatsService.getChatToken(+last(document.location.pathname.split('/'))).then((token) => {
+            this.initWebSocket(token);
+          });
+
+          chatsService.getChatUsers(+last(document.location.pathname.split('/')))
+            ?.then((users) => {
+              const userNames = users.reduce(
+                (acc, cur) => `${acc + (cur.display_name || `${cur.first_name} ${cur.second_name}`)}, `,
+                '',
+              ).slice(0, -2);
+
+              this.children.chat.setProps({
+                users: userNames,
+              });
+            });
         },
       },
     });
@@ -101,73 +156,93 @@ export class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   }
 
   sendMessage(): void {
-    const id = makeUUID();
-    const dialog = this.dialogues.find((item) => item.date === getDateCustomFormat());
-
-    if (dialog) {
-      dialog.messages.unshift({
-        message: this.currentMessage,
-        status: 'sending',
-        time: getTimeNow(),
-        from: 'me',
-        id,
-      });
-    } else {
-      this.dialogues.unshift({
-        date: getDateCustomFormat(),
-        messages: [{
-          message: this.currentMessage,
-          status: 'sending',
-          time: getTimeNow(),
-          from: 'me',
-          id,
-        }],
-      });
-    }
-
-    updateUsersData(this.chatCards as IUsersData[]); // Временный тип
+    this.socket.send(JSON.stringify({
+      content: this.currentMessage,
+      type: 'message',
+    }));
 
     this.currentMessage = '';
-    const filteredChatCards = this.chatCards.filter((item) => item.name.toLowerCase()
-      .includes(this.searchValue));
-    this.children.chatList.setProps({ chatCards: filteredChatCards, value: this.searchValue });
-    this.children.chat.setProps({ value: '', dialogues: [...this.dialogues] });
+    this.children.chat.setProps({ value: '' });
+    // chatsService.getChats().then(() => {
+    //   this.socket.send(JSON.stringify({
+    //     content: '0',
+    //     type: 'get old',
+    //   }));
+    //
+    // });
+
     (document.querySelector('#message') as HTMLElement)?.focus();
-
-    this.messageDelivered(id);
   }
 
-  messageDelivered(id: string) {
-    setTimeout(() => {
-      (this.dialogues[0].messages.find((item) => item.id === id) as IMessage).status = 'sent';
-      this.children.chat.setProps({ dialogues: [...this.dialogues] });
-    }, 1000);
-  }
+  loadUserData(data: IChatCard[]): void {
+    if (!data) return;
+    const userData = getUsersData();
+    const user = userData.find((item) => item.id === last(document.location.href.split('/')));
 
-  loadUserData(): void {
-    setTimeout(() => {
-      const userData = getUsersData();
-      const user = userData.find((item) => item.id === last(document.location.href.split('/')));
+    this.dialogues = user?.chat as IDialog[];
+    this.chatCards = data;
 
-      this.dialogues = user?.chat as IDialog[];
-      this.chatCards = userData as IChatCard[];
+    this.initActiveChat();
 
-      this.initActiveChat();
-
-      this.children.chatList.setProps({ chatCards: this.chatCards });
+    this.children.chatList.setProps({ chatCards: this.chatCards });
+    if (data.length) {
       this.children.chat.setProps({
         disabled: false,
-        name: user?.name,
+        name: data?.find((item) => item.id === +last(document.location.href.split('/')))?.title,
         dialogues: this.dialogues,
       });
-    }, 700);
+    }
   }
 
   initActiveChat(): void {
     this.chatCards.forEach((item) => {
-      item.id === last(document.location.href.split('/'))
+      item.id === +last(document.location.href.split('/'))
         ? item.status = 'active'
         : item.status = 'passive';
     });
   }
+
+  initWebSocket(token) {
+    if (this.socket) this.socket.close();
+    this.socket = new WebSocket(
+      `wss://ya-praktikum.tech/ws/chats/${store.getState().user!.id}/${last(document.location.pathname.split('/'))}/${token.token}`,
+    );
+
+    this.socket.addEventListener('open', () => {
+      this.socket.send(JSON.stringify({
+        content: '0',
+        type: 'get old',
+      }));
+    });
+
+    this.socket.addEventListener('close', (event) => {
+      if (event.wasClean) {
+        console.log('Соединение закрыто чисто');
+      } else {
+        console.log('Обрыв соединения');
+      }
+
+      console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+    });
+
+    this.socket.addEventListener('message', (event) => {
+      if (Array.isArray(JSON.parse(event.data))) {
+        this.currentMessages = JSON.parse(event.data);
+      } else {
+        this.currentMessages.unshift(JSON.parse(event.data));
+      }
+
+      this.children.chat.setProps({
+        dialogues: this.currentMessages,
+      });
+    });
+
+    this.socket.addEventListener('error', (event) => {
+      console.log('Ошибка', (event as ErrorEvent).message);
+    });
+  }
 }
+
+export const ChatPageWrap = connect((state) => ({
+  chats: state?.chats,
+}))(ChatPage as typeof Block);

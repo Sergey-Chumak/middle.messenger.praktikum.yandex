@@ -1,6 +1,9 @@
 export const tmpl = `
     <div class="chat-page">
         {{{ chatList }}}
-        {{{ chat }}}
+        <div class="chat-page__content">
+            {{{ chat }}}
+            {{{ plug }}}
+        </div>
     </div>
 `;

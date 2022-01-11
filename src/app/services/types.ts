@@ -1,8 +1,11 @@
+import { IState } from '../store/store.types';
+
 export type TPropsAndChildren<T> = T & {
     __id?: string;
     settings?: ISettings;
     events?: IEvents;
     children?: TChildrenBlock<unknown>;
+    [key: string]: any | IState;
 }
 
 export type TChildrenBlock<T> = {

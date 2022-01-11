@@ -1,3 +1,3 @@
 import './profile.scss';
 
-export { Profile } from './profile';
+export { ProfileWrap as Profile } from './profile';

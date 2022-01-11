@@ -1,7 +1,11 @@
 export const tmpl = `
     <div id="sidebar" class="sidebar">
         <div class="sidebar__user-data">
-            <div class="sidebar__user-data_avatar"></div>
+            <div class="sidebar__user-data_avatar">
+                {{#if userAvatar}}
+                <img src="{{ userAvatar }}" alt="">
+                {{/if}}
+            </div>
             <div>
                 <p class="sidebar__user-data_name">{{ userName }}</p>
                 <p class="sidebar__user-data_phone">{{ userPhone }}</p>
@@ -30,4 +34,5 @@ export const tmpl = `
         </nav>
     </div>
     <div id="sidebar-backdrop" class="sidebar__backdrop"></div>
+    <div id="sidebar-icon-menu" class="sidebar__icon-menu"></div>
 `;

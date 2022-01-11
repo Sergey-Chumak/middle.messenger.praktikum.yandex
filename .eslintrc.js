@@ -26,7 +26,11 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-unused-vars': 'off',
     'no-shadow': 'off',
+    'no-constructor-return': 'off',
     'no-unused-expressions': 'off',
+    'no-prototype-builtins': 'off',
+    'new-cap': 'off',
+    'func-names': 'off',
     'max-len': ['error', { code: 120, tabWidth: 4 }],
   },
 };
