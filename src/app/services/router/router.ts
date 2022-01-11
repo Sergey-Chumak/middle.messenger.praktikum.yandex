@@ -22,7 +22,7 @@ export default class Router {
     Router.__instance = this;
   }
 
-  use(path: string, component: Function, canActivate?: () => Promise<boolean>, redirectTo?: string) {
+  public use(path: string, component: Function, canActivate?: () => Promise<boolean>, redirectTo?: string) {
     if (path.includes('/:')) {
       path = path.split('/')
         .filter((_item, index) => index !== path.split('/').length - 1)
@@ -41,12 +41,25 @@ export default class Router {
     return this;
   }
 
-  start() {
+  public start() {
     window.onpopstate = ((event) => {
       this.onRoute((event.currentTarget as Window).location.pathname);
     });
 
     this.onRoute(window.location.pathname);
+  }
+
+  public go(path: string) {
+    this.history.pushState({}, '', path);
+    this.onRoute(path);
+  }
+
+  public back() {
+    window.history.back();
+  }
+
+  public forward() {
+    window.history.forward();
   }
 
   private onRoute(path: string) {
@@ -61,19 +74,6 @@ export default class Router {
 
     this.currentRoute = route;
     route.render();
-  }
-
-  go(path: string) {
-    this.history.pushState({}, '', path);
-    this.onRoute(path);
-  }
-
-  back() {
-    window.history.back();
-  }
-
-  forward() {
-    window.history.forward();
   }
 
   private getRoute(path: string): Route {
