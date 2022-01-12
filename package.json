@@ -5,7 +5,7 @@
   "scripts": {
     "start": "parcel src/index.html --open --port 3000 --cache-dir build/cache",
     "build": "parcel build src/index.html",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register",
+    "test": "mocha",
     "check-types": "tsc"
   },
   "engines": {
