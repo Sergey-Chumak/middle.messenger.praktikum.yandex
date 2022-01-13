@@ -80,7 +80,6 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       this.children.chat.hide();
     }
     if (oldProps.chats !== newProps.chats) return false;
-    console.log('render');
     return true;
   }
 
