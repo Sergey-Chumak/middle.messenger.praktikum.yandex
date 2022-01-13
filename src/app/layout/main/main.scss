@@ -8,31 +8,6 @@
     height: 100%;
     width: 100%;
     position: relative;
-
-    &:first-child {
-      height: fit-content;
-      width: fit-content;
-    }
-  }
-
-  &__icon-menu {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    width: 26px;
-    height: 18px;
-    background: url("../../../assets/images/menu.svg") no-repeat;
-    cursor: pointer;
-  }
-
-  &__backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--color-backdrop);
-    visibility: hidden;
   }
 }
 

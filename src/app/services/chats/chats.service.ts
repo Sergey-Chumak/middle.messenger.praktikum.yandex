@@ -1,20 +1,44 @@
 import { ChatsServiceApi } from './chats.service.api';
-import { ITitleChat } from './chats.types';
 import store from '../../store/store';
 import { profileService } from '../profile/profile.service';
+import last from '../../utils/last';
+import { getDateCustomFormat, getTimeCustomFormat } from '../../utils/date';
+import { IUserData } from '../auth/auth.types';
 
 class ChatsService {
   private chatsApi: ChatsServiceApi = new ChatsServiceApi();
 
   getChats() {
     return this.chatsApi.getChats().then((data) => {
+      data?.sort((a, b) => {
+        if (a.last_message && b.last_message) {
+          return a.last_message.time < b.last_message.time ? 1 : -1;
+        }
+        if (a.last_message && !b.last_message) return -1;
+        if (!a.last_message && b.last_message) return 1;
+        if (!a.last_message && !b.last_message) return -1;
+        return 0;
+      })
+        .forEach((item) => {
+          item.id === +last(document.location.pathname.split('/'))!
+            ? item.status = 'active'
+            : item.status = 'passive';
+
+          if (item.last_message) {
+            if (new Date(Date.parse(item.last_message.time)).getDate() === new Date(Date.now()).getDate()) {
+              item.last_message.time = getTimeCustomFormat(item.last_message.time);
+            } else {
+              item.last_message.time = getDateCustomFormat(item.last_message.time);
+            }
+          }
+        });
       store.set('chats', data);
       return data;
     });
   }
 
-  createChat(data: ITitleChat) {
-    return this.chatsApi.createChat(data).then((data) => {
+  createChat(data: string) {
+    return this.chatsApi.createChat({ title: data }).then((data) => {
       this.getChats();
       return data.id;
     });
@@ -35,7 +59,9 @@ class ChatsService {
         throw Error('User not found');
       }
 
-      return this.chatsApi.addUsers({ chatId, users: [user.id] });
+      return this.chatsApi.addUsers({ chatId, users: [user.id] }).then(() => {
+        this.getChatUsers(+last(document.location.pathname.split('/')));
+      });
     });
   }
 
@@ -49,9 +75,15 @@ class ChatsService {
     });
   }
 
-  getChatUsers(id: number) {
+  getChatUsers(id: number): Promise<IUserData[]> | void {
     if (!id) return;
     return this.chatsApi.getChatUsers(id).then((data) => {
+      const userNames = data.reduce(
+        (acc, cur) => `${acc + (cur.display_name || `${cur.first_name} ${cur.second_name}`)}, `,
+        '',
+      ).slice(0, -2);
+
+      store.set('chatUserNames', userNames);
       store.set('chatUsers', data);
       return data;
     });

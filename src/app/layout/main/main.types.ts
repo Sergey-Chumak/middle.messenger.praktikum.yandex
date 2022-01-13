@@ -1,4 +1,3 @@
-import { Sidebar } from '../../components/sidebar';
 import { ChatPage } from '../../pages/chat-page';
 import { ClientError } from '../../pages/client-error';
 import { ServerError } from '../../pages/server-error';
@@ -10,7 +9,6 @@ import { Modal } from '../../components/ui/modal';
 
 export interface IPropsMain {
     isMenu?: boolean;
-    sidebar?: Sidebar;
     page?: ChatPage | ClientError | ServerError | Signin | Signup | typeof Profile;
     name?: string;
     phone?: string;
@@ -19,7 +17,6 @@ export interface IPropsMain {
 }
 
 export interface IChildrenMain {
-    sidebar: Sidebar;
     modal: Modal;
     page: ChatPage | ClientError | ServerError | Signin | Signup | typeof Profile;
 }

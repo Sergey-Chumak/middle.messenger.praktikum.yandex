@@ -1,0 +1,14 @@
+@mixin avatar {
+  border-radius: 50px;
+  background: var(--color-empty-avatar-light);
+  margin-right: 10px;
+  overflow: hidden;
+  align-self: flex-end;
+  flex-shrink: 0;
+
+  & > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
