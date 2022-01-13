@@ -37,15 +37,13 @@ class WebSocketApi {
 
     this.interval = setInterval(() => {
       this.socket.send('ping');
-      chatsService.getChats();
     }, 10000);
   }
 
   private initEventMessage() {
     this.socket.addEventListener('message', (event) => {
+      const focusEl = document.activeElement;
       if (JSON.parse(event.data).type === 'message' || Array.isArray(JSON.parse(event.data))) {
-        chatsService.getChats();
-
         let currentMessages: IMessage[] = [];
         if (Array.isArray(JSON.parse(event.data))) {
           currentMessages = [...JSON.parse(event.data)];
@@ -57,10 +55,14 @@ class WebSocketApi {
         const scrollDialogues = (document.querySelector('#dialogues') as HTMLElement).scrollTop;
 
         store.set('currentMessages', currentMessages);
+        document.querySelector('.chat-list__available-chats')?.scrollTo(0, store.getState().scrollChats);
 
         if (store.getState().user?.id === (JSON.parse(event.data).user_id)) {
           (document.querySelector('#message') as HTMLElement)?.focus();
         } else {
+          if (focusEl?.id === 'message') {
+            (document.querySelector('#message') as HTMLElement)?.focus();
+          }
           const dialoguesEl = document.querySelector('#dialogues') as HTMLElement;
           const heightMessage = dialoguesEl.firstElementChild?.getBoundingClientRect().height || 0;
           const margin = 10;
@@ -71,20 +73,7 @@ class WebSocketApi {
 
         loader.hide();
 
-        if (JSON.parse(event.data).type === 'message') {
-          chatsService.getChats().then(() => {
-            if (store.getState().user?.id === (JSON.parse(event.data).user_id)) {
-              (document.querySelector('#message') as HTMLElement)?.focus();
-            } else {
-              const dialoguesEl = document.querySelector('#dialogues') as HTMLElement;
-              const heightMessage = dialoguesEl.firstElementChild?.getBoundingClientRect().height || 0;
-              const margin = 10;
-              if (scrollDialogues !== 0) {
-                dialoguesEl.scrollTo(0, scrollDialogues - heightMessage - margin);
-              }
-            }
-          });
-        }
+        chatsService.getChats();
       }
     });
   }
@@ -107,6 +96,7 @@ class WebSocketApi {
 
   sendMessage(message: string) {
     if (!message.trim()) return;
+
     this.socket.send(JSON.stringify({
       content: message,
       type: 'message',

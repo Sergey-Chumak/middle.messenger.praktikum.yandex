@@ -14,6 +14,7 @@ import { NewChatModal } from './modals/new-chat-modal';
 
 class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   newChatName = '';
+  scrollChats: number;
 
   constructor(props: IChatPageProps) {
     super('div', props);
@@ -49,6 +50,14 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
             this.newChatName = (event.target as HTMLInputElement).value;
           }
         },
+        keydown: (event: KeyboardEvent) => {
+          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
+            if ((event.code === 'Enter' || event.code === 'NumpadEnter')) {
+              chatsService.createChat(this.newChatName);
+              this.children.newChatModal.close();
+            }
+          }
+        },
         click: (event: Event) => {
           if ((event.target as HTMLElement).id === 'new-chat-icon') {
             this.children.newChatModal.open();
@@ -62,7 +71,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     });
   }
 
-  componentDidUpdate(_oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
+  componentDidUpdate(oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
     if (newProps.chats?.find((chat) => chat.id === +last(document.location.href.split('/')))) {
       this.children.plug.hide();
       this.children.chat.show();
@@ -70,6 +79,8 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       this.children.plug.show();
       this.children.chat.hide();
     }
+    if (oldProps.chats !== newProps.chats) return false;
+    console.log('render');
     return true;
   }
 

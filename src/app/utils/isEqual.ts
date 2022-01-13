@@ -30,7 +30,12 @@ function isEqualObjects(arg: IObject, arg2: typeof arg): boolean {
   for (const prop in arg) {
     if (arg.hasOwnProperty(prop)) {
       if (typeof arg[prop] === 'object') {
-        if (!isEqualObjects(arg[prop], arg2[prop])) return false;
+        if (!isEqualObjects(arg[prop], arg2[prop])) {
+          console.log(isEqualObjects(arg[prop], arg2[prop]));
+          console.log(arg[prop], arg2[prop]);
+
+          return false;
+        }
       } else if (arg[prop] !== arg2[prop]) {
         return false;
       }

@@ -13,6 +13,7 @@ export interface IState {
     currentChat?: string;
     chatUserNames?: string;
     currentMessages?: IMessage[];
+    scrollChats?: number;
 }
 
 export type Indexed<T = unknown> = IState | null | string | number | T
