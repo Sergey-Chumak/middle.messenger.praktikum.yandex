@@ -63,6 +63,12 @@ class WebSocketApi {
           if (focusEl?.id === 'message') {
             (document.querySelector('#message') as HTMLElement)?.focus();
           }
+          if (JSON.parse(event.data).type === 'message') {
+            const soundMessage = document.getElementById('new-message-sound') as HTMLAudioElement;
+            soundMessage.currentTime = 0;
+            soundMessage.play();
+          }
+
           const dialoguesEl = document.querySelector('#dialogues') as HTMLElement;
           const heightMessage = dialoguesEl.firstElementChild?.getBoundingClientRect().height || 0;
           const margin = 10;

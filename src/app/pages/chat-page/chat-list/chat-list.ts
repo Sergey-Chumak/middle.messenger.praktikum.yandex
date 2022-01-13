@@ -28,19 +28,29 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
   }
 
   componentDidUpdate(oldProps: IChatListProps, newProps: IChatListProps): boolean {
+    const isNewMessages = newProps.chatCards?.some((i, idx) => {
+      if (oldProps?.chatCards) {
+        return i.unread_count !== oldProps?.chatCards[idx]?.unread_count;
+      }
+      return false;
+    });
+
+    if (isNewMessages) {
+      const soundMessage = document.getElementById('new-message-sound') as HTMLAudioElement;
+      soundMessage.currentTime = 0;
+      soundMessage.play();
+    }
+
     this.chatCards = newProps.chatCards;
 
     if (JSON.stringify(newProps.chatCards) !== JSON.stringify(oldProps.chatCards)) {
-      console.log(JSON.stringify(newProps.chatCards) === JSON.stringify(oldProps.chatCards));
       this.searchValue = '';
     }
 
     const filteredChatCards = this.chatCards?.filter((item) => item.title.toLowerCase()
       .includes(this.searchValue));
-    // console.log(this.searchValue);
     this.children.chatCards.setProps({ chatCards: filteredChatCards });
     if (JSON.stringify(newProps.chatCards) === JSON.stringify(oldProps.chatCards)) return false;
-    console.log('renderLit');
 
     return true;
   }
