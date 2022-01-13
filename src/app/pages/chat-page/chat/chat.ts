@@ -165,6 +165,7 @@ class Chat extends Block<IChatProps, IChatChildren> {
         },
       ],
     });
+
     if (isEqual(oldProps, newProps)) return false;
     if (this.message) return false;
     return true;

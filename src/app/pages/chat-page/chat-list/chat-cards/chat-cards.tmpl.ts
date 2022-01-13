@@ -17,8 +17,8 @@ export const tmpl = `
                         </div>
                         <div class="chat-card__info">
                             <div class="chat-card__time">{{ message.time }}</div>
-                            {{#if unread_count}}
-                            <div class="chat-card__notifications">{{ unread_count }}</div>
+                            {{#if chatCard.unread_count}}
+                            <div class="chat-card__notifications">{{ chatCard.unread_count }}</div>
                             {{/if}}
                         </div>
                     </div>

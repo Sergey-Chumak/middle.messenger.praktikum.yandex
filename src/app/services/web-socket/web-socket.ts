@@ -7,9 +7,10 @@ import { loader } from '../../components/loader';
 
 class WebSocketApi {
   socket: WebSocket;
+  interval;
 
   open(token: string) {
-    if (this.socket) this.socket.close();
+    if (this.socket) this.close();
     const currentChatId = last(document.location.pathname.split('/'));
     this.socket = new WebSocket(
       `wss://ya-praktikum.tech/ws/chats/${store.getState().user!.id}/${currentChatId}/${token}`,
@@ -23,6 +24,7 @@ class WebSocketApi {
 
   close() {
     this.socket.close();
+    clearInterval(this.interval);
   }
 
   private initEventOpen() {
@@ -33,14 +35,17 @@ class WebSocketApi {
       }));
     });
 
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.socket.send('ping');
+      chatsService.getChats();
     }, 10000);
   }
 
   private initEventMessage() {
     this.socket.addEventListener('message', (event) => {
       if (JSON.parse(event.data).type === 'message' || Array.isArray(JSON.parse(event.data))) {
+        chatsService.getChats();
+
         let currentMessages: IMessage[] = [];
         if (Array.isArray(JSON.parse(event.data))) {
           currentMessages = [...JSON.parse(event.data)];
@@ -67,7 +72,18 @@ class WebSocketApi {
         loader.hide();
 
         if (JSON.parse(event.data).type === 'message') {
-          chatsService.getChats();
+          chatsService.getChats().then(() => {
+            if (store.getState().user?.id === (JSON.parse(event.data).user_id)) {
+              (document.querySelector('#message') as HTMLElement)?.focus();
+            } else {
+              const dialoguesEl = document.querySelector('#dialogues') as HTMLElement;
+              const heightMessage = dialoguesEl.firstElementChild?.getBoundingClientRect().height || 0;
+              const margin = 10;
+              if (scrollDialogues !== 0) {
+                dialoguesEl.scrollTo(0, scrollDialogues - heightMessage - margin);
+              }
+            }
+          });
         }
       }
     });
