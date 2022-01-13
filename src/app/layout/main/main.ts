@@ -5,9 +5,11 @@ import connect from '../../utils/hoc/connect';
 import { Modal } from '../../components/ui/modal';
 import trim from '../../utils/trim';
 import { chatsService } from '../../services/chats/chats.service';
+import store from '../../store/store';
 
 class Main extends Block<IPropsMain, IChildrenMain> {
   chatName: string;
+  interval;
 
   constructor(props: IPropsMain) {
     super('div', props);
@@ -22,7 +24,11 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       inputId: 'new-chat-input',
     });
 
-    chatsService.getChats();
+    chatsService.getChats().then(() => {
+      setInterval(() => {
+        chatsService.getChats();
+      }, 10000);
+    });
   }
 
   componentDidMount() {

@@ -9,7 +9,6 @@ import { chatsService } from '../../../services/chats/chats.service';
 import last from '../../../utils/last';
 import store from '../../../store/store';
 import connect from '../../../utils/hoc/connect';
-import isEqual from '../../../utils/isEqual';
 import { webSocketApi } from '../../../services/web-socket/web-socket';
 import { loader } from '../../../components/loader';
 
@@ -31,14 +30,18 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
   componentDidUpdate(oldProps: IChatListProps, newProps: IChatListProps): boolean {
     this.chatCards = newProps.chatCards;
 
-    if (!isEqual(newProps.chatCards, oldProps.chatCards)) {
+    if (JSON.stringify(newProps.chatCards) !== JSON.stringify(oldProps.chatCards)) {
+      console.log(JSON.stringify(newProps.chatCards) === JSON.stringify(oldProps.chatCards));
       this.searchValue = '';
     }
 
     const filteredChatCards = this.chatCards?.filter((item) => item.title.toLowerCase()
       .includes(this.searchValue));
+    // console.log(this.searchValue);
     this.children.chatCards.setProps({ chatCards: filteredChatCards });
-    if (isEqual(newProps.chatCards, oldProps.chatCards)) return false;
+    if (JSON.stringify(newProps.chatCards) === JSON.stringify(oldProps.chatCards)) return false;
+    console.log('renderLit');
+
     return true;
   }
 
@@ -79,7 +82,14 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
               : item.status = 'passive';
           });
 
+          const scrollChats = document.querySelector('.chat-list__available-chats')?.scrollTop;
+          if (scrollChats || scrollChats === 0) {
+            console.log(scrollChats);
+            store.set('scrollChats', scrollChats);
+          }
           store.set('currentMessages', []);
+
+          document.querySelector('.chat-list__available-chats')?.scrollTo(0, scrollChats);
 
           loader.show();
 
@@ -88,6 +98,8 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
           chatsService.getChatUsers(currentChat!.id)
             ?.then(() => {
               store.set('currentChat', currentChat!.title);
+              document.querySelector('.chat-list__available-chats')?.scrollTo(0, scrollChats);
+
               router.go(`/messenger/${this.chatCards.find((item) => item.status === 'active')?.id}`);
 
               const chatId = +last(document.location.pathname.split('/'));
