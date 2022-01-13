@@ -12,7 +12,8 @@ export function getTimeCustomFormat(dateStr: string): string {
   return `${hours}:${minutes}`;
 }
 
-export function getDateCustomFormat(date: Date = new Date(Date.now())): string {
+export function getDateCustomFormat(dateStr: string): string {
+  const date = new Date(Date.parse(dateStr));
   const month: string = DateMonth[date.getMonth()];
   const day = date.getDate();
   return `${month} ${day}`;

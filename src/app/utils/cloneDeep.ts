@@ -2,7 +2,7 @@ interface IObject {
     [key: string]: any
 }
 
-export function cloneDeep(obj: IObject | IObject[]) {
+export function cloneDeep(obj: IObject | IObject[]): IObject | IObject[] {
   let copyObj;
   if (Array.isArray(obj)) {
     copyObj = cloneArray(obj);

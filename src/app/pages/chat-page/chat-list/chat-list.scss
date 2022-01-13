@@ -1,0 +1,67 @@
+.chat-list {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 380px;
+  height: 100%;
+  background: var(--color-background-chat-page);
+  border-right: 1px solid var(--color-border-primary);
+  display: flex;
+  flex-direction: column;
+
+  &__icon {
+    width: 36px;
+    height: 36px;
+    margin-top: 13px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+
+    &.setting {
+      margin-left: 14px;
+      background: url("../../../../assets/images/setting.svg") no-repeat;
+
+      &:hover {
+        background: url("../../../../assets/images/setting-light.svg") no-repeat;
+      }
+    }
+
+    &.new-chat {
+      background: url("../../../../assets/images/new-chat.svg") no-repeat;
+
+      &:hover {
+        background: url("../../../../assets/images/new-chat-light.svg") no-repeat;
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__search {
+    border: none;
+    background: var(--color-background-input);
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 8px;
+    width: 100%;
+    height: 38px;
+    margin: 12px 10px 12px 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--color-text-content)
+    }
+  }
+
+  &__available-chats {
+    flex-grow: 1;
+    overflow: auto;
+  }
+}

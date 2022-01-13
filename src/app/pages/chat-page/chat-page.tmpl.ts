@@ -5,5 +5,7 @@ export const tmpl = `
             {{{ chat }}}
             {{{ plug }}}
         </div>
+        
+       {{{ newChatModal }}}
     </div>
 `;

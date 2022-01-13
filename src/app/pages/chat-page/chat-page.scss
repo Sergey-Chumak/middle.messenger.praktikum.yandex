@@ -3,6 +3,8 @@
   flex-direction: row;
   width: 100%;
   height: 100%;
+  background-image: url("../../../assets/images/chat-background.avif");
+  background-size: cover;
 
   &__content {
     display: flex;
@@ -18,6 +20,4 @@
       height: 100%;
     }
   }
-
-
 }
