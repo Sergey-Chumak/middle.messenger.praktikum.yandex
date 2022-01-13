@@ -72,18 +72,7 @@ class WebSocketApi {
         loader.hide();
 
         if (JSON.parse(event.data).type === 'message') {
-          chatsService.getChats().then(() => {
-            if (store.getState().user?.id === (JSON.parse(event.data).user_id)) {
-              (document.querySelector('#message') as HTMLElement)?.focus();
-            } else {
-              const dialoguesEl = document.querySelector('#dialogues') as HTMLElement;
-              const heightMessage = dialoguesEl.firstElementChild?.getBoundingClientRect().height || 0;
-              const margin = 10;
-              if (scrollDialogues !== 0) {
-                dialoguesEl.scrollTo(0, scrollDialogues - heightMessage - margin);
-              }
-            }
-          });
+          chatsService.getChats();
         }
       }
     });

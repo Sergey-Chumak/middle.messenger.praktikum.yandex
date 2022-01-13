@@ -62,7 +62,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     });
   }
 
-  componentDidUpdate(_oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
+  componentDidUpdate(oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
     if (newProps.chats?.find((chat) => chat.id === +last(document.location.href.split('/')))) {
       this.children.plug.hide();
       this.children.chat.show();
@@ -70,6 +70,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       this.children.plug.show();
       this.children.chat.hide();
     }
+    if (oldProps.chats !== newProps.chats) return false;
     return true;
   }
 
