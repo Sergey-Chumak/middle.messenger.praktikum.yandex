@@ -40,5 +40,7 @@ export const tmpl = `
                 </div>
             {{/with}}
         {{/with}}
+        {{else}}
+            <div class="chat-cards__not-found">Chats not found</div>
     {{/each}}
 `;

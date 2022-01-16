@@ -1,19 +1,14 @@
 import { Button } from '../button';
-import { Input } from '../input';
 
 export interface IPropsModal {
-    header: string;
+    target?: string;
     message: string;
     confirm: string;
     cancel: string;
     buttonId: string;
-    avatar?: boolean;
-    isInput?: boolean;
-    inputId?: string;
 }
 
 export interface IChildrenModal {
     confirm: Button;
     cancel: Button;
-    input: Input;
 }

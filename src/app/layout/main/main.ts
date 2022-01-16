@@ -24,7 +24,7 @@ class Main extends Block<IPropsMain, IChildrenMain> {
       inputId: 'new-chat-input',
     });
 
-    chatsService.getChats().then(() => {
+    chatsService.getChats().finally(() => {
       setInterval(() => {
         chatsService.getChats();
       }, 10000);

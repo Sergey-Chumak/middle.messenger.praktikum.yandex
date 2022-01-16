@@ -7,5 +7,8 @@ export const tmpl = `
         </div>
         
        {{{ newChatModal }}}
+       {{{ editUserModal }}}
+       {{{ changeAvatarModal }}}
+       {{{ modal }}}
     </div>
 `;

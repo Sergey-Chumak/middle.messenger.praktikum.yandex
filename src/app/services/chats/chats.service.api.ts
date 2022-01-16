@@ -24,6 +24,10 @@ export class ChatsServiceApi extends BaseAPI {
     return this.chatApiInstance.put('/users', { data });
   }
 
+  deleteUsers(data: IAddUsersData) {
+    return this.chatApiInstance.delete('/users', { data });
+  }
+
   changeChatAvatar(data: FormData) {
     return this.chatApiInstance.put('/avatar', { data });
   }

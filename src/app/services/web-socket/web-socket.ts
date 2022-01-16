@@ -42,6 +42,9 @@ class WebSocketApi {
 
   private initEventMessage() {
     this.socket.addEventListener('message', (event) => {
+      if (JSON.parse(event.data).type === 'message') {
+        store.set('scrollChats', 0);
+      }
       const focusEl = document.activeElement;
       if (JSON.parse(event.data).type === 'message' || Array.isArray(JSON.parse(event.data))) {
         let currentMessages: IMessage[] = [];

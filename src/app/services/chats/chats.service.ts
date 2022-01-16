@@ -51,17 +51,16 @@ class ChatsService {
     });
   }
 
-  addUser(chatId: number, login: string) {
-    return profileService.searchUsers(login).then((users) => {
-      const user = users.find((user) => user.login === login);
+  addUser(chatId: number, userId: string | number) {
+    return this.chatsApi.addUsers({ chatId, users: [+userId] }).then((data) => {
+      this.getChatUsers(+last(document.location.pathname.split('/')));
+      return data;
+    });
+  }
 
-      if (!user) {
-        throw Error('User not found');
-      }
-
-      return this.chatsApi.addUsers({ chatId, users: [user.id] }).then(() => {
-        this.getChatUsers(+last(document.location.pathname.split('/')));
-      });
+  deleteUser(chatId: number, userId: string | number) {
+    return this.chatsApi.deleteUsers({ chatId, users: [+userId] }).then(() => {
+      this.getChatUsers(+last(document.location.pathname.split('/')));
     });
   }
 
