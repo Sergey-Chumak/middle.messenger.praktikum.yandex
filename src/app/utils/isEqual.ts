@@ -1,6 +1,7 @@
 interface IObject {
   [key: string]: any
 }
+
 type TIsEqualArg = string | number | boolean | Array<any> | IObject
 
 export default function isEqual(arg: TIsEqualArg, arg2: TIsEqualArg): boolean {
@@ -16,6 +17,8 @@ function isEqualArray(arg: Array<any>, arg2: typeof arg): boolean {
   for (let i = 0; i <= arg.length; i += 1) {
     if (Array.isArray(arg[i])) {
       if (!isEqualArray(arg[i], arg2[i])) return false;
+    } else if (typeof arg[i] === 'object') {
+      if (!isEqualObjects(arg[i], arg2[i])) return false;
     } else if (arg[i] !== arg2[i]) return false;
   }
   return true;

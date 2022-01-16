@@ -4,6 +4,9 @@ import { PlugDialog } from './plug-dialog';
 import { IChatCard } from '../../services/chats/chats.types';
 import { IMessage } from './chat/dialogues';
 import { NewChatModal } from './modals/new-chat-modal';
+import { EditUsersModal } from './modals/edit-users-modal';
+import { ChangeChatAvatarModal } from './modals/change-chat-avatar-modal';
+import { Modal } from '../../components/ui/modal';
 
 export interface IChatPageProps {
     chats?: IChatCard[];
@@ -17,4 +20,7 @@ export interface IChatPageChildren {
     chat: Chat;
     plug: PlugDialog;
     newChatModal: NewChatModal;
+    editUserModal: EditUsersModal;
+    changeAvatarModal: ChangeChatAvatarModal;
+    modal: Modal;
 }

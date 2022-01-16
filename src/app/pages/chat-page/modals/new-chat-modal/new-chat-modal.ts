@@ -28,12 +28,13 @@ export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
       type: 'text',
       labelName: 'Title chat',
       value: '',
-      class: 'modal__input',
+      class: 'new-chat-modal__input',
     });
   }
 
   open() {
     this.show();
+    document.getElementById('create-chat-modal-input')!.focus();
   }
 
   close() {
@@ -46,6 +47,13 @@ export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
   componentDidMount() {
     this.setProps({
       events: {
+        keydown: (event: KeyboardEvent) => {
+          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
+            if ((event.code === 'Escape')) {
+              this.close();
+            }
+          }
+        },
         click: (event: Event) => {
           if ((event.target as HTMLElement).id === 'create-chat-modal-cancel') {
             this.close();

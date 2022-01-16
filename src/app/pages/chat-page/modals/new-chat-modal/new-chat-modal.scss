@@ -1,14 +1,13 @@
+@import '../../../../../styles/mixins/backdrop';
+@import '../../../../../styles/mixins/modal';
+
+.new-chat-modal-wrapper {
+  @include modal-wrapper;
+}
+
 .new-chat-modal {
-  position: absolute;
-  top: calc(50% - 115px);
-  left: calc(50% - 170px);
-  width: 340px;
-  height: 230px;
-  border-radius: 12px;
-  background: var(--color-background-modal);
-  z-index: 3;
-  box-sizing: border-box;
-  padding: 32px;
+ @include modal;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,11 +32,5 @@
 }
 
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-  backdrop-filter: blur(3px);
+  @include backdrop;
 }

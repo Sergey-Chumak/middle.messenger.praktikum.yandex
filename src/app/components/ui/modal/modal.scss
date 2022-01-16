@@ -1,42 +1,38 @@
+@import '../../../../styles/mixins/modal';
+@import '../../../../styles/mixins/backdrop';
+
+.modal-wrapper {
+  @include modal-wrapper;
+  z-index: 10;
+
+  &__backdrop {
+    @include backdrop;
+  }
+}
+
 .modal {
-  position: absolute;
-  top: calc(50% - 115px);
-  left: calc(50% - 170px);
-  width: 340px;
-  height: 230px;
-  border-radius: 12px;
-  background: var(--color-background-chat);
-  z-index: 3;
-  box-sizing: border-box;
-  padding: 32px;
+  @include modal;
+  z-index: 10;
+  width: 360px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+
+  &__message {
+    color: var(--color-text-content);
+    margin-bottom: 25px;
+  }
+
+  &__target {
+    color: var(--color-text-chat-name);
+    word-break: break-word;
+  }
 
   &__buttons {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
   }
-
-  &__header {
-    font-size: 24px;
-    margin-bottom: 27px;
-  }
-
-  &__input > input {
-    width: 100%;
-    border-color: var(--color-border-primary);
-  }
-}
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: var(--color-backdrop);
-  z-index: 2;
 }

@@ -1,0 +1,46 @@
+@import '../../../../../../styles/mixins/modal';
+@import '../../../../../../styles/mixins/backdrop';
+@import '../../../../../../styles/mixins/close-modal';
+@import '../../../../../../styles/mixins/search';
+@import '../../../../../../styles/mixins/avatar';
+
+.add-users-modal-wrapper {
+  @include modal-wrapper;
+
+  &__backdrop {
+    @include backdrop;
+  }
+}
+
+.add-users-modal {
+  @include modal;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  height: 530px;
+  padding: 32px 0 0 0;
+
+  &__close-modal-icon {
+    @include close-modal;
+    background: url("../../../../../../assets/images/i_close.svg") round;
+
+    &:hover {
+      background: url("../../../../../../assets/images/i_close-hover.svg") round;
+    }
+  }
+
+  &__header {
+    text-align: center;
+    color: var(--color-text-chat-name);
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  &__search-users {
+    @include search;
+
+    width: 307px;
+    margin: 0 16px 10px 16px;
+  }
+}

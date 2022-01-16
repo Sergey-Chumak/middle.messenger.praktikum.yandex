@@ -12,5 +12,4 @@ export interface IChatProps {
 
 export interface IChatChildren {
     dialogues: Dialogues;
-    modal: Modal;
 }

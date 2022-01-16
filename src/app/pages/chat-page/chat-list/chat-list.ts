@@ -11,6 +11,7 @@ import store from '../../../store/store';
 import connect from '../../../utils/hoc/connect';
 import { webSocketApi } from '../../../services/web-socket/web-socket';
 import { loader } from '../../../components/loader';
+import isEqual from '../../../utils/isEqual';
 
 class ChatList extends Block<IChatListProps, IChatListChildren> {
   chatCards: IChatCard[];
@@ -30,7 +31,7 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
   componentDidUpdate(oldProps: IChatListProps, newProps: IChatListProps): boolean {
     const isNewMessages = newProps.chatCards?.some((i, idx) => {
       if (oldProps?.chatCards) {
-        return i.unread_count !== oldProps?.chatCards[idx]?.unread_count;
+        return (i.unread_count !== oldProps?.chatCards[idx]?.unread_count) && (i.unread_count !== 0);
       }
       return false;
     });
@@ -43,14 +44,14 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
 
     this.chatCards = newProps.chatCards;
 
-    if (JSON.stringify(newProps.chatCards) !== JSON.stringify(oldProps.chatCards)) {
+    if (!isEqual(newProps.chatCards, oldProps.chatCards)) {
       this.searchValue = '';
     }
 
     const filteredChatCards = this.chatCards?.filter((item) => item.title.toLowerCase()
       .includes(this.searchValue));
     this.children.chatCards.setProps({ chatCards: filteredChatCards });
-    if (JSON.stringify(newProps.chatCards) === JSON.stringify(oldProps.chatCards)) return false;
+    if (isEqual(newProps.chatCards, oldProps.chatCards)) return false;
 
     return true;
   }
@@ -94,12 +95,12 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
 
           const scrollChats = document.querySelector('.chat-list__available-chats')?.scrollTop;
           if (scrollChats || scrollChats === 0) {
-            console.log(scrollChats);
             store.set('scrollChats', scrollChats);
           }
           store.set('currentMessages', []);
 
-          document.querySelector('.chat-list__available-chats')?.scrollTo(0, scrollChats);
+          document.querySelector('.chat-list__available-chats')?.scrollTo(0, scrollChats as number);
+          (document.getElementById('message') as HTMLInputElement).value = '';
 
           loader.show();
 
