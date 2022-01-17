@@ -42,10 +42,12 @@ class WebSocketApi {
 
   private initEventMessage() {
     this.socket.addEventListener('message', (event) => {
+      const focusEl = document.activeElement;
+      const scrollDialogues = (document.querySelector('#dialogues') as HTMLElement).scrollTop;
+
       if (JSON.parse(event.data).type === 'message') {
         store.set('scrollChats', 0);
       }
-      const focusEl = document.activeElement;
       if (JSON.parse(event.data).type === 'message' || Array.isArray(JSON.parse(event.data))) {
         let currentMessages: IMessage[] = [];
         if (Array.isArray(JSON.parse(event.data))) {
@@ -55,10 +57,8 @@ class WebSocketApi {
           currentMessages.unshift(JSON.parse(event.data));
         }
 
-        const scrollDialogues = (document.querySelector('#dialogues') as HTMLElement).scrollTop;
-
         store.set('currentMessages', currentMessages);
-        document.querySelector('.chat-list__available-chats')?.scrollTo(0, store.getState().scrollChats);
+        document.querySelector('.chat-list__available-chats')?.scrollTo(0, store.getState().scrollChats!);
 
         if (store.getState().user?.id === (JSON.parse(event.data).user_id)) {
           (document.querySelector('#message') as HTMLElement)?.focus();
