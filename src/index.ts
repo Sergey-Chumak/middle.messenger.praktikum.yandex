@@ -12,8 +12,6 @@ import { Profile } from './app/pages/profile';
 import { ServerError } from './app/pages/server-error';
 import { ClientError } from './app/pages/client-error';
 
-render('#app', new Main({}));
-
 async function hasAuthentication() {
   if (store.getState()?.user) return true;
   return authService.getUserData()
@@ -40,3 +38,5 @@ router.start();
 if (document.location.pathname === '/') {
   router.go('/signin');
 }
+
+render('#app', new Main({}));

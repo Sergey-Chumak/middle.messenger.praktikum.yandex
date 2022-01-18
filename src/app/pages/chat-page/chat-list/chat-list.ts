@@ -45,7 +45,6 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
     this.chatCards = newProps.chatCards;
 
     if (!isEqual(newProps.chatCards, oldProps.chatCards)) {
-      console.log(newProps.chatCards, oldProps.chatCards);
       this.searchValue = '';
     }
 

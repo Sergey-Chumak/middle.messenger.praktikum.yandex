@@ -21,7 +21,6 @@ import { IEvents } from '../../../services/types';
 import { Snackbar } from '../../../components/ui/snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 import { authService } from '../../../services/auth/auth.service';
-import store from '../../../store/store';
 import { router } from '../../../services/router/router';
 
 export class Signup extends Block<IPropsSignup, IChildrenSignup> {
@@ -312,12 +311,10 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     if (!this.isValidSignUpForm) return;
     const form: ISignupFormValue = { ...this.signupFormValue };
     delete form.passwordRepeat;
-    console.log(store.getState());
 
     authService.registration(form)
       .then(() => {
         this.resetForm();
-        console.log(store.getState());
         router.go('/messenger');
       }).catch((e) => {
         this.children.snackbar.setProps({
