@@ -1,3 +1,3 @@
 import './main.scss';
 
-export { Main } from './main';
+export { MainWrap as Main } from './main';

@@ -457,7 +457,6 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
           });
         })
         .catch((e) => {
-          console.log(e);
           this.children.snackbar.setProps({
             text: ucFirstLetter(e.reason || e.error),
             color: 'error',

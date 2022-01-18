@@ -1,6 +1,7 @@
 import { tmpl } from './main.tmpl';
 import Block from '../../services/block/block';
 import { chatsService } from '../../services/chats/chats.service';
+import connect from '../../utils/hoc/connect';
 
 export class Main extends Block<{}, {}> {
   constructor(props: {}) {
@@ -16,3 +17,6 @@ export class Main extends Block<{}, {}> {
     return this.compile(tmpl, {});
   }
 }
+
+export const MainWrap = connect<{}, {}>(() => ({
+}))(Main as typeof Block);
