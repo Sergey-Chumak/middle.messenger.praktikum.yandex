@@ -1,6 +1,6 @@
 import Route from './route';
 
-export default class Router {
+class Router {
   static __instance: Router;
 
   private readonly rootQuery: string;
@@ -80,3 +80,5 @@ export default class Router {
     return this.routes.find((route: Route) => route.match(path)) as Route;
   }
 }
+
+export const router = new Router('#main');

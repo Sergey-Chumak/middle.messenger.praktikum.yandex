@@ -1,4 +1,4 @@
-import Block from '../../../../services/block';
+import Block from '../../../../services/block/block';
 import { tmplDialogues } from './dialogues.tmpl';
 import { IDialoguesProps } from './dialogues.types';
 import isEqual from '../../../../utils/isEqual';

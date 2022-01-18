@@ -1,7 +1,7 @@
 import { Signin } from '../pages/auth/signin';
 import { ChatPage } from '../pages/chat-page';
 import { Signup } from '../pages/auth/signup';
-import Router from '../services/router/router';
+import { router } from '../services/router/router';
 import { ServerError } from '../pages/server-error';
 import { ClientError } from '../pages/client-error';
 import { Profile } from '../pages/profile';
@@ -22,7 +22,7 @@ async function hasLogout() {
     .catch(() => true);
 }
 
-export const router = new Router('#main')
+router
   .use('/signin', Signin, hasLogout, '/messenger')
   .use('/signup', Signup, hasLogout, '/messenger')
   .use('/messenger/:id', ChatPage, hasAuthentication, '/signin')

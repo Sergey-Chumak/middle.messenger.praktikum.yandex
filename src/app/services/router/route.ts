@@ -1,8 +1,8 @@
-import Block from '../block';
+import Block from '../block/block';
 import isEqual from '../../utils/isEqual';
 import { render } from '../../utils/renderDOM';
 import { IPropsRoute } from './router.types';
-import { router } from '../../routing/routing';
+import { router } from './router';
 
 export default class Route {
   private readonly component: any;

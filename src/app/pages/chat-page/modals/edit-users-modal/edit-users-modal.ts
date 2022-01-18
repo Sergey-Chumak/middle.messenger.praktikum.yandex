@@ -1,4 +1,4 @@
-import Block from '../../../../services/block';
+import Block from '../../../../services/block/block';
 import { tmpl } from './edit-users-modal.tmpl';
 import { IChildrenEditUsersModal, IPropsEditUsersModal } from './edit-users-modal.types';
 import connect from '../../../../utils/hoc/connect';

@@ -4,9 +4,10 @@ import {
   IAddUsersData, IChatCard, ITitleChat,
 } from './chats.types';
 import { IUserData } from '../auth/auth.types';
+import { BASE_URL } from '../constants';
 
 export class ChatsServiceApi extends BaseAPI {
-  private chatApiInstance: HTTPTransport = new HTTPTransport('/chats');
+  private chatApiInstance: HTTPTransport = new HTTPTransport(`${BASE_URL}/chats`);
 
   getChats() {
     return this.chatApiInstance.get<IChatCard[]>('');

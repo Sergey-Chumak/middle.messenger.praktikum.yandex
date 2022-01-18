@@ -1,4 +1,4 @@
-import Block from '../../../../services/block';
+import Block from '../../../../services/block/block';
 import { Button } from '../../../../components/ui/button';
 import { Input } from '../../../../components/ui/input';
 import { IChildrenNewChatModal } from './new-chat-modal.types';

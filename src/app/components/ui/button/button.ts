@@ -1,6 +1,6 @@
 import { tmpl } from './button.tmpl';
 import { IPropsButton } from './button.types';
-import Block from '../../../services/block';
+import Block from '../../../services/block/block';
 
 export class Button extends Block<IPropsButton, void> {
   constructor(props: IPropsButton) {

@@ -1,5 +1,5 @@
 import { tmpl } from './add-users-modal.tmpl';
-import Block from '../../../../../services/block';
+import Block from '../../../../../services/block/block';
 import { IChildrenAddUsersModal } from './add-users-modal.types';
 import { profileService } from '../../../../../services/profile/profile.service';
 import { FoundUsers } from './found-users';

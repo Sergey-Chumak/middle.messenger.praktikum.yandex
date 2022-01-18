@@ -1,7 +1,8 @@
 export const tmpl = `
     <div class="profile-wrapper">
     {{{ snackbar }}}
-    {{{ modal }}}
+    {{{ changeAvatarModal }}}
+        <div class="profile-wrapper__back-to-chats" id="back-to-chats-icon"></div>
         <div class="profile" id="profile">
             <div class="profile__avatar">
                 {{#if avatar}}

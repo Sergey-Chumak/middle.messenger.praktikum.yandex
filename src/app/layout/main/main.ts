@@ -1,29 +1,10 @@
 import { tmpl } from './main.tmpl';
-import Block from '../../services/block';
-import { IChildrenMain, IPropsMain } from './main.types';
-import connect from '../../utils/hoc/connect';
-import { Modal } from '../../components/ui/modal';
-import trim from '../../utils/trim';
+import Block from '../../services/block/block';
 import { chatsService } from '../../services/chats/chats.service';
-import store from '../../store/store';
 
-class Main extends Block<IPropsMain, IChildrenMain> {
-  chatName: string;
-  interval;
-
-  constructor(props: IPropsMain) {
+export class Main extends Block<{}, {}> {
+  constructor(props: {}) {
     super('div', props);
-
-    this.children.modal = new Modal({
-      cancel: 'Cancel',
-      message: '',
-      confirm: 'Create',
-      header: 'Create a new chat?',
-      buttonId: 'create-chat-btn',
-      isInput: true,
-      inputId: 'new-chat-input',
-    });
-
     chatsService.getChats().finally(() => {
       setInterval(() => {
         chatsService.getChats();
@@ -31,40 +12,7 @@ class Main extends Block<IPropsMain, IChildrenMain> {
     });
   }
 
-  componentDidMount() {
-  }
-
-  // @ts-ignore
-  componentDidUpdate(oldProps, newProps): boolean {
-    this.children.modal.setProps({
-      events: {
-        input: (event:Event) => {
-          const target = event.target as HTMLInputElement;
-          if (target.id === 'new-chat-input') {
-            if (!target.value) return;
-            this.chatName = trim(target.value);
-          }
-        },
-      },
-    });
-
-    if (oldProps.events !== newProps.events) return true;
-    return false;
-  }
-
   render(): DocumentFragment {
-    return this.compile(tmpl, {
-      isMenu: this.props.isMenu,
-      phone: this.props.phone,
-      avatar: this.props.avatar,
-      name: this.props.name,
-      modal: this.children.modal,
-    });
+    return this.compile(tmpl, {});
   }
 }
-
-export const MainWrap = connect<IPropsMain, IChildrenMain>((state) => ({
-  name: state?.user?.display_name || state?.user?.first_name as string,
-  avatar: state?.user?.avatar as string,
-  phone: state?.user?.phone as string,
-}))(Main as typeof Block);

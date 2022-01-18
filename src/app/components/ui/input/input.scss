@@ -28,7 +28,7 @@
   &__input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border);
     width: 335px;
     flex-shrink: 0;
     padding: 0;
@@ -51,7 +51,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 510px;
-    border-bottom: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 5px;
     margin-bottom: 10px;
 
@@ -103,6 +103,10 @@
       }
 
       &:disabled {
+        color: var(--color-link-primary);
+      }
+
+      &::placeholder {
         color: var(--color-text-primary);
       }
     }

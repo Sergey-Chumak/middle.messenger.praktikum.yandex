@@ -1,4 +1,4 @@
-import Block from '../services/block';
+import Block from '../services/block/block';
 
 export function render(query: string, block: Block<unknown, unknown>) {
   const root = document.querySelector(query);

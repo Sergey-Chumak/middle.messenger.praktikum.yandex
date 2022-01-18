@@ -1,8 +1,8 @@
-import Block from '../../services/block';
+import Block from '../../services/block/block';
 import { tmpl } from './loader.tmpl';
 import { render } from '../../utils/renderDOM';
 
-class Loader extends Block<{ }, void > {
+class Loader extends Block<{ }, { } > {
   constructor(props: {}) {
     super('div', props);
   }

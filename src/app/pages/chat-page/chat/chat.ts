@@ -1,11 +1,11 @@
 import { tmpl } from './chat.tmpl';
-import Block from '../../../services/block';
+import Block from '../../../services/block/block';
 import { Dialogues, IDialog } from './dialogues';
 import { IChatChildren, IChatProps } from './chat.types';
 import connect from '../../../utils/hoc/connect';
 import { webSocketApi } from '../../../services/web-socket/web-socket';
 import store from '../../../store/store';
-import { getTimeCustomFormat } from '../../../utils/date';
+import { getDateCustomFormat, getTimeCustomFormat } from '../../../utils/date';
 import isEqual from '../../../utils/isEqual';
 
 class Chat extends Block<IChatProps, IChatChildren> {
@@ -63,21 +63,28 @@ class Chat extends Block<IChatProps, IChatChildren> {
   }
 
   componentDidUpdate(oldProps: IChatProps, newProps: IChatProps): boolean {
-    this.children.dialogues?.setProps({
+    const dialogues: IDialog[] = [];
 
-      dialogues: [
-        {
-          messages: newProps?.currentMessages?.map((m) => {
-            const user = store.getState()?.chatUsers?.find((user) => user.id === m.user_id);
-            m.from = store.getState()?.user?.id !== m.user_id ? 'me' : undefined;
-            m.name = user?.display_name || user?.first_name!;
-            m.userAvatar = user?.avatar;
-            m.timeCustomFormat = getTimeCustomFormat(m.time);
-            return m;
-          }) || [],
-          date: 'June 18',
-        },
-      ],
+    newProps.currentMessages?.forEach((message) => {
+      const user = store.getState()?.chatUsers?.find((user) => user.id === message.user_id);
+      message.from = store.getState()?.user?.id !== message.user_id ? 'me' : undefined;
+      message.name = user?.display_name || user?.first_name!;
+      message.userAvatar = user?.avatar;
+      message.timeCustomFormat = getTimeCustomFormat(message.time);
+
+      if (dialogues.find((i) => i.date === getDateCustomFormat(message.time))) {
+        dialogues.find((i) => i.date === getDateCustomFormat(message.time))?.messages.push(message);
+      } else {
+        dialogues.push({
+          date: getDateCustomFormat(message.time),
+          messages: [],
+        });
+        dialogues.find((i) => i.date === getDateCustomFormat(message.time))?.messages.push(message);
+      }
+    });
+
+    this.children.dialogues?.setProps({
+      dialogues,
     });
 
     if (isEqual(oldProps, newProps)) return false;

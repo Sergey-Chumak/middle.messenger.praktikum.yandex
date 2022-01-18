@@ -1,7 +1,7 @@
 import { tmpl } from './signup.tmpl';
 import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
-import Block from '../../../services/block';
+import Block from '../../../services/block/block';
 import {
   isValidEmail,
   isValidEqualPasswords,
@@ -18,11 +18,11 @@ import {
   SignupFormKeys,
 } from './signup.types';
 import { IEvents } from '../../../services/types';
-import { router } from '../../../routing/routing';
 import { Snackbar } from '../../../components/ui/snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 import { authService } from '../../../services/auth/auth.service';
 import store from '../../../store/store';
+import { router } from '../../../services/router/router';
 
 export class Signup extends Block<IPropsSignup, IChildrenSignup> {
   inputs: Input[];

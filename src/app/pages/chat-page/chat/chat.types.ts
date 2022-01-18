@@ -1,5 +1,4 @@
 import { Dialogues, IDialog, IMessage } from './dialogues';
-import { Modal } from '../../../components/ui/modal';
 
 export interface IChatProps {
     name: string;
