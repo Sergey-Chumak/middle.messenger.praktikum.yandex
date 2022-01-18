@@ -3,7 +3,7 @@ export const tmpl = `
         <div class="change-avatar-modal">
             <div class="change-avatar-modal__header">Change avatar</div>
             
-            <input id="change-chat-avatar-modal-input" class="change-avatar-modal__input" type="file">
+            <input id="{{ inputId }}" class="change-avatar-modal__input" type="file">
             
             <div class="change-avatar-modal__buttons">
                 {{{ confirmBtn }}}

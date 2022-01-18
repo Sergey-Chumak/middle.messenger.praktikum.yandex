@@ -13,13 +13,19 @@
   margin: auto;
   width: 400px;
   padding: 32px;
-  background: var(--color-background-form);
+  background: var(--color-background-secondary);
   box-sizing: border-box;
   border-radius: 12px;
 
   &__link {
     text-align: center;
     cursor: pointer;
+    color: var(--color-text-content);
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-text-chat-name)
+    }
   }
 
   &__button {

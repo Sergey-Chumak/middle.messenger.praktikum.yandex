@@ -1,5 +1,5 @@
 import { tmpl } from './profile.tmpl';
-import Block from '../../services/block';
+import Block from '../../services/block/block';
 import { IEvents } from '../../services/types';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
@@ -20,15 +20,16 @@ import { profileService } from '../../services/profile/profile.service';
 import connect from '../../utils/hoc/connect';
 import { Snackbar } from '../../components/ui/snackbar';
 import { ucFirstLetter } from '../../utils/ucFirstLetter';
-import { Modal } from '../../components/ui/modal';
 import { authService } from '../../services/auth/auth.service';
-import { router } from '../../routing/routing';
+import isEqual from '../../utils/isEqual';
+import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
+import { router } from '../../services/router/router';
 
 export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   avatar: File | null;
   userDataInputs: Input[] = [];
   userPasswordInputs: Input[] = [];
-  userData: IUserData = store.getState().user;
+  userData: IUserData = store.getState().user!;
   userDataFormValue: IUserDataFormValue = {
     [UserDataKeys.Email]: this.userData.email,
     [UserDataKeys.Login]: this.userData.login,
@@ -86,8 +87,10 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     this.userPasswordInputs.forEach((input) => input.hide());
   }
 
-  componentDidUpdate(oldProps, newProps): boolean {
+  componentDidUpdate(oldProps: IPropsProfile, newProps: IPropsProfile): boolean {
+    if (isEqual(oldProps, newProps)) return false;
     if (!this.props.userData) return true;
+
     this.children.emailInput.setProps({ value: this.props.userData?.email });
     this.children.loginInput.setProps({ value: this.props.userData?.login });
     this.children.nameInput.setProps({ value: this.props.userData?.first_name });
@@ -114,7 +117,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       saveDataBtn: this.children.saveDataBtn,
       savePassBtn: this.children.savePassBtn,
       snackbar: this.children.snackbar,
-      modal: this.children.modal,
+      changeAvatarModal: this.children.changeAvatarModal,
       avatar: this.props.avatar,
     });
   }
@@ -147,13 +150,16 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
           }
 
           if ((event.target as HTMLElement).id === 'profile-avatar') {
-            this.children.modal.open();
+            this.children.changeAvatarModal.open();
           }
 
           if ((event.target as HTMLElement).id === 'profile-logout') {
             authService.logout().then(() => {
               router.go('/signin');
             });
+          }
+          if ((event.target as HTMLElement).id === 'back-to-chats-icon') {
+            router.go('/messenger');
           }
         },
       },
@@ -182,18 +188,14 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       text: '',
     });
 
-    this.children.modal = new Modal({
-      cancel: 'Cancel',
-      message: 'Select file on computer',
-      header: 'Upload the file',
-      buttonId: 'profile-confirm',
-      confirm: 'Confirm',
-      avatar: true,
+    this.children.changeAvatarModal = new ChangeAvatarModal({
+      inputId: 'change-user-avatar-modal-input',
+      confirmBtnId: 'change-user-avatar-modal-confirm',
     });
 
     this.children.emailInput = new Input({
       value: this.userDataFormValue[UserDataKeys.Email],
-      id: 'email',
+      id: 'profile-email',
       type: 'email',
       labelName: 'Email',
       from: 'profile',
@@ -203,7 +205,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.loginInput = new Input({
       value: this.userDataFormValue[UserDataKeys.Login],
-      id: 'login',
+      id: 'profile-login',
       type: 'text',
       labelName: 'Login',
       from: 'profile',
@@ -213,7 +215,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.nameInput = new Input({
       value: this.userDataFormValue[UserDataKeys.FirstName],
-      id: 'first_name',
+      id: 'profile-first_name',
       type: 'text',
       labelName: 'Name',
       from: 'profile',
@@ -223,7 +225,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.lastNameInput = new Input({
       value: this.userDataFormValue[UserDataKeys.SecondName],
-      id: 'last_name',
+      id: 'profile-last_name',
       type: 'text',
       labelName: 'Last name',
       from: 'profile',
@@ -233,7 +235,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.nicknameInput = new Input({
       value: this.userDataFormValue[UserDataKeys.DisplayName],
-      id: 'nickname',
+      id: 'profile-nickname',
       type: 'text',
       labelName: 'Nickname',
       from: 'profile',
@@ -243,7 +245,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.phoneInput = new Input({
       value: this.userDataFormValue[UserDataKeys.Phone],
-      id: 'phone',
+      id: 'profile-phone',
       type: 'text',
       labelName: 'Phone',
       from: 'profile',
@@ -253,7 +255,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.oldPasswordInput = new Input({
       value: '',
-      id: 'old-pass',
+      id: 'profile-old-pass',
       type: 'password',
       labelName: 'Old password',
       from: 'profile',
@@ -263,7 +265,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.newPasswordInput = new Input({
       value: '',
-      id: 'new-pass',
+      id: 'profile-new-pass',
       type: 'password',
       labelName: 'New password',
       from: 'profile',
@@ -273,7 +275,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.newPasswordRepeatInput = new Input({
       value: '',
-      id: 'new-pass-repeat',
+      id: 'profile-new-pass-repeat',
       type: 'password',
       labelName: 'New password (repeat)',
       from: 'profile',
@@ -399,19 +401,19 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       },
     });
 
-    this.children.modal.setProps({
+    this.children.changeAvatarModal.setProps({
       events: {
         change: (event:Event) => {
-          if ((event.target as HTMLInputElement).id === 'file-download') {
-            this.avatar = event.target?.files[0] as File;
+          if ((event.target as HTMLInputElement).id === 'change-user-avatar-modal-input') {
+            this.avatar = ((event.target as HTMLInputElement)?.files!)[0] as File;
           }
         },
         click: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'profile-confirm') {
+          if ((event.target as HTMLElement).id === 'change-user-avatar-modal-confirm') {
             if (!this.avatar) return;
             profileService.changeUserAvatar(this.avatar).then(() => {
               this.avatar = null;
-              this.children.modal.close();
+              this.children.changeAvatarModal.close();
               this.setProps({
                 avatar: this.props.userData?.avatar,
               });
@@ -523,17 +525,17 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       focusout: (event) => {
         if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
         if (validator(this.userDataFormValue[formField])) {
-          this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.remove('ui-input__profile_invalid');
         } else {
-          this.children[inputName].getContent().classList.add('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.add('ui-input__profile_invalid');
         }
       },
       focusin: (event) => {
         if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
         if (validator(this.userDataFormValue[formField])) {
-          this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.remove('ui-input__profile_invalid');
         } else {
-          this.children[inputName].getContent().classList.add('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.add('ui-input__profile_invalid');
         }
       },
     };

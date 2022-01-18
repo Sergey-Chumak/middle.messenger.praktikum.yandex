@@ -1,4 +1,4 @@
-import Block from '../../../../../../services/block';
+import Block from '../../../../../../services/block/block';
 import { tmpl } from './found-users.tmpl';
 import { IPropsFoundUsers } from './found-users.types';
 

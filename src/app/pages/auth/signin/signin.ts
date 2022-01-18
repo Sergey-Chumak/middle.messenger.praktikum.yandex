@@ -1,16 +1,16 @@
 import { tmpl } from './signin.tmpl';
 import { Button } from '../../../components/ui/button';
-import Block from '../../../services/block';
+import Block from '../../../services/block/block';
 import { Input } from '../../../components/ui/input';
 import { isValidLogin, isValidPassword } from '../../../utils/validate';
 import {
   ChildrenSigninKeys, IChildrenSignin, IPropsSignin, ISigninFormValue, SigninFormKeys,
 } from './signin.types';
 import { IEvents } from '../../../services/types';
-import { router } from '../../../routing/routing';
 import { Snackbar } from '../../../components/ui/snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 import { authService } from '../../../services/auth/auth.service';
+import { router } from '../../../services/router/router';
 
 export class Signin extends Block<IPropsSignin, IChildrenSignin> {
   signInFormValue: ISigninFormValue = {
@@ -49,7 +49,7 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
 
     this.children.loginInput = new Input({
       value: this.signInFormValue.login,
-      id: 'login',
+      id: 'signin-login',
       labelName: 'Login',
       type: 'text',
       errorMessage: 'Login is invalid',
@@ -57,7 +57,7 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
 
     this.children.passwordInput = new Input({
       value: this.signInFormValue.password,
-      id: 'password',
+      id: 'signin-password',
       labelName: 'Password',
       errorMessage: 'Password is invalid',
       type: 'password',

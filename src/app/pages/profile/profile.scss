@@ -4,6 +4,21 @@
   align-items: center;
   height: 100%;
   width: 100%;
+
+  &__back-to-chats {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 28px;
+    width: 28px;
+    cursor: pointer;
+    background: url("../../../assets/images/i_arrow-back.svg");
+    transition: background 0.2s;
+
+    &:hover {
+      background: url("../../../assets/images/i_arrow-back-hover.svg");
+    }
+  }
 }
 
 .profile {
@@ -14,7 +29,7 @@
     width: 130px;
     height: 130px;
     margin: 0 auto 21px auto;
-    background: var(--color-empty-avatar-light);
+    background: var(--color-empty-avatar);
     border-radius: 50%;
     position: relative;
     cursor: pointer;
@@ -34,7 +49,6 @@
       top: 0;
       left: 0;
       padding: 51px 39px;
-      border-radius: 50%;
       width: 130px;
       height: 130px;
       background: var(--color-backdrop);
@@ -57,7 +71,7 @@
     align-self: center;
     width: 40px;
     height: 40px;
-    background: url("../../../assets/images/avatar.svg") no-repeat;
+    background: url("../../../assets/images/i_avatar.svg") no-repeat;
   }
 
   &__user-name {
@@ -74,7 +88,7 @@
     display: flex;
     justify-content: space-between;
     width: 510px;
-    border-bottom: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 5px;
     margin-bottom: 10px;
 
@@ -93,7 +107,7 @@
     text-align: right;
 
     &:disabled {
-      color: var(--color-text-primary);
+      color: var(--color-link-primary);
     }
 
     &:focus {

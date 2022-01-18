@@ -1,6 +1,6 @@
 import { tmpl } from './server-error.tmpl';
-import Block from '../../services/block';
-import { router } from '../../routing/routing';
+import Block from '../../services/block/block';
+import { router } from '../../services/router/router';
 
 export class ServerError extends Block<{}, void > {
   constructor(props: { }) {

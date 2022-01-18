@@ -7,7 +7,7 @@ import { loader } from '../../components/loader';
 
 class WebSocketApi {
   socket: WebSocket;
-  interval;
+  interval: any;
 
   open(token: string) {
     if (this.socket) this.close();

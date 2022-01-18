@@ -1,7 +1,7 @@
 // @ts-ignore
 import { v4 as makeUUID } from 'uuid';
 import { tmpl } from './chat-page.tmpl';
-import Block from '../../services/block';
+import Block from '../../services/block/block';
 import { ChatList } from './chat-list';
 import { Chat } from './chat';
 import last from '../../utils/last';
@@ -12,9 +12,10 @@ import connect from '../../utils/hoc/connect';
 import { loader } from '../../components/loader';
 import { NewChatModal } from './modals/new-chat-modal';
 import { EditUsersModal } from './modals/edit-users-modal';
-import { ChangeChatAvatarModal } from './modals/change-chat-avatar-modal';
+import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
 import { Modal } from '../../components/ui/modal';
 import store from '../../store/store';
+import { router } from '../../services/router/router';
 
 class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   newChatName = '';
@@ -33,7 +34,10 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
 
     this.children.newChatModal = new NewChatModal({ });
     this.children.editUserModal = new EditUsersModal({ });
-    this.children.changeAvatarModal = new ChangeChatAvatarModal({ });
+    this.children.changeAvatarModal = new ChangeAvatarModal({
+      inputId: 'change-chat-avatar-modal-input',
+      confirmBtnId: 'change-chat-avatar-modal-confirm',
+    });
     this.children.modal = new Modal({
       cancel: 'Cancel',
       confirm: '',
@@ -54,7 +58,10 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
         this.children.plug.hide();
         this.children.chat.show();
       }
-    });
+    })
+      .catch(() => {
+        router.go('client-error');
+      });
 
     this.setProps({
       events: {

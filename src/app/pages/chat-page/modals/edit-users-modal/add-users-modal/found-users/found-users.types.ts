@@ -1,5 +1,5 @@
-import { IUsersData } from '../../../../../../services/users-data';
+import { IUserData } from '../../../../../../services/auth/auth.types';
 
 export interface IPropsFoundUsers {
-    foundUsers: IUsersData[]
+    foundUsers: IUserData[]
 }

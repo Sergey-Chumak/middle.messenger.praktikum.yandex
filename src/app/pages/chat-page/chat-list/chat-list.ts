@@ -1,9 +1,8 @@
 import { tmpl } from './chat-list.tmpl';
-import Block from '../../../services/block';
+import Block from '../../../services/block/block';
 import { IChatListChildren, IChatListProps } from './chat-list.types';
 import { ChatCards } from './chat-cards';
 import { IChatCard } from '../../../services/chats/chats.types';
-import { router } from '../../../routing/routing';
 import { getElementId } from '../../../utils/get-element-id';
 import { chatsService } from '../../../services/chats/chats.service';
 import last from '../../../utils/last';
@@ -12,6 +11,7 @@ import connect from '../../../utils/hoc/connect';
 import { webSocketApi } from '../../../services/web-socket/web-socket';
 import { loader } from '../../../components/loader';
 import isEqual from '../../../utils/isEqual';
+import { router } from '../../../services/router/router';
 
 class ChatList extends Block<IChatListProps, IChatListChildren> {
   chatCards: IChatCard[];
@@ -45,6 +45,7 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
     this.chatCards = newProps.chatCards;
 
     if (!isEqual(newProps.chatCards, oldProps.chatCards)) {
+      console.log(newProps.chatCards, oldProps.chatCards);
       this.searchValue = '';
     }
 
@@ -52,7 +53,6 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
       .includes(this.searchValue));
     this.children.chatCards.setProps({ chatCards: filteredChatCards });
     if (isEqual(newProps.chatCards, oldProps.chatCards)) return false;
-
     return true;
   }
 
@@ -63,17 +63,21 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
   }
 
   saveChatTitle() {
-    const chatId = +last(document.location.href.split('/'));
-    chatsService.getChatUsers(chatId)
-      ?.then(() => {
-        const currentChat = this.chatCards?.find((item) => item.status === 'active');
-        store.set('currentChat', currentChat?.title);
+    if (document.location.pathname.startsWith('/messenger/') && document.location.pathname !== '/messenger/') {
+      const chatId = +last(document.location.pathname.split('/'));
+      chatsService.getChatUsers(chatId)
+        ?.then(() => {
+          const currentChat = this.chatCards?.find((item) => item.status === 'active');
+          store.set('currentChat', currentChat?.title);
 
-        const chatId = +last(document.location.pathname.split('/'));
-        chatsService.getChatToken(chatId).then((data) => {
-          webSocketApi.open(data.token);
+          const chatId = +last(document.location.pathname.split('/'));
+          chatsService.getChatToken(chatId).then((data) => {
+            webSocketApi.open(data.token);
+          });
+        }).catch(() => {
+          router.go('/client-error');
         });
-      });
+    }
   }
 
   initEvents() {
@@ -109,7 +113,7 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
           chatsService.getChatUsers(currentChat!.id)
             ?.then(() => {
               store.set('currentChat', currentChat!.title);
-              document.querySelector('.chat-list__available-chats')?.scrollTo(0, scrollChats);
+              document.querySelector('.chat-list__available-chats')?.scrollTo(0, scrollChats as number);
 
               router.go(`/messenger/${this.chatCards.find((item) => item.status === 'active')?.id}`);
 

@@ -1,4 +1,4 @@
-import Block from '../../../services/block';
+import Block from '../../../services/block/block';
 import { tmpl } from './modal.tmpl';
 import { IChildrenModal, IPropsModal } from './modal.types';
 import { Button } from '../button';

@@ -1,5 +1,4 @@
-import { BASE_URL } from '../constants';
-import { router } from '../../routing/routing';
+import { router } from '../router/router';
 
 enum Method {
   GET = 'GET',
@@ -16,10 +15,12 @@ type Options = {
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
 export default class HTTPTransport {
-  baseUrl: string;
+  private readonly baseUrl: string;
+  private readonly withCookie: boolean;
 
-  constructor(baseUrl: string = '') {
+  constructor(baseUrl: string = '', withCookie = true) {
     this.baseUrl = baseUrl;
+    this.withCookie = withCookie;
   }
 
   get<T>(url: string, options: OptionsWithoutMethod = {}): Promise<T> {
@@ -40,16 +41,19 @@ export default class HTTPTransport {
     return this.request<T>(url, { ...options, method: Method.DELETE });
   }
 
-  request<T>(url: string, options: Options = { method: Method.GET }): Promise<T> {
+  private request<T>(url: string, options: Options = { method: Method.GET }): Promise<T> {
     const { method, data } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, `${BASE_URL}${this.baseUrl}${url}`);
+      xhr.open(method, `${this.baseUrl}${url}`);
       if (!(data instanceof FormData)) {
         xhr.setRequestHeader('content-type', 'application/json');
       }
-      xhr.withCredentials = true;
+
+      if (this.withCookie) {
+        xhr.withCredentials = true;
+      }
 
       xhr.onload = function () {
         if (xhr.status === 200) {

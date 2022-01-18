@@ -1,9 +1,9 @@
 import { ChatsServiceApi } from './chats.service.api';
 import store from '../../store/store';
-import { profileService } from '../profile/profile.service';
 import last from '../../utils/last';
 import { getDateCustomFormat, getTimeCustomFormat } from '../../utils/date';
 import { IUserData } from '../auth/auth.types';
+import { router } from '../router/router';
 
 class ChatsService {
   private chatsApi: ChatsServiceApi = new ChatsServiceApi();
@@ -46,6 +46,7 @@ class ChatsService {
 
   deleteChat(id: number) {
     return this.chatsApi.deleteChat(id).then((data) => {
+      router.go('/messenger');
       this.getChats();
       return data;
     });
@@ -74,8 +75,12 @@ class ChatsService {
     });
   }
 
-  getChatUsers(id: number): Promise<IUserData[]> | void {
-    if (!id) return;
+  getChatUsers(id: number): Promise<IUserData[]> {
+    if (!id) {
+      return new Promise((_resolve, reject) => {
+        reject('incorrect Id');
+      });
+    }
     return this.chatsApi.getChatUsers(id).then((data) => {
       const userNames = data.reduce(
         (acc, cur) => `${acc + (cur.display_name || `${cur.first_name} ${cur.second_name}`)}, `,

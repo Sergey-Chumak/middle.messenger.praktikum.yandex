@@ -1,5 +1,5 @@
 import { tmpl } from './chat-cards.tmpl';
-import Block from '../../../../services/block';
+import Block from '../../../../services/block/block';
 import { IChatCardsProps } from './chat-cards.types';
 
 export class ChatCards extends Block<IChatCardsProps, void> {

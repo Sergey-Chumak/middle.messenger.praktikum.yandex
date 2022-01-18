@@ -1,11 +1,11 @@
 // @ts-ignore
 import { v4 as makeUUID } from 'uuid';
 import * as Handlebars from 'handlebars';
-import { EventBus } from './event-bus';
+import { EventBus } from '../event-bus';
 import {
   EventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,
-} from './types';
-import { IState } from '../store/store.types';
+} from '../types';
+import { IState } from '../../store/store.types';
 
 export default class Block<TProps, TChildren> {
   protected props: TPropsAndChildren<TProps>;
@@ -47,11 +47,11 @@ export default class Block<TProps, TChildren> {
     return element;
   }
 
-  _render() {
+  private _render() {
     const block = this.render();
     this.removeEvents();
     this.element.innerHTML = '';
-    this.element.appendChild(block);
+    this.element.appendChild(block as unknown as Node);
     this.addEvents();
   }
 
@@ -79,8 +79,10 @@ export default class Block<TProps, TChildren> {
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof Block) {
+        // @ts-ignore
         children[key] = value;
       } else {
+        // @ts-ignore
         props[key] = value;
       }
     });
@@ -91,6 +93,7 @@ export default class Block<TProps, TChildren> {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
+      // @ts-ignore
       propsAndStubs[key] = `<div data-id="${(child as Block<TProps, unknown>).id}"></div>`;
     });
     const fragment = this.createDocumentElement('template') as HTMLTemplateElement;
@@ -104,7 +107,7 @@ export default class Block<TProps, TChildren> {
     return fragment.content;
   }
 
-  _componentDidMount() {
+  private _componentDidMount() {
     this.componentDidMount();
     Object.values(this.children).forEach((child: Block<TProps, unknown>) => {
       child.dispatchComponentDidMount();
@@ -117,7 +120,7 @@ export default class Block<TProps, TChildren> {
     this.eventBus.emit(EventsBusEvents.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: TPropsAndChildren<TProps>, newProps: TPropsAndChildren<TProps>) {
+  private _componentDidUpdate(oldProps: TPropsAndChildren<TProps>, newProps: TPropsAndChildren<TProps>) {
     const isReRender = this.componentDidUpdate(oldProps, newProps);
     if (isReRender) this.eventBus.emit(EventsBusEvents.FLOW_RENDER);
   }
@@ -135,7 +138,7 @@ export default class Block<TProps, TChildren> {
     Object.assign(this.props, nextProps);
   };
 
-  private makePropsProxy(props) {
+  private makePropsProxy(props: any) {
     return new Proxy(props, {
       get(target, prop) {
         const value = target[prop];
@@ -143,6 +146,7 @@ export default class Block<TProps, TChildren> {
       },
       set: (target: TPropsAndChildren<TProps>, prop: string, value) => {
         const oldValue = { ...target };
+        // @ts-ignore
         target[prop] = value;
         this.eventBus.emit(EventsBusEvents.FLOW_CDU, oldValue, target);
         return true;
@@ -150,15 +154,15 @@ export default class Block<TProps, TChildren> {
     });
   }
 
-  show() {
+  public show() {
     this.getContent().style.display = 'block';
   }
 
-  hide() {
+  public hide() {
     this.getContent().style.display = 'none';
   }
 
-  getContent() {
+  public getContent() {
     return this.element;
   }
 }

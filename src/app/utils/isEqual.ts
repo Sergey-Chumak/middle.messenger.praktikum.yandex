@@ -25,6 +25,7 @@ function isEqualArray(arg: Array<any>, arg2: typeof arg): boolean {
 }
 
 function isEqualObjects(arg: IObject, arg2: typeof arg): boolean {
+  if (!arg || !arg2) return arg2 === arg;
   if (typeof arg === 'function') return false;
   if (arg === arg2) return true;
   if (Object.keys(arg).length !== Object.keys(arg2).length) return false;

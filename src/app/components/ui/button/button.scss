@@ -4,7 +4,7 @@
   border-radius: 8px;
   border: none;
   font-size: 14px;
-  background: var(--color-button-primary);
+  background: var(--color-button);
   color: var(--color-text-secondary);
   cursor: pointer;
 
@@ -21,11 +21,11 @@
   }
 
   &_primary {
-    background: var(--color-button-primary);
+    background: var(--color-button);
   }
 
   &_secondary {
-    background: var(--color-button-secondary);
+    background: var(--color-button);
   }
 
   &:active {

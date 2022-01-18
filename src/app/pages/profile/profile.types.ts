@@ -2,7 +2,7 @@ import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { IUserData } from '../../services/auth/auth.types';
 import { Snackbar } from '../../components/ui/snackbar';
-import { Modal } from '../../components/ui/modal';
+import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
 
 export enum UserDataKeys {
     FirstName = 'first_name',
@@ -59,5 +59,5 @@ export interface IChildrenProfile {
     saveDataBtn: Button;
     savePassBtn: Button;
     snackbar: Snackbar;
-    modal: Modal;
+    changeAvatarModal: ChangeAvatarModal;
 }
