@@ -11,11 +11,11 @@ import {
   isValidPhone,
 } from '../../../utils/validate';
 import {
-  ChildrenSignupKeys,
+  EChildrenSignupKeys,
   IChildrenSignup,
   IPropsSignup,
   ISignupFormValue,
-  SignupFormKeys,
+  ESignupFormKeys,
 } from './signup.types';
 import { IEvents } from '../../../services/types';
 import { Snackbar } from '../../../components/ui/snackbar';
@@ -26,25 +26,25 @@ import { router } from '../../../services/router/router';
 export class Signup extends Block<IPropsSignup, IChildrenSignup> {
   inputs: Input[];
   signupFormValue: ISignupFormValue = {
-    [SignupFormKeys.Login]: '',
-    [SignupFormKeys.Email]: '',
-    [SignupFormKeys.Password]: '',
-    [SignupFormKeys.Name]: '',
-    [SignupFormKeys.LastName]: '',
-    [SignupFormKeys.PasswordRepeat]: '',
-    [SignupFormKeys.Phone]: '',
+    [ESignupFormKeys.Login]: '',
+    [ESignupFormKeys.Email]: '',
+    [ESignupFormKeys.Password]: '',
+    [ESignupFormKeys.Name]: '',
+    [ESignupFormKeys.LastName]: '',
+    [ESignupFormKeys.PasswordRepeat]: '',
+    [ESignupFormKeys.Phone]: '',
   };
 
   get isValidSignUpForm(): boolean {
-    return isValidLogin(this.signupFormValue[SignupFormKeys.Login])
-        && isValidEmail(this.signupFormValue[SignupFormKeys.Email])
-        && isValidPassword(this.signupFormValue[SignupFormKeys.Password])
-        && isValidPhone(this.signupFormValue[SignupFormKeys.Phone])
-        && isValidName(this.signupFormValue[SignupFormKeys.Name])
-        && isValidName(this.signupFormValue[SignupFormKeys.LastName])
+    return isValidLogin(this.signupFormValue[ESignupFormKeys.Login])
+        && isValidEmail(this.signupFormValue[ESignupFormKeys.Email])
+        && isValidPassword(this.signupFormValue[ESignupFormKeys.Password])
+        && isValidPhone(this.signupFormValue[ESignupFormKeys.Phone])
+        && isValidName(this.signupFormValue[ESignupFormKeys.Name])
+        && isValidName(this.signupFormValue[ESignupFormKeys.LastName])
         && isValidEqualPasswords(
-          this.signupFormValue[SignupFormKeys.Password],
-            this.signupFormValue[SignupFormKeys.PasswordRepeat] as string,
+          this.signupFormValue[ESignupFormKeys.Password],
+            this.signupFormValue[ESignupFormKeys.PasswordRepeat] as string,
         );
   }
 
@@ -94,7 +94,7 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     });
 
     this.children.loginInput = new Input({
-      value: this.signupFormValue[SignupFormKeys.Login],
+      value: this.signupFormValue[ESignupFormKeys.Login],
       id: 'login',
       labelName: 'Login',
       type: 'text',
@@ -102,7 +102,7 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     });
 
     this.children.nameInput = new Input({
-      value: this.signupFormValue[SignupFormKeys.Name],
+      value: this.signupFormValue[ESignupFormKeys.Name],
       id: 'first_name',
       labelName: 'Name',
       type: 'text',
@@ -110,7 +110,7 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     });
 
     this.children.lastNameInput = new Input({
-      value: this.signupFormValue[SignupFormKeys.LastName],
+      value: this.signupFormValue[ESignupFormKeys.LastName],
       id: 'last_name',
       labelName: 'Last name',
       type: 'text',
@@ -118,7 +118,7 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     });
 
     this.children.phoneInput = new Input({
-      value: this.signupFormValue[SignupFormKeys.Phone],
+      value: this.signupFormValue[ESignupFormKeys.Phone],
       id: 'phone',
       labelName: 'Phone',
       type: 'text',
@@ -126,7 +126,7 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     });
 
     this.children.passwordInput = new Input({
-      value: this.signupFormValue[SignupFormKeys.Password],
+      value: this.signupFormValue[ESignupFormKeys.Password],
       id: 'password',
       labelName: 'Password',
       type: 'password',
@@ -134,7 +134,7 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
     });
 
     this.children.passwordRepeatInput = new Input({
-      value: this.signupFormValue[SignupFormKeys.PasswordRepeat] as string,
+      value: this.signupFormValue[ESignupFormKeys.PasswordRepeat] as string,
       id: 'password_repeat',
       labelName: 'Password (repeat)',
       type: 'password',
@@ -164,28 +164,28 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
 
   initChildrenEvents(): void {
     this.children.emailInput.setProps({
-      events: this.initInputEvents(ChildrenSignupKeys.EmailInput, SignupFormKeys.Email, isValidEmail),
+      events: this.initInputEvents(EChildrenSignupKeys.EmailInput, ESignupFormKeys.Email, isValidEmail),
     });
 
     this.children.loginInput.setProps({
-      events: this.initInputEvents(ChildrenSignupKeys.LoginInput, SignupFormKeys.Login, isValidLogin),
+      events: this.initInputEvents(EChildrenSignupKeys.LoginInput, ESignupFormKeys.Login, isValidLogin),
     });
 
     this.children.nameInput.setProps({
-      events: this.initInputEvents(ChildrenSignupKeys.NameInput, SignupFormKeys.Name, isValidName),
+      events: this.initInputEvents(EChildrenSignupKeys.NameInput, ESignupFormKeys.Name, isValidName),
     });
 
     this.children.lastNameInput.setProps({
-      events: this.initInputEvents(ChildrenSignupKeys.LastNameInput, SignupFormKeys.LastName, isValidName),
+      events: this.initInputEvents(EChildrenSignupKeys.LastNameInput, ESignupFormKeys.LastName, isValidName),
     });
 
     this.children.phoneInput.setProps({
-      events: this.initInputEvents(ChildrenSignupKeys.PhoneInput, SignupFormKeys.Phone, isValidPhone),
+      events: this.initInputEvents(EChildrenSignupKeys.PhoneInput, ESignupFormKeys.Phone, isValidPhone),
     });
 
     this.children.passwordInput.setProps({
       events: {
-        ...this.initInputEvents(ChildrenSignupKeys.PasswordInput, SignupFormKeys.Password, isValidPassword),
+        ...this.initInputEvents(EChildrenSignupKeys.PasswordInput, ESignupFormKeys.Password, isValidPassword),
         focusout: (event: Event) => {
           if ((event.target as HTMLElement).tagName !== 'INPUT') return;
           if (isValidPassword(this.signupFormValue.password)) {
@@ -251,8 +251,8 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
   }
 
   initInputEvents(
-    inputName: ChildrenSignupKeys,
-    formField: SignupFormKeys,
+    inputName: EChildrenSignupKeys,
+    formField: ESignupFormKeys,
     validator: (text: string) => boolean,
   ): IEvents {
     return {
@@ -281,28 +281,28 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
   }
 
   submit(): void {
-    if (!isValidEmail(this.signupFormValue[SignupFormKeys.Email])) {
+    if (!isValidEmail(this.signupFormValue[ESignupFormKeys.Email])) {
       this.children.emailInput.getContent().classList.add('ui-input_invalid');
     }
-    if (!isValidLogin(this.signupFormValue[SignupFormKeys.Login])) {
+    if (!isValidLogin(this.signupFormValue[ESignupFormKeys.Login])) {
       this.children.loginInput.getContent().classList.add('ui-input_invalid');
     }
-    if (!isValidName(this.signupFormValue[SignupFormKeys.Name])) {
+    if (!isValidName(this.signupFormValue[ESignupFormKeys.Name])) {
       this.children.nameInput.getContent().classList.add('ui-input_invalid');
     }
-    if (!isValidName(this.signupFormValue[SignupFormKeys.LastName])) {
+    if (!isValidName(this.signupFormValue[ESignupFormKeys.LastName])) {
       this.children.lastNameInput.getContent().classList.add('ui-input_invalid');
     }
-    if (!isValidPhone(this.signupFormValue[SignupFormKeys.Phone])) {
+    if (!isValidPhone(this.signupFormValue[ESignupFormKeys.Phone])) {
       this.children.phoneInput.getContent().classList.add('ui-input_invalid');
     }
-    if (!isValidPassword(this.signupFormValue[SignupFormKeys.Password])) {
+    if (!isValidPassword(this.signupFormValue[ESignupFormKeys.Password])) {
       this.children.passwordInput.getContent().classList.add('ui-input_invalid');
     }
     if (
       !isValidEqualPasswords(
-        this.signupFormValue[SignupFormKeys.Password],
-        this.signupFormValue[SignupFormKeys.PasswordRepeat] as string,
+        this.signupFormValue[ESignupFormKeys.Password],
+        this.signupFormValue[ESignupFormKeys.PasswordRepeat] as string,
       )
     ) {
       this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
@@ -330,12 +330,12 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
       input.getContent().classList.remove('ui-input_invalid');
     });
 
-    this.signupFormValue[SignupFormKeys.Email] = '';
-    this.signupFormValue[SignupFormKeys.Login] = '';
-    this.signupFormValue[SignupFormKeys.Name] = '';
-    this.signupFormValue[SignupFormKeys.Phone] = '';
-    this.signupFormValue[SignupFormKeys.LastName] = '';
-    this.signupFormValue[SignupFormKeys.PasswordRepeat] = '';
-    this.signupFormValue[SignupFormKeys.Password] = '';
+    this.signupFormValue[ESignupFormKeys.Email] = '';
+    this.signupFormValue[ESignupFormKeys.Login] = '';
+    this.signupFormValue[ESignupFormKeys.Name] = '';
+    this.signupFormValue[ESignupFormKeys.Phone] = '';
+    this.signupFormValue[ESignupFormKeys.LastName] = '';
+    this.signupFormValue[ESignupFormKeys.PasswordRepeat] = '';
+    this.signupFormValue[ESignupFormKeys.Password] = '';
   }
 }

@@ -6,7 +6,7 @@ export const tmpl = `
         <div class="profile" id="profile">
             <div class="profile__avatar">
                 {{#if avatar}}
-                <img class="profile__avatar_img" src="{{ avatar }}" alt="">
+                <img class="profile__avatar_img" src="https://ya-praktikum.tech/api/v2/Resources{{ avatar }}" alt="">
                 {{/if}}
                 <div class="profile__icon"></div>
                 <div class="profile__avatar_hover" id="profile-avatar">Change avatar</div>

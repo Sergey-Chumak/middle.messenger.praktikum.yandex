@@ -31,7 +31,8 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
   componentDidUpdate(oldProps: IChatListProps, newProps: IChatListProps): boolean {
     const isNewMessages = newProps.chatCards?.some((i, idx) => {
       if (oldProps?.chatCards) {
-        return (i.unread_count !== oldProps?.chatCards[idx]?.unread_count) && (i.unread_count !== 0);
+        const isGotNewMessage = (i.unread_count !== oldProps?.chatCards[idx]?.unread_count) && (i.unread_count !== 0);
+        return isGotNewMessage;
       }
       return false;
     });
@@ -91,9 +92,11 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
           ) return;
 
           this.chatCards.forEach((item) => {
-            item.id === +getElementId(event.target as HTMLElement)!
-              ? item.status = 'active'
-              : item.status = 'passive';
+            if (item.id === +getElementId(event.target as HTMLElement)!) {
+              item.status = 'active';
+            } else {
+              item.status = 'passive';
+            }
           });
 
           const scrollChats = document.querySelector('.chat-list__available-chats')?.scrollTop;

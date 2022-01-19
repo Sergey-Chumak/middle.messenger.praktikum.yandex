@@ -7,16 +7,16 @@
   position: absolute;
   padding: 15px;
   border-radius: 12px;
-  background: rgba(255, 77, 77, 0.5);
-  color: red;
+  background: var(--snackbar-error);
+  color: var(--color-text-snackbar-error);
 
-  &__success {
-    background: rgba(116, 250, 95, 0.3);
-    color: #2d950a;
+  &_success {
+    background: var(--snackbar-success);
+    color: var(--color-text-snackbar-success);
   }
 
-  &__error {
-    background: rgba(255, 77, 77, 0.5);
-    color: red;
+  &_error {
+    background: var(--snackbar-error);
+    color: var(--color-text-snackbar-error);
   }
 }

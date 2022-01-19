@@ -25,7 +25,7 @@ export interface IMeta {
     props: TPropsAndChildren<unknown>;
 }
 
-export enum EventsBusEvents {
+export enum EEventsBusEvents {
     INIT = 'init',
     FLOW_CDM = 'flow:component-did-mount',
     FLOW_CDU = 'flow:component-did-update',

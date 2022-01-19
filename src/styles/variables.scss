@@ -5,6 +5,7 @@
   --color-background-active-chat: #606060;
   --color-background-hover-chat: rgba(199, 199, 199, 0.05);
   --color-background-hover-modal: rgba(31, 31, 31, 0.5);
+  --color-background-hover-context-menu: #3e3e3e;
   --color-background-message: #CECECE;
   --color-background-my-message: #FFF;
   --color-background-input: #545453;
@@ -17,6 +18,11 @@
 
   --color-border: #000;
 
+  --color-spiner: rgb(191, 226, 255);
+
+  --snackbar-success: rgba(116, 250, 95, 0.3);
+  --snackbar-error: rgba(255, 77, 77, 0.5);
+
   --color-text-default: #1e1e1e;
   --color-text-primary: #999;
   --color-text-secondary: #fff;
@@ -26,8 +32,11 @@
   --color-text-time: #939292;
   --color-text-chat-name: #fff;
   --color-text-content: #c8c8c8;
+  --color-text-snackbar-success: #2d950a;
+  --color-text-snackbar-error: red;
 
   --shadow-primary:0 7px 5px -3px rgba(24, 24, 24, 0.5);
+  --shadow-secondary:0 7px 5px -3px rgba(95, 95, 95, 0.5);
 
   --color-backdrop: rgba(0, 0, 0, 0.5);
 }

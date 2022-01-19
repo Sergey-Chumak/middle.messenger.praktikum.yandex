@@ -3,7 +3,7 @@ import { v4 as makeUUID } from 'uuid';
 import * as Handlebars from 'handlebars';
 import { EventBus } from '../event-bus';
 import {
-  EventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,
+  EEventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,
 } from '../types';
 import { IState } from '../../store/store.types';
 
@@ -26,19 +26,19 @@ export default class Block<TProps, TChildren> {
       props,
     };
     this.registerEvents(this.eventBus);
-    this.eventBus.emit(EventsBusEvents.INIT);
+    this.eventBus.emit(EEventsBusEvents.INIT);
   }
 
   private registerEvents(eventBus: EventBus) {
-    eventBus.attach(EventsBusEvents.INIT, this.init.bind(this));
-    eventBus.attach(EventsBusEvents.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.attach(EventsBusEvents.FLOW_CDU, this._componentDidUpdate.bind(this));
-    eventBus.attach(EventsBusEvents.FLOW_RENDER, this._render.bind(this));
+    eventBus.attach(EEventsBusEvents.INIT, this.init.bind(this));
+    eventBus.attach(EEventsBusEvents.FLOW_CDM, this._componentDidMount.bind(this));
+    eventBus.attach(EEventsBusEvents.FLOW_CDU, this._componentDidUpdate.bind(this));
+    eventBus.attach(EEventsBusEvents.FLOW_RENDER, this._render.bind(this));
   }
 
   private init() {
     this.element = this.createDocumentElement(this.meta?.tagName as string);
-    this.eventBus.emit(EventsBusEvents.FLOW_RENDER);
+    this.eventBus.emit(EEventsBusEvents.FLOW_RENDER);
   }
 
   private createDocumentElement(tag: string): HTMLElement {
@@ -117,12 +117,12 @@ export default class Block<TProps, TChildren> {
   componentDidMount() {}
 
   dispatchComponentDidMount() {
-    this.eventBus.emit(EventsBusEvents.FLOW_CDM);
+    this.eventBus.emit(EEventsBusEvents.FLOW_CDM);
   }
 
   private _componentDidUpdate(oldProps: TPropsAndChildren<TProps>, newProps: TPropsAndChildren<TProps>) {
     const isReRender = this.componentDidUpdate(oldProps, newProps);
-    if (isReRender) this.eventBus.emit(EventsBusEvents.FLOW_RENDER);
+    if (isReRender) this.eventBus.emit(EEventsBusEvents.FLOW_RENDER);
   }
 
   componentDidUpdate(_oldProps:TPropsAndChildren<TProps>, _newProps: TPropsAndChildren<TProps>): boolean {
@@ -148,7 +148,7 @@ export default class Block<TProps, TChildren> {
         const oldValue = { ...target };
         // @ts-ignore
         target[prop] = value;
-        this.eventBus.emit(EventsBusEvents.FLOW_CDU, oldValue, target);
+        this.eventBus.emit(EEventsBusEvents.FLOW_CDU, oldValue, target);
         return true;
       },
     });

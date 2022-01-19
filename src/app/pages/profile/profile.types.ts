@@ -4,7 +4,7 @@ import { IUserData } from '../../services/auth/auth.types';
 import { Snackbar } from '../../components/ui/snackbar';
 import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
 
-export enum UserDataKeys {
+export enum EUserDataKeys {
     FirstName = 'first_name',
     SecondName = 'second_name',
     DisplayName = 'display_name',
@@ -20,12 +20,12 @@ export interface IUserPassFormValue {
 }
 
 export interface IUserDataFormValue {
-    [UserDataKeys.Email]: string;
-    [UserDataKeys.Login]: string;
-    [UserDataKeys.FirstName]: string;
-    [UserDataKeys.SecondName]: string;
-    [UserDataKeys.Phone]: string;
-    [UserDataKeys.DisplayName]: string;
+    [EUserDataKeys.Email]: string;
+    [EUserDataKeys.Login]: string;
+    [EUserDataKeys.FirstName]: string;
+    [EUserDataKeys.SecondName]: string;
+    [EUserDataKeys.Phone]: string;
+    [EUserDataKeys.DisplayName]: string;
 }
 
 export interface IPropsProfile {

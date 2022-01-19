@@ -2,12 +2,12 @@ import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
 import { Snackbar } from '../../../components/ui/snackbar';
 
-export enum SigninFormKeys {
+export enum ESigninFormKeys {
     Login = 'login',
     Password = 'password'
 }
 
-export enum ChildrenSigninKeys {
+export enum EChildrenSigninKeys {
     LoginInput = 'loginInput',
     PasswordInput = 'passwordInput',
     SubmitBtn = 'submitBtn',
@@ -15,15 +15,15 @@ export enum ChildrenSigninKeys {
 }
 
 export interface ISigninFormValue {
-    [SigninFormKeys.Login]: string;
-    [SigninFormKeys.Password]: string;
+    [ESigninFormKeys.Login]: string;
+    [ESigninFormKeys.Password]: string;
 }
 
 export interface IChildrenSignin {
-    [ChildrenSigninKeys.LoginInput]: Input;
-    [ChildrenSigninKeys.PasswordInput]: Input;
-    [ChildrenSigninKeys.SubmitBtn]: Button;
-    [ChildrenSigninKeys.Snackbar]: Snackbar;
+    [EChildrenSigninKeys.LoginInput]: Input;
+    [EChildrenSigninKeys.PasswordInput]: Input;
+    [EChildrenSigninKeys.SubmitBtn]: Button;
+    [EChildrenSigninKeys.Snackbar]: Snackbar;
 }
 
 export interface IPropsSignin {

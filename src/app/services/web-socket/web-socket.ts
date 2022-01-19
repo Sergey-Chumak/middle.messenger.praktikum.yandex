@@ -23,7 +23,7 @@ class WebSocketApi {
   }
 
   close() {
-    this.socket.close();
+    this.socket?.close();
     clearInterval(this.interval);
   }
 
