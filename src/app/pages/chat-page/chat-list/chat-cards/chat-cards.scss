@@ -1,0 +1,99 @@
+@import '../../../../../styles/mixins/avatar';
+
+.chat-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  height: 96px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: var(--color-background-hover-chat);
+  }
+
+  &_active {
+    background: var(--color-background-active-chat) !important;
+  }
+
+  &__avatar {
+   @include avatar;
+
+    align-self: center;
+    width: 67px;
+    height: 67px;
+  }
+
+  &__content-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: calc(100% - 77px);
+    margin-top: 6px;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-text-chat-name);
+  }
+
+  &__last-message{
+    padding-right: 5px;
+    font-size: 14px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    color: var(--color-text-content);
+
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+    align-items: flex-end;
+  }
+
+  &__time {
+    font-size: 12px;
+    color: var(--color-text-time)
+  }
+
+  &__notifications {
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    background: var(--color-no-read-notification);
+    color: var(--color-text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+}
+
+.chat-cards {
+  &__not-found {
+    color: var(--color-text-content);
+    text-align: center;
+    margin-top: 20px;
+    font-size: 15px;
+  }
+}

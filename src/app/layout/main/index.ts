@@ -1,4 +1,3 @@
 import './main.scss';
-import '../../components/sidebar/sidebar.scss';
 
-export { Main } from './main';
+export { MainWrap as Main } from './main';

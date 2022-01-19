@@ -1,3 +1,11 @@
+.server-error-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .server-error {
   width: 160px;
   align-self: center;
@@ -5,15 +13,26 @@
   text-align: center;
 
   &__title {
-    font-size: 44px;
+    font-size: 48px;
     margin-top: 0;
     margin-bottom: 20px;
     font-weight: 600;
   }
 
   &__info {
-    font-size: 22px;
+    font-size: 24px;
     margin-bottom: 49px;
     font-weight: 600;
+  }
+
+  &__link {
+    cursor: pointer;
+    color: var(--color-text-content);
+    font-size: 14px;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-text-chat-name)
+    }
   }
 }

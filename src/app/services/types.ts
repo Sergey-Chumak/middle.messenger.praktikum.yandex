@@ -1,8 +1,11 @@
+import { IState } from '../store/store.types';
+
 export type TPropsAndChildren<T> = T & {
     __id?: string;
     settings?: ISettings;
     events?: IEvents;
     children?: TChildrenBlock<unknown>;
+    [key: string]: any | IState;
 }
 
 export type TChildrenBlock<T> = {
@@ -22,7 +25,7 @@ export interface IMeta {
     props: TPropsAndChildren<unknown>;
 }
 
-export enum EventsBusEvents {
+export enum EEventsBusEvents {
     INIT = 'init',
     FLOW_CDM = 'flow:component-did-mount',
     FLOW_CDU = 'flow:component-did-update',

@@ -1,17 +1,25 @@
 export function getTimeNow(): string {
   const date: Date = new Date(Date.now());
-  const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-  const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
   return `${hours}:${minutes}`;
 }
 
-export function getDateCustomFormat(date: Date = new Date(Date.now())): string {
-  const month: string = DateMonth[date.getMonth()];
+export function getTimeCustomFormat(dateStr: string): string {
+  const date = new Date(Date.parse(dateStr));
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+export function getDateCustomFormat(dateStr: string): string {
+  const date = new Date(Date.parse(dateStr));
+  const month: string = EDateMonth[date.getMonth()];
   const day = date.getDate();
   return `${month} ${day}`;
 }
 
-enum DateMonth {
+enum EDateMonth {
   January,
   February,
   March,

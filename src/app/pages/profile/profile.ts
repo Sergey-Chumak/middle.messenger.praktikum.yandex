@@ -1,53 +1,67 @@
 import { tmpl } from './profile.tmpl';
-import Block from '../../services/block';
+import Block from '../../services/block/block';
 import { IEvents } from '../../services/types';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import {
-  isValidEmail, isValidEqualPasswords, isValidLogin, isValidName, isValidPassword, isValidPhone,
+  isValidEmail,
+  isValidEqualPasswords,
+  isValidLogin,
+  isValidName,
+  isValidPassword,
+  isValidPhone,
 } from '../../utils/validate';
 import {
-  IChildrenProfile, IPropsProfile, IUserDataFormValue, IUserPassFormValue,
+  IChildrenProfile, IPropsProfile, IUserDataFormValue, IUserPassFormValue, EUserDataKeys,
 } from './profile.types';
-import { getUserProfile, IUserProfile } from '../../services/users-data';
+import store from '../../store/store';
+import { IUserData } from '../../services/auth/auth.types';
+import { profileService } from '../../services/profile/profile.service';
+import connect from '../../utils/hoc/connect';
+import { Snackbar } from '../../components/ui/snackbar';
+import { ucFirstLetter } from '../../utils/ucFirstLetter';
+import { authService } from '../../services/auth/auth.service';
+import isEqual from '../../utils/isEqual';
+import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
+import { router } from '../../services/router/router';
 
 export class Profile extends Block<IPropsProfile, IChildrenProfile> {
-  userDataProfile: IUserProfile;
+  avatar: File | null;
   userDataInputs: Input[] = [];
   userPasswordInputs: Input[] = [];
-
+  userData: IUserData = store.getState().user!;
   userDataFormValue: IUserDataFormValue = {
-    email: '',
-    login: '',
-    name: '',
-    lastName: '',
-    nickname: '',
-    phone: '',
+    [EUserDataKeys.Email]: this.userData.email,
+    [EUserDataKeys.Login]: this.userData.login,
+    [EUserDataKeys.FirstName]: this.userData.first_name,
+    [EUserDataKeys.SecondName]: this.userData.second_name,
+    [EUserDataKeys.DisplayName]: this.userData.display_name,
+    [EUserDataKeys.Phone]: this.userData.phone,
   };
-
   userPassFormValue: IUserPassFormValue = {
     oldPassword: '',
     newPassword: '',
     newRepeatPassword: '',
   };
+  userDataProfile: IUserData = { ...this.userDataFormValue } as IUserData;
 
   get isValidUserDataForm(): boolean {
-    return isValidLogin(this.userDataFormValue.login)
-        && isValidLogin(this.userDataFormValue.nickname)
-        && isValidEmail(this.userDataFormValue.email)
-        && isValidPhone(this.userDataFormValue.phone)
-        && isValidName(this.userDataFormValue.name)
-        && isValidName(this.userDataFormValue.lastName);
+    return isValidLogin(this.userDataFormValue[EUserDataKeys.Login])
+        && isValidLogin(this.userDataFormValue[EUserDataKeys.DisplayName])
+        && isValidEmail(this.userDataFormValue[EUserDataKeys.Email])
+        && isValidPhone(this.userDataFormValue[EUserDataKeys.Phone])
+        && isValidName(this.userDataFormValue[EUserDataKeys.FirstName])
+        && isValidName(this.userDataFormValue[EUserDataKeys.SecondName]);
   }
 
   get isValidUserPassForm(): boolean {
     return isValidPassword(this.userPassFormValue.newPassword)
-        && isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)
-        && isValidEqualPasswords(this.userPassFormValue.oldPassword, this.userPassFormValue.oldPassword);
+        && isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword!);
   }
 
   constructor(props: IPropsProfile) {
     super('div', props);
+
     this.initChildren();
 
     this.userDataInputs = [
@@ -68,15 +82,28 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   componentDidMount() {
     this.initComponentEvents();
     this.initChildrenEvents();
-    this.loadDataProfile();
     this.children.saveDataBtn.hide();
     this.children.savePassBtn.hide();
     this.userPasswordInputs.forEach((input) => input.hide());
   }
 
+  componentDidUpdate(oldProps: IPropsProfile, newProps: IPropsProfile): boolean {
+    if (isEqual(oldProps, newProps)) return false;
+    if (!this.props.userData) return true;
+
+    this.children.emailInput.setProps({ value: this.props.userData?.email });
+    this.children.loginInput.setProps({ value: this.props.userData?.login });
+    this.children.nameInput.setProps({ value: this.props.userData?.first_name });
+    this.children.lastNameInput.setProps({ value: this.props.userData?.second_name });
+    this.children.nicknameInput.setProps({ value: this.props.userData?.display_name });
+    this.children.phoneInput.setProps({ value: this.props.userData?.phone });
+    return true;
+  }
+
   render(): DocumentFragment {
     return this.compile(tmpl, {
       userName: this.props.userName,
+      userData: this.props.userData,
       emailInput: this.children.emailInput,
       loginInput: this.children.loginInput,
       nameInput: this.children.nameInput,
@@ -89,11 +116,16 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       nonAvailableChangeData: this.props.nonAvailableChangeData,
       saveDataBtn: this.children.saveDataBtn,
       savePassBtn: this.children.savePassBtn,
+      snackbar: this.children.snackbar,
+      changeAvatarModal: this.children.changeAvatarModal,
+      avatar: this.props.avatar,
     });
   }
 
   initComponentEvents() {
     this.setProps({
+      avatar: this.userData.avatar,
+      userName: this.userData.display_name || this.userData.first_name,
       nonAvailableChangeData: true,
       events: {
         click: (event: Event) => {
@@ -115,6 +147,19 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
           if ((event.target as HTMLElement).id === 'cancel-link') {
             this.cancelChanges();
+          }
+
+          if ((event.target as HTMLElement).id === 'profile-avatar') {
+            this.children.changeAvatarModal.open();
+          }
+
+          if ((event.target as HTMLElement).id === 'profile-logout') {
+            authService.logout().then(() => {
+              router.go('/signin');
+            });
+          }
+          if ((event.target as HTMLElement).id === 'back-to-chats-icon') {
+            router.go('/messenger');
           }
         },
       },
@@ -139,9 +184,18 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   }
 
   initChildren() {
+    this.children.snackbar = new Snackbar({
+      text: '',
+    });
+
+    this.children.changeAvatarModal = new ChangeAvatarModal({
+      inputId: 'change-user-avatar-modal-input',
+      confirmBtnId: 'change-user-avatar-modal-confirm',
+    });
+
     this.children.emailInput = new Input({
-      value: this.userDataFormValue.email,
-      id: 'email',
+      value: this.userDataFormValue[EUserDataKeys.Email],
+      id: 'profile-email',
       type: 'email',
       labelName: 'Email',
       from: 'profile',
@@ -150,8 +204,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.loginInput = new Input({
-      value: this.userDataFormValue.login,
-      id: 'login',
+      value: this.userDataFormValue[EUserDataKeys.Login],
+      id: 'profile-login',
       type: 'text',
       labelName: 'Login',
       from: 'profile',
@@ -160,8 +214,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.nameInput = new Input({
-      value: this.userDataFormValue.name,
-      id: 'first_name',
+      value: this.userDataFormValue[EUserDataKeys.FirstName],
+      id: 'profile-first_name',
       type: 'text',
       labelName: 'Name',
       from: 'profile',
@@ -170,8 +224,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.lastNameInput = new Input({
-      value: this.userDataFormValue.lastName,
-      id: 'last_name',
+      value: this.userDataFormValue[EUserDataKeys.SecondName],
+      id: 'profile-last_name',
       type: 'text',
       labelName: 'Last name',
       from: 'profile',
@@ -180,8 +234,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.nicknameInput = new Input({
-      value: this.userDataFormValue.nickname,
-      id: 'nickname',
+      value: this.userDataFormValue[EUserDataKeys.DisplayName],
+      id: 'profile-nickname',
       type: 'text',
       labelName: 'Nickname',
       from: 'profile',
@@ -190,8 +244,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.phoneInput = new Input({
-      value: this.userDataFormValue.phone,
-      id: 'phone',
+      value: this.userDataFormValue[EUserDataKeys.Phone],
+      id: 'profile-phone',
       type: 'text',
       labelName: 'Phone',
       from: 'profile',
@@ -201,7 +255,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.oldPasswordInput = new Input({
       value: '',
-      id: 'old-pass',
+      id: 'profile-old-pass',
       type: 'password',
       labelName: 'Old password',
       from: 'profile',
@@ -211,7 +265,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.newPasswordInput = new Input({
       value: '',
-      id: 'new-pass',
+      id: 'profile-new-pass',
       type: 'password',
       labelName: 'New password',
       from: 'profile',
@@ -221,7 +275,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
     this.children.newPasswordRepeatInput = new Input({
       value: '',
-      id: 'new-pass-repeat',
+      id: 'profile-new-pass-repeat',
       type: 'password',
       labelName: 'New password (repeat)',
       from: 'profile',
@@ -244,27 +298,27 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
   initChildrenEvents(): void {
     this.children.emailInput.setProps({
-      events: this.initUserDataInputEvents('emailInput', 'email', isValidEmail),
+      events: this.initUserDataInputEvents('emailInput', EUserDataKeys.Email, isValidEmail),
     });
 
     this.children.loginInput.setProps({
-      events: this.initUserDataInputEvents('loginInput', 'login', isValidLogin),
+      events: this.initUserDataInputEvents('loginInput', EUserDataKeys.Login, isValidLogin),
     });
 
     this.children.nameInput.setProps({
-      events: this.initUserDataInputEvents('nameInput', 'name', isValidName),
+      events: this.initUserDataInputEvents('nameInput', EUserDataKeys.FirstName, isValidName),
     });
 
     this.children.lastNameInput.setProps({
-      events: this.initUserDataInputEvents('lastNameInput', 'lastName', isValidName),
+      events: this.initUserDataInputEvents('lastNameInput', EUserDataKeys.SecondName, isValidName),
     });
 
     this.children.nicknameInput.setProps({
-      events: this.initUserDataInputEvents('nicknameInput', 'nickname', isValidLogin),
+      events: this.initUserDataInputEvents('nicknameInput', EUserDataKeys.DisplayName, isValidLogin),
     });
 
     this.children.phoneInput.setProps({
-      events: this.initUserDataInputEvents('phoneInput', 'phone', isValidPhone),
+      events: this.initUserDataInputEvents('phoneInput', EUserDataKeys.Phone, isValidPhone),
     });
 
     this.children.oldPasswordInput.setProps({
@@ -305,7 +359,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
         },
         focusout: (event: Event) => {
           if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword!)) {
             this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
           } else {
             this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
@@ -314,7 +368,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
         focusin: (event: Event) => {
           if ((event.target as HTMLElement).tagName !== 'INPUT') return;
 
-          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+          if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword!)) {
             this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
           } else {
             this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
@@ -327,7 +381,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       events: {
         focusout: this.initValidatePasswordEvent(),
         focusin: this.initValidatePasswordEvent(),
-        input: (event) => {
+        input: (event: Event) => {
           const target = event?.target as HTMLInputElement;
           if (target.tagName !== 'INPUT') return;
           this.userPassFormValue.newPassword = target.value;
@@ -346,6 +400,28 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
         click: () => this.submitUserPass(),
       },
     });
+
+    this.children.changeAvatarModal.setProps({
+      events: {
+        change: (event:Event) => {
+          if ((event.target as HTMLInputElement).id === 'change-user-avatar-modal-input') {
+            this.avatar = ((event.target as HTMLInputElement)?.files!)[0] as File;
+          }
+        },
+        click: (event: Event) => {
+          if ((event.target as HTMLElement).id === 'change-user-avatar-modal-confirm') {
+            if (!this.avatar) return;
+            profileService.changeUserAvatar(this.avatar).then(() => {
+              this.avatar = null;
+              this.children.changeAvatarModal.close();
+              this.setProps({
+                avatar: this.props.userData?.avatar,
+              });
+            });
+          }
+        },
+      },
+    });
   }
 
   initValidatePasswordEvent(): (event: Event) => void {
@@ -356,7 +432,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       } else {
         this.children.newPasswordInput.getContent().classList.add('ui-input__profile_invalid');
       }
-      if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+      if (isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword!)) {
         this.children.newPasswordRepeatInput.getContent().classList.remove('ui-input__profile_invalid');
       } else {
         this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
@@ -366,25 +442,31 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
   submitUserData(): void {
     if (this.isValidUserDataForm) {
-      this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
-      this.setProps({ nonAvailableChangeData: true });
+      profileService.changeUserData(this.userDataFormValue)
+        .then(() => {
+          this.userDataInputs.forEach((input) => input.setProps({ disabled: true }));
+          this.setProps({ nonAvailableChangeData: true, userName: this.props.userData?.display_name });
 
-      this.children.emailInput.setProps({ value: this.userDataFormValue.email });
-      this.children.loginInput.setProps({ value: this.userDataFormValue.login });
-      this.children.nameInput.setProps({ value: this.userDataFormValue.name });
-      this.children.lastNameInput.setProps({ value: this.userDataFormValue.lastName });
-      this.children.nicknameInput.setProps({ value: this.userDataFormValue.nickname });
-      this.children.phoneInput.setProps({ value: this.userDataFormValue.phone });
+          this.userDataProfile = { ...this.userDataFormValue } as IUserData;
 
-      this.userDataProfile = { ...this.userDataFormValue } as IUserProfile;
+          this.children.saveDataBtn.hide();
 
-      this.children.saveDataBtn.hide();
+          this.children.snackbar.setProps({
+            text: 'Profile updated successfully',
+            color: 'success',
+          });
+        })
+        .catch((e) => {
+          this.children.snackbar.setProps({
+            text: ucFirstLetter(e.reason || e.error),
+            color: 'error',
+          });
+        });
     }
   }
 
   submitUserPass(): void {
-    if (!isValidEqualPasswords(this.userPassFormValue.oldPassword, this.userPassFormValue.oldPassword)
-        || !this.userPassFormValue.oldPassword) {
+    if (!this.userPassFormValue.oldPassword) {
       this.children.oldPasswordInput.getContent().classList.add('ui-input__profile_invalid');
     }
 
@@ -392,31 +474,47 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       this.children.newPasswordInput.getContent().classList.add('ui-input__profile_invalid');
     }
 
-    if (!isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword)) {
+    if (!isValidEqualPasswords(this.userPassFormValue.newPassword, this.userPassFormValue.newRepeatPassword!)) {
       this.children.newPasswordRepeatInput.getContent().classList.add('ui-input__profile_invalid');
     }
 
     if (this.isValidUserPassForm && this.userPassFormValue.oldPassword) {
-      this.setProps({ nonAvailableChangeData: true });
+      const form = { ...this.userPassFormValue };
+      delete form.newRepeatPassword;
+      profileService.changeUserPassword(form)
+        .then(() => {
+          this.setProps({ nonAvailableChangeData: true });
 
-      this.userPassFormValue.newRepeatPassword = '';
-      this.userPassFormValue.oldPassword = '';
-      this.userPassFormValue.newPassword = '';
+          this.userPassFormValue.newRepeatPassword = '';
+          this.userPassFormValue.oldPassword = '';
+          this.userPassFormValue.newPassword = '';
 
-      this.children.oldPasswordInput.setProps({ value: '' });
-      this.children.newPasswordInput.setProps({ value: '' });
-      this.children.newPasswordRepeatInput.setProps({ value: '' });
+          this.children.oldPasswordInput.setProps({ value: '' });
+          this.children.newPasswordInput.setProps({ value: '' });
+          this.children.newPasswordRepeatInput.setProps({ value: '' });
 
-      this.children.savePassBtn.hide();
-      this.userPasswordInputs.forEach((input) => input.hide());
+          this.children.savePassBtn.hide();
+          this.userPasswordInputs.forEach((input) => input.hide());
 
-      this.userDataInputs.forEach((input) => input.show());
+          this.userDataInputs.forEach((input) => input.show());
 
-      this.userPasswordInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
+          this.userPasswordInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
+
+          this.children.snackbar.setProps({
+            text: 'Password updated successfully',
+            color: 'success',
+          });
+        })
+        .catch((e) => {
+          this.children.snackbar.setProps({
+            text: ucFirstLetter(e.reason || e.error),
+            color: 'error',
+          });
+        });
     }
   }
 
-  initUserDataInputEvents(inputName: string, formField: string, validator: (text: string) => boolean): IEvents {
+  initUserDataInputEvents(inputName: string, formField: EUserDataKeys, validator: (text: string) => boolean): IEvents {
     return {
       input: (event) => {
         const target = event?.target as HTMLInputElement;
@@ -426,38 +524,23 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       focusout: (event) => {
         if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
         if (validator(this.userDataFormValue[formField])) {
-          this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.remove('ui-input__profile_invalid');
         } else {
-          this.children[inputName].getContent().classList.add('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.add('ui-input__profile_invalid');
         }
       },
       focusin: (event) => {
         if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
         if (validator(this.userDataFormValue[formField])) {
-          this.children[inputName].getContent().classList.remove('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.remove('ui-input__profile_invalid');
         } else {
-          this.children[inputName].getContent().classList.add('ui-input__profile_invalid');
+          this.children[inputName as keyof IChildrenProfile].getContent().classList.add('ui-input__profile_invalid');
         }
       },
     };
   }
-
-  loadDataProfile(): void {
-    setTimeout(() => {
-      this.userDataProfile = getUserProfile();
-
-      this.userDataFormValue = { ...this.userDataProfile } as IUserDataFormValue;
-
-      this.setProps({
-        userName: this.userDataProfile.name,
-      });
-
-      this.children.emailInput.setProps({ value: this.userDataProfile.email });
-      this.children.loginInput.setProps({ value: this.userDataProfile.login });
-      this.children.nameInput.setProps({ value: this.userDataProfile.name });
-      this.children.lastNameInput.setProps({ value: this.userDataProfile.lastName });
-      this.children.nicknameInput.setProps({ value: this.userDataProfile.nickname });
-      this.children.phoneInput.setProps({ value: this.userDataProfile.phone });
-    }, 700);
-  }
 }
+
+export const ProfileWrap = connect<IPropsProfile, IChildrenProfile>((state) => ({
+  userData: state?.user,
+}))(Profile as typeof Block);

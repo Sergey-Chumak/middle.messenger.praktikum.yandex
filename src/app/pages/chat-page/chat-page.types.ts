@@ -1,13 +1,30 @@
-import { ChatList } from '../../components/chat-list';
-import { Chat } from '../../components/chat';
-import { PlugDialog } from '../../components/plug-dialog';
+// @ts-ignore
+import { ChatList } from './chat-list';
+// @ts-ignore
+import { Chat } from './chat';
+import { PlugDialog } from './plug-dialog';
+import { IChatCard } from '../../services/chats/chats.types';
+import { IMessage } from './chat/dialogues';
+import { NewChatModal } from './modals/new-chat-modal';
+// @ts-ignore
+import { EditUsersModal } from './modals/edit-users-modal';
+import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
+import { Modal } from '../../components/ui/modal';
 
 export interface IChatPageProps {
-    chatList?: ChatList;
-    chat?: Chat | PlugDialog;
+    chats?: IChatCard[];
+    currentMessages?: IMessage[];
 }
 
 export interface IChatPageChildren {
+    // @ts-ignore
     chatList: ChatList;
-    chat: Chat | PlugDialog;
+    // @ts-ignore
+    chat: Chat;
+    plug: PlugDialog;
+    newChatModal: NewChatModal;
+    // @ts-ignore
+    editUserModal: EditUsersModal;
+    changeAvatarModal: ChangeAvatarModal;
+    modal: Modal;
 }

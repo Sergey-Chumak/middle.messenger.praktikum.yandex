@@ -1,0 +1,35 @@
+.signin-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin: auto;
+  width: 400px;
+  padding: 32px;
+  background: var(--color-background-secondary);
+  box-sizing: border-box;
+  border-radius: 12px;
+
+  &__link {
+    text-align: center;
+    cursor: pointer;
+    color: var(--color-text-content);
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-text-chat-name)
+    }
+  }
+
+  &__submit-btn {
+    margin-top: 10px;
+    margin-bottom: 60px;
+  }
+}

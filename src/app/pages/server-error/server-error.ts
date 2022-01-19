@@ -1,12 +1,21 @@
 import { tmpl } from './server-error.tmpl';
-import Block from '../../services/block';
-import { IPropsServerError } from './server-error.types';
+import Block from '../../services/block/block';
+import { router } from '../../services/router/router';
 
-export class ServerError extends Block<IPropsServerError, void > {
-  constructor(props: IPropsServerError) {
+export class ServerError extends Block<{}, void > {
+  constructor(props: { }) {
     super('div', props);
+  }
+
+  componentDidMount() {
     this.setProps({
-      error: '500',
+      events: {
+        click: (event: Event) => {
+          if ((event.target as HTMLElement).id === 'server-error-link') {
+            router.go('/messenger');
+          }
+        },
+      },
     });
   }
 

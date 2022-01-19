@@ -1,3 +1,3 @@
 import './chat-page.scss';
 
-export { ChatPage } from './chat-page';
+export { ChatPageWrap as ChatPage } from './chat-page';

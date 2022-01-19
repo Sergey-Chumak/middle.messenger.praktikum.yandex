@@ -21,18 +21,20 @@
 
   &__label {
     margin-bottom: 6px;
-    font-size: 10px;
-    color: var(--color-text-primary);
+    font-size: 11px;
+    color: var(--color-text-content);
   }
 
   &__input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border);
     width: 335px;
     flex-shrink: 0;
     padding: 0;
     margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--color-text-chat-name);
 
     &:focus {
       outline: none;
@@ -49,7 +51,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 510px;
-    border-bottom: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 5px;
     margin-bottom: 10px;
 
@@ -101,6 +103,10 @@
       }
 
       &:disabled {
+        color: var(--color-link-primary);
+      }
+
+      &::placeholder {
         color: var(--color-text-primary);
       }
     }

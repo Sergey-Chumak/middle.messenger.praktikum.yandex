@@ -1,0 +1,36 @@
+@import '../../../../../styles/mixins/backdrop';
+@import '../../../../../styles/mixins/modal';
+
+.new-chat-modal-wrapper {
+  @include modal-wrapper;
+}
+
+.new-chat-modal {
+ @include modal;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+
+  &__buttons {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+  }
+
+  &__header {
+    font-size: 26px;
+    margin-bottom: 27px;
+    color: var(--color-text-chat-name)
+  }
+
+  &__input > input {
+    width: 100%;
+    border-color: var(--color-border);
+  }
+}
+
+.modal-backdrop {
+  @include backdrop;
+}
