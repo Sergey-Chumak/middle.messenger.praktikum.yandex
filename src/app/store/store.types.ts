@@ -2,7 +2,7 @@ import { IUserData } from '../services/auth/auth.types';
 import { IChatCard } from '../services/chats/chats.types';
 import { IMessage } from '../pages/chat-page/chat/dialogues';
 
-export enum StoreEvents {
+export enum EStoreEvents {
     Updated = 'updated',
 }
 

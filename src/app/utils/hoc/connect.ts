@@ -1,5 +1,5 @@
 import Block from '../../services/block/block';
-import { IState, StoreEvents } from '../../store/store.types';
+import { IState, EStoreEvents } from '../../store/store.types';
 import store from '../../store/store';
 
 export default function connect<Props, Children>(mapStateToProps:(state: IState) => { [key: string]: any }) {
@@ -8,7 +8,7 @@ export default function connect<Props, Children>(mapStateToProps:(state: IState)
       constructor(props: Props) {
         super('div', { ...props, ...mapStateToProps(store.getState()) });
 
-        store.attach(StoreEvents.Updated, () => {
+        store.attach(EStoreEvents.Updated, () => {
           this.setProps({ ...mapStateToProps(store.getState()) });
         });
       }

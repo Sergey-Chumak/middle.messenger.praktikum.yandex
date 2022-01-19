@@ -1,6 +1,6 @@
 import { router } from '../router/router';
 
-enum Method {
+enum EMethod {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -26,22 +26,22 @@ export default class HTTPTransport {
   get<T>(url: string, options: OptionsWithoutMethod = {}): Promise<T> {
     const query = queryStringify(options.data);
     const targetUrl = query ? `${url}${query}` : url;
-    return this.request<T>(targetUrl, { ...options, method: Method.GET });
+    return this.request<T>(targetUrl, { ...options, method: EMethod.GET });
   }
 
   put<T>(url: string, options: OptionsWithoutMethod = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: Method.PUT });
+    return this.request<T>(url, { ...options, method: EMethod.PUT });
   }
 
   post<T>(url: string, options: OptionsWithoutMethod = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: Method.POST });
+    return this.request<T>(url, { ...options, method: EMethod.POST });
   }
 
   delete<T>(url: string, options: OptionsWithoutMethod = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: Method.DELETE });
+    return this.request<T>(url, { ...options, method: EMethod.DELETE });
   }
 
-  private request<T>(url: string, options: Options = { method: Method.GET }): Promise<T> {
+  private request<T>(url: string, options: Options = { method: EMethod.GET }): Promise<T> {
     const { method, data } = options;
 
     return new Promise((resolve, reject) => {
@@ -71,7 +71,7 @@ export default class HTTPTransport {
       xhr.onerror = reject;
       xhr.ontimeout = reject;
 
-      if (method === Method.GET || !data) {
+      if (method === EMethod.GET || !data) {
         xhr.send();
       } else if (data instanceof FormData) {
         xhr.send(data);

@@ -16,6 +16,7 @@ import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
 import { Modal } from '../../components/ui/modal';
 import store from '../../store/store';
 import { router } from '../../services/router/router';
+import { webSocketApi } from '../../services/web-socket/web-socket';
 
 class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
   newChatName = '';
@@ -84,23 +85,25 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
           }
         },
         click: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'chat-edit-users') {
+          const eventTarget = event.target as HTMLElement;
+
+          if (eventTarget.id === 'chat-edit-users') {
             this.children.editUserModal.open();
           }
-          if ((event.target as HTMLElement).id === 'edit-users-modal-close') {
+          if (eventTarget.id === 'edit-users-modal-close') {
             this.children.editUserModal.close();
           }
-          if ((event.target as HTMLElement).id === 'new-chat-icon') {
+          if (eventTarget.id === 'new-chat-icon') {
             this.children.newChatModal.open();
           }
-          if ((event.target as HTMLElement).id === 'create-chat-modal-confirm') {
+          if (eventTarget.id === 'create-chat-modal-confirm') {
             chatsService.createChat(this.newChatName);
             this.children.newChatModal.close();
           }
-          if ((event.target as HTMLElement).id === 'option-change-avatar') {
+          if (eventTarget.id === 'option-change-avatar') {
             this.children.changeAvatarModal.open();
           }
-          if ((event.target as HTMLElement).id === 'change-chat-avatar-modal-confirm') {
+          if (eventTarget.id === 'change-chat-avatar-modal-confirm') {
             if (this.chatAvatar) {
               chatsService.changeChatAvatar(this.chatAvatar, +last(document.location.pathname.split('/'))).then(() => {
                 this.children.changeAvatarModal.close();
@@ -108,7 +111,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
               });
             }
           }
-          if ((event.target as HTMLElement).id === 'option-delete-chat') {
+          if (eventTarget.id === 'option-delete-chat') {
             this.children.modal.setProps({
               message: 'Are you sure you want to delete the chat',
               target: store.getState().currentChat,
@@ -120,13 +123,13 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
             this.children.modal.open();
           }
 
-          if ((event.target as HTMLElement).id === 'delete-chat-button') {
+          if (eventTarget.id === 'delete-chat-button') {
             chatsService.deleteChat(+last(document.location.pathname.split('/')))
               .then(() => {
                 this.children.modal.close();
               });
           }
-          if ((event.target as HTMLElement).id === 'option-leave-chat') {
+          if (eventTarget.id === 'option-leave-chat') {
             this.children.modal.setProps({
               message: 'Do you really want to leave the chat',
               target: undefined,
@@ -138,7 +141,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
             this.children.modal.open();
           }
 
-          if ((event.target as HTMLElement).id === 'leave-chat-button') {
+          if (eventTarget.id === 'leave-chat-button') {
             chatsService.deleteUser(+last(document.location.pathname.split('/')), store.getState().user?.id!)
               .then(() => {
                 this.children.modal.close();
@@ -172,6 +175,11 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       changeAvatarModal: this.children.changeAvatarModal,
       modal: this.children.modal,
     });
+  }
+
+  hide() {
+    webSocketApi.close();
+    super.hide();
   }
 }
 

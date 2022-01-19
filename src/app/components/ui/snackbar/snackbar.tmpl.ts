@@ -1,5 +1,5 @@
 export const tmpl = `
-    <div class="snackbar snackbar__{{ color }}">
+    <div class="snackbar snackbar_{{ color }}">
         {{ text }}
     </div> 
 `;

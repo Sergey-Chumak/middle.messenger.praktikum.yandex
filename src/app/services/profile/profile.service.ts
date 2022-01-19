@@ -2,7 +2,6 @@ import { ProfileServiceApi } from './profile.service.api';
 import { IUserDataFormValue, IUserPassFormValue } from '../../pages/profile/profile.types';
 import store from '../../store/store';
 import { IUserData } from '../auth/auth.types';
-import { BASE_URL } from '../constants';
 
 class ProfileService {
   private profileApi: ProfileServiceApi = new ProfileServiceApi();
@@ -10,7 +9,7 @@ class ProfileService {
   public changeUserData(data: IUserDataFormValue) {
     return this.profileApi.changeUserData(data).then((data: IUserData) => {
       store.set('user', data);
-      store.set('user.avatar', `${BASE_URL}/Resources${data.avatar}`);
+      store.set('user.avatar', data.avatar);
     });
   }
 
@@ -22,7 +21,7 @@ class ProfileService {
     const formData = new FormData();
     formData.append('avatar', data);
     return this.profileApi.changeUserAvatar(formData).then((data: IUserData) => {
-      store.set('user.avatar', `${BASE_URL}/Resources${data.avatar}`);
+      store.set('user.avatar', data.avatar);
     });
   }
 

@@ -1,5 +1,5 @@
 import { EventBus } from '../services/event-bus';
-import { Indexed, IState, StoreEvents } from './store.types';
+import { Indexed, IState, EStoreEvents } from './store.types';
 
 function set(state: any, path: string, value: Indexed): void {
   const keys = path.split('.');
@@ -22,12 +22,12 @@ class Store extends EventBus {
 
   public removeState(): void {
     this.state = {};
-    this.emit(StoreEvents.Updated);
+    this.emit(EStoreEvents.Updated);
   }
 
   public set(path: string, value: Indexed): void {
     set(this.state, path, value);
-    this.emit(StoreEvents.Updated);
+    this.emit(EStoreEvents.Updated);
   }
 }
 

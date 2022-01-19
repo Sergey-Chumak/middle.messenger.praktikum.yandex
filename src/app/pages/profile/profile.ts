@@ -12,7 +12,7 @@ import {
   isValidPhone,
 } from '../../utils/validate';
 import {
-  IChildrenProfile, IPropsProfile, IUserDataFormValue, IUserPassFormValue, UserDataKeys,
+  IChildrenProfile, IPropsProfile, IUserDataFormValue, IUserPassFormValue, EUserDataKeys,
 } from './profile.types';
 import store from '../../store/store';
 import { IUserData } from '../../services/auth/auth.types';
@@ -31,12 +31,12 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   userPasswordInputs: Input[] = [];
   userData: IUserData = store.getState().user!;
   userDataFormValue: IUserDataFormValue = {
-    [UserDataKeys.Email]: this.userData.email,
-    [UserDataKeys.Login]: this.userData.login,
-    [UserDataKeys.FirstName]: this.userData.first_name,
-    [UserDataKeys.SecondName]: this.userData.second_name,
-    [UserDataKeys.DisplayName]: this.userData.display_name,
-    [UserDataKeys.Phone]: this.userData.phone,
+    [EUserDataKeys.Email]: this.userData.email,
+    [EUserDataKeys.Login]: this.userData.login,
+    [EUserDataKeys.FirstName]: this.userData.first_name,
+    [EUserDataKeys.SecondName]: this.userData.second_name,
+    [EUserDataKeys.DisplayName]: this.userData.display_name,
+    [EUserDataKeys.Phone]: this.userData.phone,
   };
   userPassFormValue: IUserPassFormValue = {
     oldPassword: '',
@@ -46,12 +46,12 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   userDataProfile: IUserData = { ...this.userDataFormValue } as IUserData;
 
   get isValidUserDataForm(): boolean {
-    return isValidLogin(this.userDataFormValue[UserDataKeys.Login])
-        && isValidLogin(this.userDataFormValue[UserDataKeys.DisplayName])
-        && isValidEmail(this.userDataFormValue[UserDataKeys.Email])
-        && isValidPhone(this.userDataFormValue[UserDataKeys.Phone])
-        && isValidName(this.userDataFormValue[UserDataKeys.FirstName])
-        && isValidName(this.userDataFormValue[UserDataKeys.SecondName]);
+    return isValidLogin(this.userDataFormValue[EUserDataKeys.Login])
+        && isValidLogin(this.userDataFormValue[EUserDataKeys.DisplayName])
+        && isValidEmail(this.userDataFormValue[EUserDataKeys.Email])
+        && isValidPhone(this.userDataFormValue[EUserDataKeys.Phone])
+        && isValidName(this.userDataFormValue[EUserDataKeys.FirstName])
+        && isValidName(this.userDataFormValue[EUserDataKeys.SecondName]);
   }
 
   get isValidUserPassForm(): boolean {
@@ -194,7 +194,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.emailInput = new Input({
-      value: this.userDataFormValue[UserDataKeys.Email],
+      value: this.userDataFormValue[EUserDataKeys.Email],
       id: 'profile-email',
       type: 'email',
       labelName: 'Email',
@@ -204,7 +204,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.loginInput = new Input({
-      value: this.userDataFormValue[UserDataKeys.Login],
+      value: this.userDataFormValue[EUserDataKeys.Login],
       id: 'profile-login',
       type: 'text',
       labelName: 'Login',
@@ -214,7 +214,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.nameInput = new Input({
-      value: this.userDataFormValue[UserDataKeys.FirstName],
+      value: this.userDataFormValue[EUserDataKeys.FirstName],
       id: 'profile-first_name',
       type: 'text',
       labelName: 'Name',
@@ -224,7 +224,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.lastNameInput = new Input({
-      value: this.userDataFormValue[UserDataKeys.SecondName],
+      value: this.userDataFormValue[EUserDataKeys.SecondName],
       id: 'profile-last_name',
       type: 'text',
       labelName: 'Last name',
@@ -234,7 +234,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.nicknameInput = new Input({
-      value: this.userDataFormValue[UserDataKeys.DisplayName],
+      value: this.userDataFormValue[EUserDataKeys.DisplayName],
       id: 'profile-nickname',
       type: 'text',
       labelName: 'Nickname',
@@ -244,7 +244,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     });
 
     this.children.phoneInput = new Input({
-      value: this.userDataFormValue[UserDataKeys.Phone],
+      value: this.userDataFormValue[EUserDataKeys.Phone],
       id: 'profile-phone',
       type: 'text',
       labelName: 'Phone',
@@ -298,27 +298,27 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
   initChildrenEvents(): void {
     this.children.emailInput.setProps({
-      events: this.initUserDataInputEvents('emailInput', UserDataKeys.Email, isValidEmail),
+      events: this.initUserDataInputEvents('emailInput', EUserDataKeys.Email, isValidEmail),
     });
 
     this.children.loginInput.setProps({
-      events: this.initUserDataInputEvents('loginInput', UserDataKeys.Login, isValidLogin),
+      events: this.initUserDataInputEvents('loginInput', EUserDataKeys.Login, isValidLogin),
     });
 
     this.children.nameInput.setProps({
-      events: this.initUserDataInputEvents('nameInput', UserDataKeys.FirstName, isValidName),
+      events: this.initUserDataInputEvents('nameInput', EUserDataKeys.FirstName, isValidName),
     });
 
     this.children.lastNameInput.setProps({
-      events: this.initUserDataInputEvents('lastNameInput', UserDataKeys.SecondName, isValidName),
+      events: this.initUserDataInputEvents('lastNameInput', EUserDataKeys.SecondName, isValidName),
     });
 
     this.children.nicknameInput.setProps({
-      events: this.initUserDataInputEvents('nicknameInput', UserDataKeys.DisplayName, isValidLogin),
+      events: this.initUserDataInputEvents('nicknameInput', EUserDataKeys.DisplayName, isValidLogin),
     });
 
     this.children.phoneInput.setProps({
-      events: this.initUserDataInputEvents('phoneInput', UserDataKeys.Phone, isValidPhone),
+      events: this.initUserDataInputEvents('phoneInput', EUserDataKeys.Phone, isValidPhone),
     });
 
     this.children.oldPasswordInput.setProps({
@@ -514,7 +514,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     }
   }
 
-  initUserDataInputEvents(inputName: string, formField: UserDataKeys, validator: (text: string) => boolean): IEvents {
+  initUserDataInputEvents(inputName: string, formField: EUserDataKeys, validator: (text: string) => boolean): IEvents {
     return {
       input: (event) => {
         const target = event?.target as HTMLInputElement;

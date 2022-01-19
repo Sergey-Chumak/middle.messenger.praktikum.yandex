@@ -2,6 +2,8 @@ interface IObject {
     [key: string]: any
 }
 
+const isObject = <T = Record<string, unknown>>(value: unknown): value is T => !!value && typeof value === 'object' && value.toString() === '[object Object]';
+
 export function cloneDeep(obj: IObject | IObject[]): IObject | IObject[] {
   let copyObj;
   if (Array.isArray(obj)) {
@@ -17,7 +19,7 @@ function cloneArray(arg: Array<any>): typeof arg {
   for (let i = 0; i < arg.length; i += 1) {
     if (Array.isArray(arg[i])) {
       cloneArg[i] = cloneArray(arg[i]);
-    } else if (typeof arg[i] === 'object') {
+    } else if (isObject(arg[i])) {
       cloneArg[i] = cloneObject(arg[i]);
     } else {
       cloneArg[i] = arg[i];
@@ -28,11 +30,12 @@ function cloneArray(arg: Array<any>): typeof arg {
 
 function cloneObject(arg: IObject): typeof arg {
   const cloneArg: IObject = {};
+  // eslint-disable-next-line no-restricted-syntax
   for (const key in arg) {
     if (arg.hasOwnProperty(key)) {
       if (Array.isArray(arg[key])) {
         cloneArg[key] = cloneArray(arg[key]);
-      } else if (typeof arg[key] === 'object') {
+      } else if (isObject(arg[key])) {
         cloneArg[key] = cloneObject(arg[key]);
       } else {
         cloneArg[key] = arg[key];

@@ -3,7 +3,6 @@ import AuthServiceApi from './auth.service.api';
 import store from '../../store/store';
 import { IUserData } from './auth.types';
 import { ISignupFormValue } from '../../pages/auth/signup/signup.types';
-import { BASE_URL } from '../constants';
 import { chatsService } from '../chats/chats.service';
 
 class AuthService {
@@ -24,7 +23,7 @@ class AuthService {
     return this.authApi.getUserData()
       .then((data:IUserData) => {
         store.set('user', data);
-        store.set('user.avatar', `${BASE_URL}/Resources${data.avatar}`);
+        store.set('user.avatar', data.avatar);
       });
   }
 

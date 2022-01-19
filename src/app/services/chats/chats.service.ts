@@ -10,7 +10,7 @@ class ChatsService {
 
   getChats() {
     return this.chatsApi.getChats().then((data) => {
-      data?.sort((a, b) => {
+      data?.slice().sort((a, b) => {
         if (a.last_message && b.last_message) {
           return a.last_message.time < b.last_message.time ? 1 : -1;
         }

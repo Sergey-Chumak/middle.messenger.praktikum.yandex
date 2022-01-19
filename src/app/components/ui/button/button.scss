@@ -20,14 +20,6 @@
     width: 276px;
   }
 
-  &_primary {
-    background: var(--color-button);
-  }
-
-  &_secondary {
-    background: var(--color-button);
-  }
-
   &:active {
     box-shadow: var(--shadow-primary);
   }

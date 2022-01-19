@@ -4,7 +4,7 @@ import Block from '../../../services/block/block';
 import { Input } from '../../../components/ui/input';
 import { isValidLogin, isValidPassword } from '../../../utils/validate';
 import {
-  ChildrenSigninKeys, IChildrenSignin, IPropsSignin, ISigninFormValue, SigninFormKeys,
+  EChildrenSigninKeys, IChildrenSignin, IPropsSignin, ISigninFormValue, ESigninFormKeys,
 } from './signin.types';
 import { IEvents } from '../../../services/types';
 import { Snackbar } from '../../../components/ui/snackbar';
@@ -14,8 +14,8 @@ import { router } from '../../../services/router/router';
 
 export class Signin extends Block<IPropsSignin, IChildrenSignin> {
   signInFormValue: ISigninFormValue = {
-    [SigninFormKeys.Login]: '',
-    [SigninFormKeys.Password]: '',
+    [ESigninFormKeys.Login]: '',
+    [ESigninFormKeys.Password]: '',
   };
 
   get isValidSignInForm(): boolean {
@@ -86,10 +86,10 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
 
   initChildrenEvents(): void {
     this.children.loginInput.setProps({
-      events: this.getInputEvents(ChildrenSigninKeys.LoginInput, SigninFormKeys.Login, isValidLogin),
+      events: this.getInputEvents(EChildrenSigninKeys.LoginInput, ESigninFormKeys.Login, isValidLogin),
     });
     this.children.passwordInput.setProps({
-      events: this.getInputEvents(ChildrenSigninKeys.PasswordInput, SigninFormKeys.Password, isValidPassword),
+      events: this.getInputEvents(EChildrenSigninKeys.PasswordInput, ESigninFormKeys.Password, isValidPassword),
     });
     this.children.submitBtn.setProps({
       events: {
@@ -101,8 +101,8 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
   }
 
   getInputEvents(
-    inputName: ChildrenSigninKeys,
-    formField: SigninFormKeys,
+    inputName: EChildrenSigninKeys,
+    formField: ESigninFormKeys,
     validator: (text: string) => boolean,
   ): IEvents {
     return {
@@ -160,7 +160,7 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
     this.children.passwordInput.setProps({ value: '' });
     this.children.passwordInput.getContent().classList.remove('ui-input_invalid');
 
-    this.signInFormValue[SigninFormKeys.Login] = '';
-    this.signInFormValue[SigninFormKeys.Password] = '';
+    this.signInFormValue[ESigninFormKeys.Login] = '';
+    this.signInFormValue[ESigninFormKeys.Password] = '';
   }
 }
