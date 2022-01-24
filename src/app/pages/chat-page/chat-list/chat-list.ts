@@ -12,6 +12,7 @@ import { webSocketApi } from '../../../services/web-socket/web-socket';
 import { loader } from '../../../components/loader';
 import isEqual from '../../../utils/isEqual';
 import { router } from '../../../services/router/router';
+import audioFile from '../../../../assets/audio/new-message.mp3';
 
 class ChatList extends Block<IChatListProps, IChatListChildren> {
   chatCards: IChatCard[];
@@ -38,9 +39,11 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
     });
 
     if (isNewMessages) {
-      const soundMessage = document.getElementById('new-message-sound') as HTMLAudioElement;
-      soundMessage.currentTime = 0;
-      soundMessage.play();
+      const audio = new Audio();
+      audio.src = audioFile;
+
+      audio.currentTime = 0;
+      audio.play();
     }
 
     this.chatCards = newProps.chatCards;

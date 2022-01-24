@@ -25,6 +25,32 @@
     height: 45px;
     width: 45px;
   }
+
+  &__more-messages {
+    color: var(--color-text-content);
+    transition: background-color 0.2s;
+    cursor: pointer;
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    visibility: hidden;
+
+    &:hover {
+      color: var(--color-text-chat-name);
+    }
+
+    &_visible {
+      visibility: visible;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .dialogues {
+    &__more-messages {
+      position: static;
+    }
+  }
 }
 
 .message {

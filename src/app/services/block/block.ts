@@ -1,6 +1,6 @@
 // @ts-ignore
 import { v4 as makeUUID } from 'uuid';
-import * as Handlebars from 'handlebars';
+import Handlebars from 'handlebars';
 import { EventBus } from '../event-bus';
 import {
   EEventsBusEvents, TChildrenBlock, IMeta, TPropsAndChildren,

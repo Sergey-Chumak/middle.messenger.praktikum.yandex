@@ -19,27 +19,17 @@ export default class Route {
   }
 
   render(): void {
-    if (!this.props.canActivate) {
-      if (!this.block) {
-        this.block = new this.component({});
-        render(this.props.rootQuery, this.block as Block<unknown, unknown>);
-        return;
-      }
+    this.props.canActivate().then((data) => {
+      if (data) {
+        if (!this.block) {
+          this.block = new this.component({});
+          render(this.props.rootQuery, this.block as Block<unknown, unknown>);
+          return;
+        }
 
-      this.block.show();
-    } else {
-      this.props.canActivate().then((data) => {
-        if (data) {
-          if (!this.block) {
-            this.block = new this.component({});
-            render(this.props.rootQuery, this.block as Block<unknown, unknown>);
-            return;
-          }
-
-          this.block.show();
-        } else if (this.props.redirectTo) router.go(this.props.redirectTo);
-      });
-    }
+        this.block.show();
+      } else if (this.props.redirectTo) router.go(this.props.redirectTo);
+    });
   }
 
   navigate(path: string): void {
