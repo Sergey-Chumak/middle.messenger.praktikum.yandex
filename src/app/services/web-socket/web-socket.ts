@@ -4,10 +4,12 @@ import { cloneDeep } from '../../utils/cloneDeep';
 import { IMessage } from '../../pages/chat-page/chat/dialogues';
 import { chatsService } from '../chats/chats.service';
 import { loader } from '../../components/loader';
+import audioFile from '../../../assets/audio/new-message.mp3';
 
 class WebSocketApi {
   socket: WebSocket;
   interval: any;
+  offsetMessages: number;
 
   open(token: string) {
     if (this.socket) this.close();
@@ -29,6 +31,8 @@ class WebSocketApi {
 
   private initEventOpen() {
     this.socket.addEventListener('open', () => {
+      this.offsetMessages = 0;
+
       this.socket.send(JSON.stringify({
         content: '0',
         type: 'get old',
@@ -51,7 +55,7 @@ class WebSocketApi {
       if (JSON.parse(event.data).type === 'message' || Array.isArray(JSON.parse(event.data))) {
         let currentMessages: IMessage[] = [];
         if (Array.isArray(JSON.parse(event.data))) {
-          currentMessages = [...JSON.parse(event.data)];
+          currentMessages = (store.getState().currentMessages || currentMessages).concat(JSON.parse(event.data));
         } else {
           currentMessages = cloneDeep(store.getState().currentMessages || currentMessages) as IMessage[];
           currentMessages.unshift(JSON.parse(event.data));
@@ -67,9 +71,11 @@ class WebSocketApi {
             (document.querySelector('#message') as HTMLElement)?.focus();
           }
           if (JSON.parse(event.data).type === 'message') {
-            const soundMessage = document.getElementById('new-message-sound') as HTMLAudioElement;
-            soundMessage.currentTime = 0;
-            soundMessage.play();
+            const audio = new Audio();
+            audio.src = audioFile;
+
+            audio.currentTime = 0;
+            audio.play();
           }
 
           const dialoguesEl = document.querySelector('#dialogues') as HTMLElement;
@@ -89,6 +95,8 @@ class WebSocketApi {
 
   private initEventClose() {
     this.socket.addEventListener('close', (event) => {
+      this.offsetMessages = 0;
+
       if (event.wasClean) {
         console.log('Соединение закрыто чисто');
       } else {
@@ -109,6 +117,17 @@ class WebSocketApi {
     this.socket.send(JSON.stringify({
       content: message,
       type: 'message',
+    }));
+  }
+
+  loadMoreMessages() {
+    loader.show();
+
+    this.offsetMessages += 20;
+
+    this.socket.send(JSON.stringify({
+      content: this.offsetMessages,
+      type: 'get old',
     }));
   }
 }

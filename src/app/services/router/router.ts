@@ -22,7 +22,8 @@ class Router {
     Router.__instance = this;
   }
 
-  public use(path: string, component: Function, canActivate?: () => Promise<boolean>, redirectTo?: string) {
+  // eslint-disable-next-line default-param-last
+  public use(path: string, component: Function, canActivate = () => Promise.resolve(true), redirectTo?: string) {
     if (path.includes('/:')) {
       path = path.split('/')
         .filter((_item, index) => index !== path.split('/').length - 1)

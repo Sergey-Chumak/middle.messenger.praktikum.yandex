@@ -10,9 +10,7 @@ import isEqual from '../../../utils/isEqual';
 
 class Chat extends Block<IChatProps, IChatChildren> {
   dialogues: IDialog[] = this.props.dialogues || [];
-  chatAvatar: File | undefined;
   newUserName: string = '';
-  socket: WebSocket;
   message: string;
 
   constructor(props: IChatProps) {

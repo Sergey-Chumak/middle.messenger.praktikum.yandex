@@ -10,7 +10,7 @@ class ChatsService {
 
   getChats() {
     return this.chatsApi.getChats().then((data) => {
-      data?.slice().sort((a, b) => {
+      const copyData = data?.slice().sort((a, b) => {
         if (a.last_message && b.last_message) {
           return a.last_message.time < b.last_message.time ? 1 : -1;
         }
@@ -19,7 +19,7 @@ class ChatsService {
         if (!a.last_message && !b.last_message) return -1;
         return 0;
       })
-        .forEach((item) => {
+        .map((item) => {
           item.id === +last(document.location.pathname.split('/'))!
             ? item.status = 'active'
             : item.status = 'passive';
@@ -31,9 +31,11 @@ class ChatsService {
               item.last_message.time = getDateCustomFormat(item.last_message.time);
             }
           }
+
+          return item;
         });
-      store.set('chats', data);
-      return data;
+      store.set('chats', copyData);
+      return copyData;
     });
   }
 
