@@ -34,9 +34,10 @@ router
   .use('/server-error', ServerError)
   .use('**', ClientError);
 
-router.start();
 if (document.location.pathname === '/') {
   router.go('/signin');
 }
+
+router.start();
 
 render('#app', new Main({}));
