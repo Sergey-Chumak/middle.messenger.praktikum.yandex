@@ -23,5 +23,6 @@ export const tmplDialogues = `
             <div class="message__date">{{ date }}</div>
         {{/with}}
         {{/each}}
+        <p id="load-more-messages" class="dialogues__more-messages">Load more messages</p>
     </div>
 `;

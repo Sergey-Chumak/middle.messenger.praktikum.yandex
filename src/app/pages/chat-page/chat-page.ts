@@ -39,6 +39,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
       inputId: 'change-chat-avatar-modal-input',
       confirmBtnId: 'change-chat-avatar-modal-confirm',
     });
+
     this.children.modal = new Modal({
       cancel: 'Cancel',
       confirm: '',

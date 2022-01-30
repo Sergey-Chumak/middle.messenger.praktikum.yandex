@@ -6,9 +6,12 @@
 Запуск тестов: npm run test  
 Проверка типов: npm run check-types  
 
-Используется Block как BaseComponent  
-Handlebars как шаблонизатор  
+Стек:  
+TypeScript,  
+SCSS,  
+Handlebars,  
+Webpack,  
+Mocha
 
-Ссылка на развернутый проект на Netlify: https://determined-gates-cc856c.netlify.app  
-Ссылка на Figma: https://www.figma.com/file/npZeA9IYIhLa50VaA6Y8dh/Messanger?node-id=308%3A2  
-Ссылка на pull request Sprint 4: https://github.com/Sergey-Chumak/middle.messenger.praktikum.yandex/pull/27  
+Ссылка на развернутый проект на Heroku: https://ancient-wildwood-72618.herokuapp.com/  
+Ссылка на Figma: https://www.figma.com/file/npZeA9IYIhLa50VaA6Y8dh/Messanger?node-id=308%3A2
