@@ -1,4 +1,4 @@
-@import '../../../../styles/mixins/search';
+@import "../../../../styles/mixins/search";
 
 .chat-list {
   box-sizing: border-box;
@@ -43,7 +43,7 @@
   }
 
   &__search {
-   @include search;
+    @include search;
   }
 
   &__available-chats {

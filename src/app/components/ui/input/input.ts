@@ -7,7 +7,19 @@ export class Input extends Block<IPropsInput, void> {
     super('div', props);
   }
 
+  componentDidMount() {
+    this.getContent().classList.add('c-input');
+
+    this.setProps({
+      events: {
+        click: () => {
+          (this.getContent().firstElementChild as HTMLInputElement).focus();
+        },
+      },
+    });
+  }
+
   render(): DocumentFragment {
-    return this.compile(tmpl, this.props);
+    return this.compile(tmpl);
   }
 }

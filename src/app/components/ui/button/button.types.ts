@@ -1,8 +1,7 @@
 export interface IPropsButton {
     name: string;
-    class?: string;
     id?: string;
-    type?: string;
+    class?: string;
     color?: 'primary' | 'secondary';
     size?: 's' | 'm' | 'l';
 }

@@ -1,26 +1,70 @@
-.ui-button {
-  width: 276px;
-  height: 37px;
+.c-button {
+  position: relative;
+  overflow: hidden;
   border-radius: 8px;
-  border: none;
-  font-size: 14px;
   background: var(--color-button);
-  color: var(--color-text-secondary);
-  cursor: pointer;
+  box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
+  width: 100%;
+  height: 37px;
 
   &_s {
     width: 131px;
-  }
-
-  &_l {
-    width: 336px;
   }
 
   &_m {
     width: 276px;
   }
 
-  &:active {
-    box-shadow: var(--shadow-primary);
+  &_l {
+    width: 360px;
+    height: 54px;
+    border-radius: 12px;
+
+    .c-button__button {
+      text-transform: uppercase;
+    }
+  }
+
+  &_primary {
+    background: rebeccapurple;
+  }
+
+  &_secondary {
+    background: transparent;
+    box-shadow: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: rgba(199, 199, 199, 0.05);
+    }
+  }
+
+  &__button {
+    position: relative;
+    z-index: 1;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    border: none;
+    font-size: 14px;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  &_pulse {
+    background-color: rgb(255 255 255 / 10%);
+    border-radius: 50%;
+    animation: pulse 0.7s ease-out;
+    transform: scale(0);
+    position: absolute;
+  }
+}
+
+@keyframes pulse {
+  to {
+    transform: scale(2);
+    background-color: rgb(255 255 255 / 10%);
+    opacity: 0;
   }
 }

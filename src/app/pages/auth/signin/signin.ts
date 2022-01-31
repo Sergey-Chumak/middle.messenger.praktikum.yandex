@@ -1,54 +1,42 @@
-import { tmpl } from './signin.tmpl';
+import { signinTmpl } from './signin.tmpl';
 import { Button } from '../../../components/ui/button';
 import Block from '../../../services/block/block';
 import { Input } from '../../../components/ui/input';
 import { isValidLogin, isValidPassword } from '../../../utils/validate';
 import {
-  EChildrenSigninKeys, IChildrenSignin, IPropsSignin, ISigninFormValue, ESigninFormKeys,
+  ESigninChildren, ESigninFormFields, ISigninChildren, ISigninFormValue,
 } from './signin.types';
 import { IEvents } from '../../../services/types';
-import { Snackbar } from '../../../components/ui/snackbar';
-import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
 
-export class Signin extends Block<IPropsSignin, IChildrenSignin> {
-  signInFormValue: ISigninFormValue = {
-    [ESigninFormKeys.Login]: '',
-    [ESigninFormKeys.Password]: '',
+export class Signin extends Block<{}, ISigninChildren> {
+  signinFormValue: ISigninFormValue = {
+    [ESigninFormFields.Login]: '',
+    [ESigninFormFields.Password]: '',
   };
 
-  get isValidSignInForm(): boolean {
-    return isValidLogin(this.signInFormValue.login)
-        && isValidPassword(this.signInFormValue.password);
+  get isValidSigninForm(): boolean {
+    return isValidLogin(this.signinFormValue[ESigninFormFields.Login])
+        && isValidPassword(this.signinFormValue[ESigninFormFields.Password]);
   }
 
-  constructor(props: IPropsSignin) {
+  constructor(props: {}) {
     super('div', props);
-    this.initChildren();
   }
 
   componentDidMount(): void {
-    this.initComponentEvents();
+    this.initChildren();
     this.initChildrenEvents();
   }
 
   render(): DocumentFragment {
-    return this.compile(tmpl, {
-      loginInput: this.props.loginInput,
-      passwordInput: this.props.passwordInput,
-      submitBtn: this.props.submitBtn,
-      snackbar: this.props.snackbar,
-    });
+    return this.compile(signinTmpl);
   }
 
   initChildren(): void {
-    this.children.snackbar = new Snackbar({
-      text: '',
-    });
-
     this.children.loginInput = new Input({
-      value: this.signInFormValue.login,
+      value: this.signinFormValue.login,
       id: 'signin-login',
       labelName: 'Login',
       type: 'text',
@@ -56,7 +44,7 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
     });
 
     this.children.passwordInput = new Input({
-      value: this.signInFormValue.password,
+      value: this.signinFormValue.password,
       id: 'signin-password',
       labelName: 'Password',
       errorMessage: 'Password is invalid',
@@ -65,18 +53,38 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
 
     this.children.submitBtn = new Button({
       name: 'Sign in',
-      color: 'secondary',
+      color: 'primary',
       size: 'l',
       class: 'signin__button',
-      type: 'button',
+    });
+
+    this.children.linkBtn = new Button({
+      name: 'Create account',
+      color: 'secondary',
+      size: 'l',
+      id: 'create-account-link',
+      class: 'signin__button',
     });
   }
 
-  initComponentEvents(): void {
-    this.setProps({
+  initChildrenEvents(): void {
+    this.children.loginInput.setProps({
+      events: this.getInputEvents(ESigninChildren.LoginInput, ESigninFormFields.Login, isValidLogin),
+    });
+
+    this.children.passwordInput.setProps({
+      events: this.getInputEvents(ESigninChildren.PasswordInput, ESigninFormFields.Password, isValidPassword),
+    });
+
+    this.children.submitBtn.setProps({
       events: {
-        click: (event: Event) => {
-          if ((event.target as HTMLElement).id !== 'create-account-link') return;
+        click: this.submit.bind(this),
+      },
+    });
+
+    this.children.linkBtn.setProps({
+      events: {
+        click: () => {
           this.resetForm();
           router.go('/signup');
         },
@@ -84,83 +92,58 @@ export class Signin extends Block<IPropsSignin, IChildrenSignin> {
     });
   }
 
-  initChildrenEvents(): void {
-    this.children.loginInput.setProps({
-      events: this.getInputEvents(EChildrenSigninKeys.LoginInput, ESigninFormKeys.Login, isValidLogin),
-    });
-    this.children.passwordInput.setProps({
-      events: this.getInputEvents(EChildrenSigninKeys.PasswordInput, ESigninFormKeys.Password, isValidPassword),
-    });
-    this.children.submitBtn.setProps({
-      events: {
-        click: () => {
-          this.submit();
-        },
-      },
-    });
-  }
-
   getInputEvents(
-    inputName: EChildrenSigninKeys,
-    formField: ESigninFormKeys,
+    inputName: ESigninChildren,
+    formField: ESigninFormFields,
     validator: (text: string) => boolean,
   ): IEvents {
     return {
       input: (event) => {
         const target = event?.target as HTMLInputElement;
-        if (target.tagName !== 'INPUT') return;
-        this.signInFormValue[formField] = target.value;
-      },
-      focusout: (event) => {
-        if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
-        if (validator((this.signInFormValue[formField]))) {
-          this.children[inputName].getContent().classList.remove('ui-input_invalid');
-        } else {
-          this.children[inputName].getContent().classList.add('ui-input_invalid');
+        this.signinFormValue[formField] = target.value;
+
+        if (validator((this.signinFormValue[formField])) || this.signinFormValue[formField] === '') {
+          this.children[inputName].getContent().classList.remove('c-input_invalid');
+          return;
         }
+
+        this.children[inputName].getContent().classList.add('c-input_invalid');
       },
-      focusin: (event) => {
-        if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
-        if (validator(this.signInFormValue[formField])) {
-          this.children[inputName].getContent().classList.remove('ui-input_invalid');
-        } else {
-          this.children[inputName].getContent().classList.add('ui-input_invalid');
+      focusin: () => {
+        if (this.signinFormValue[formField] === '') {
+          this.children[inputName].getContent().classList.remove('c-input_invalid');
         }
       },
     };
   }
 
   submit(): void {
-    if (!isValidLogin(this.signInFormValue.login)) {
-      this.children.loginInput.getContent().classList.add('ui-input_invalid');
+    if (!isValidLogin(this.signinFormValue.login)) {
+      this.children.loginInput.getContent().classList.add('c-input_invalid');
     }
 
-    if (!isValidPassword(this.signInFormValue.password)) {
-      this.children.passwordInput.getContent().classList.add('ui-input_invalid');
+    if (!isValidPassword(this.signinFormValue.password)) {
+      this.children.passwordInput.getContent().classList.add('c-input_invalid');
     }
 
-    if (!this.isValidSignInForm) return;
-    authService.login(this.signInFormValue)
+    if (!this.isValidSigninForm) return;
+    authService.login(this.signinFormValue)
       .then(() => {
         this.resetForm();
         router.go('/messenger');
       })
-      .catch((e) => {
-        this.children.snackbar.setProps({
-          text: ucFirstLetter(e.reason || e.error),
-          color: 'error',
-        });
+      .catch(() => {
       });
   }
 
   resetForm() {
     this.children.loginInput.setProps({ value: '' });
-    this.children.loginInput.getContent().classList.remove('ui-input_invalid');
+    this.children.loginInput.getContent().classList.remove('c-input_invalid');
 
     this.children.passwordInput.setProps({ value: '' });
-    this.children.passwordInput.getContent().classList.remove('ui-input_invalid');
+    this.children.passwordInput.getContent().classList.remove('c-input_invalid');
 
-    this.signInFormValue[ESigninFormKeys.Login] = '';
-    this.signInFormValue[ESigninFormKeys.Password] = '';
+    this.signinFormValue[ESigninFormFields.Login] = '';
+    this.signinFormValue[ESigninFormFields.Password] = '';
   }
 }

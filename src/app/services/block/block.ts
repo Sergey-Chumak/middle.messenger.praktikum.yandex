@@ -89,7 +89,7 @@ export default class Block<TProps, TChildren> {
     return { children, props };
   }
 
-  protected compile(template: string, props: TPropsAndChildren<TProps>): DocumentFragment {
+  protected compile(template: string, props: TPropsAndChildren<TProps> = this.props): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
@@ -118,6 +118,9 @@ export default class Block<TProps, TChildren> {
 
   dispatchComponentDidMount() {
     this.eventBus.emit(EEventsBusEvents.FLOW_CDM);
+    if (Object.keys(this.children).length) {
+      this.eventBus.emit(EEventsBusEvents.FLOW_RENDER);
+    }
   }
 
   private _componentDidUpdate(oldProps: TPropsAndChildren<TProps>, newProps: TPropsAndChildren<TProps>) {

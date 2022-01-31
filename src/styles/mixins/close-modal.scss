@@ -1,12 +1,12 @@
 @mixin close-modal {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 26px;
-  height: 26px;
-  transition: background 0.2s;
-  cursor: pointer;
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 26px;
+	height: 26px;
+	transition: background 0.2s;
+	cursor: pointer;
 
-  &:hover {
-  }
+	&:hover {
+	}
 }

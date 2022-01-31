@@ -1,8 +1,7 @@
 import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
-import { Snackbar } from '../../../components/ui/snackbar';
 
-export enum ESignupFormKeys {
+export enum ESignupFormFields {
     Email = 'email',
     Login = 'login',
     Name = 'first_name',
@@ -12,7 +11,17 @@ export enum ESignupFormKeys {
     PasswordRepeat = 'passwordRepeat',
 }
 
-export enum EChildrenSignupKeys {
+export interface ISignupFormValue {
+    [ESignupFormFields.Email]: string;
+    [ESignupFormFields.Login]: string;
+    [ESignupFormFields.Name]: string;
+    [ESignupFormFields.LastName]: string;
+    [ESignupFormFields.Phone]: string;
+    [ESignupFormFields.Password]: string;
+    [ESignupFormFields.PasswordRepeat]?: string;
+}
+
+export enum ESignupChildren {
     EmailInput = 'emailInput',
     LoginInput = 'loginInput',
     NameInput = 'nameInput',
@@ -21,38 +30,17 @@ export enum EChildrenSignupKeys {
     PasswordInput = 'passwordInput',
     PasswordRepeatInput = 'passwordRepeatInput',
     SubmitBtn = 'submitBtn',
-    Snackbar = 'snackbar',
-}
-
-export interface ISignupFormValue {
-    [ESignupFormKeys.Email]: string;
-    [ESignupFormKeys.Login]: string;
-    [ESignupFormKeys.Name]: string;
-    [ESignupFormKeys.LastName]: string;
-    [ESignupFormKeys.Phone]: string;
-    [ESignupFormKeys.Password]: string;
-    [ESignupFormKeys.PasswordRepeat]?: string;
-}
-
-export interface IPropsSignup {
-    emailInput?: Input;
-    loginInput?: Input;
-    nameInput?: Input;
-    lastNameInput?: Input;
-    phoneInput?: Input;
-    passwordInput?: Input;
-    passwordRepeatInput?: Input;
-    submitBtn?: Button;
+    LinkBtn = 'linkBtn',
 }
 
 export interface IChildrenSignup {
-    [EChildrenSignupKeys.EmailInput]: Input;
-    [EChildrenSignupKeys.LoginInput]: Input;
-    [EChildrenSignupKeys.NameInput]: Input;
-    [EChildrenSignupKeys.LastNameInput]: Input;
-    [EChildrenSignupKeys.PhoneInput]: Input;
-    [EChildrenSignupKeys.PasswordInput]: Input;
-    [EChildrenSignupKeys.PasswordRepeatInput]: Input;
-    [EChildrenSignupKeys.SubmitBtn]: Button;
-    [EChildrenSignupKeys.Snackbar]: Snackbar;
+    [ESignupChildren.EmailInput]: Input;
+    [ESignupChildren.LoginInput]: Input;
+    [ESignupChildren.NameInput]: Input;
+    [ESignupChildren.LastNameInput]: Input;
+    [ESignupChildren.PhoneInput]: Input;
+    [ESignupChildren.PasswordInput]: Input;
+    [ESignupChildren.PasswordRepeatInput]: Input;
+    [ESignupChildren.SubmitBtn]: Button;
+    [ESignupChildren.LinkBtn]: Button;
 }

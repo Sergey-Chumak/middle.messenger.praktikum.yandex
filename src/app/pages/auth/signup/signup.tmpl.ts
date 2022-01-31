@@ -1,16 +1,21 @@
 export const tmpl = `
     <div class="signup__wrapper">
-        {{{ snackbar }}}
         <div class="signup" id="signup">
-            {{{ emailInput }}}
-            {{{ loginInput }}}
-            {{{ nameInput }}}
-            {{{ lastNameInput }}}
-            {{{ phoneInput }}}
-            {{{ passwordInput }}}
-            {{{ passwordRepeatInput }}}
-            {{{ submitBtn }}}
-            <a id="signup-link" class="signup__link">I have a profile</a>
+            <h1 class="signup__title">Sign up to Messenger</h1>
+            <p class="signup__info">Please fill out the registration form.</p>        
+        
+            <form class="signup__form">
+                {{{ emailInput }}}
+                {{{ loginInput }}}
+                {{{ nameInput }}}
+                {{{ lastNameInput }}}
+                {{{ phoneInput }}}
+                {{{ passwordInput }}}
+                {{{ passwordRepeatInput }}}
+                {{{ submitBtn }}}
+            </form>
+            
+            {{{ linkBtn }}}
         </div>
     </div>
 `;

@@ -1,7 +1,7 @@
 export const tmpl = `
     <button id="{{ id }}"
-            type="{{ type }}"
-            class="ui-button ui-button_{{ size }} {{ class }}">
+            type="button"
+            class="c-button__button">
         {{ name }}
     </button>
 `;
