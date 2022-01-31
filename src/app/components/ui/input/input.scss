@@ -1,113 +1,113 @@
-.ui-input {
+.c-input {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  text-align: start;
-
-  &_invalid {
-    .ui-input__input_error{
-      color: var(--color-text-error);
-      margin-bottom: 0;
-    }
-
-    .ui-input__error {
-      height: 8px;
-      font-size: 10px;
-      margin: 4px 0;
-      color: var(--color-text-error);
-      display: block;
-    }
-  }
-
-  &__label {
-    margin-bottom: 6px;
-    font-size: 11px;
-    color: var(--color-text-content);
-  }
+  background-color: #212121;
+  margin-bottom: 12px;
 
   &__input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--color-border);
-    width: 335px;
-    flex-shrink: 0;
-    padding: 0;
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: var(--color-text-chat-name);
+    box-sizing: border-box;
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-radius: 8px;
+    background-color: inherit;
+    border: 1px solid gray;
+    padding: 15px;
+    color: white;
+    font-size: 16px;
+    transition: border-color 0.2s ease-out;
+
+    &:hover {
+      border: 1px solid white;
+
+      & ~ .c-input__message {
+        color: white;
+      }
+    }
 
     &:focus {
       outline: none;
-      box-shadow: var(--shadow-primary)
+      border: 2px solid #b389ee;
+
+      & ~ .c-input__label {
+        color: #b389ee;
+      }
+    }
+
+    &:valid {
+      outline: none;
+      border: 2px solid #b389ee;
+
+      & ~ .c-input__label {
+        color: #b389ee;
+      }
+    }
+
+    &:valid ~ .c-input__message, &:focus ~ .c-input__message, {
+      position: absolute;
+      top: -7px;
+      left: 12px;
+      font-size: 11px;
     }
   }
 
-  &__error {
-    display: none;
+  &__message {
+    color: gray;
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    font-size: 16px;
+    background-color: inherit;
+    transition: top 0.2s ease-out, font-size 0.2s ease-out, color 0.2s ease-out;
+    padding: 0 3px;
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 30px);
   }
 
-  &__profile {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 510px;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 5px;
-    margin-bottom: 10px;
+  &__error {
+    visibility: hidden;
+  }
 
-    &_invalid {
-      position: relative;
+  .c-input__label {
+    visibility: visible;
+  }
 
-      &:after {
-        content: '';
-        width: 8px;
-        height: 8px;
-        background: #FF0000;
-        border-radius: 50%;
-        position: absolute;
-        top: 4px;
-        right: -16px;
-      }
+  &_invalid {
+    .c-input__label {
+      visibility: hidden;
+    }
 
-      .ui-input__error {
-        height: 8px;
-        font-size: 10px;
-        margin: 4px 0;
-        color: var(--color-text-error);
-        display: block;
-        position: absolute;
-        top: calc(100% - 6px);
-        right: 0;
-      }
+    .c-input__error {
+      cursor: text;
+      visibility: visible;
+    }
 
-      & > div > input {
+    & > input {
+      border: 2px solid var(--color-text-error) !important;
+
+      & ~ .c-input__message {
         color: var(--color-text-error) !important;
       }
     }
 
-    & > label {
-      font-size: 13px !important;
-      margin-bottom: 0;
-      color: var(--color-text-default);
+    & > input:focus {
+      border: 2px solid var(--color-text-error) !important;
+
+      & ~ .c-input__message {
+        color: var(--color-text-error) !important;
+      }
     }
 
-    & > input {
-      color: var(--color-text-default);
-      margin-bottom: 0;
-      text-align: right;
-      border-bottom: none;
-      width: 70%;
+    & > input:hover {
+      border: 2px solid var(--color-text-error) !important;
 
-      &:focus {
-        box-shadow: var(--shadow-primary);
-      }
-
-      &:disabled {
-        color: var(--color-link-primary);
-      }
-
-      &::placeholder {
-        color: var(--color-text-primary);
+      & ~ .c-input__message {
+        color: var(--color-text-error) !important;
       }
     }
   }

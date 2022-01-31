@@ -1,5 +1,5 @@
-@import '../../../../styles/mixins/modal';
-@import '../../../../styles/mixins/backdrop';
+@import "../../../../styles/mixins/modal";
+@import "../../../../styles/mixins/backdrop";
 
 .change-avatar-modal-wrapper {
   @include modal-wrapper;
@@ -24,7 +24,7 @@
   &__header {
     font-size: 26px;
     margin-bottom: 27px;
-    color: var(--color-text-chat-name)
+    color: var(--color-text-chat-name);
   }
 
   &__input {

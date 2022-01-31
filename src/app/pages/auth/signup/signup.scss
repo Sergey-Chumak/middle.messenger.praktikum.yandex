@@ -9,27 +9,39 @@
 .signup {
   display: flex;
   flex-direction: column;
-  align-self: center;
+  align-items: center;
   margin: auto;
-  width: 400px;
-  padding: 32px;
-  background: var(--color-background-secondary);
-  box-sizing: border-box;
-  border-radius: 12px;
+  width: 360px;
 
-  &__link {
-    text-align: center;
-    cursor: pointer;
-    color: var(--color-text-content);
-    transition: color 0.2s;
+  &__title {
+    color: white;
+    margin-bottom: 16px;
+  }
 
-    &:hover {
-      color: var(--color-text-chat-name)
-    }
+  &__info {
+    font-size: 16px;
+    color: gray;
+    margin-bottom: 25px;
+  }
+
+  &__form {
+    width: 100%;
   }
 
   &__button {
-    margin-top: 10px;
-    margin-bottom: 60px;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .signup {
+    text-align: center;
+    width: 100%;
+    padding: 32px;
+
+    &__form {
+      width: 100%;
+    }
   }
 }
