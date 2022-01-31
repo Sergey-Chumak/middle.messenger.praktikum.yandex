@@ -12,6 +12,7 @@
 .signin {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   align-items: center;
   margin: auto;
   width: 360px;
@@ -41,7 +42,7 @@
 
   &__button {
     margin-bottom: 8px;
-    width: 100% !important;
+    width: 100%;
   }
 
   &__signature {
