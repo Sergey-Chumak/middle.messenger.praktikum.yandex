@@ -1,4 +1,4 @@
 export interface IPropsSnackbar {
-    text: string;
+    text?: string;
     color?: 'error' | 'success'
  }

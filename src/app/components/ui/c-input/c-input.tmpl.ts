@@ -1,10 +1,8 @@
-export const tmpl = `
+export const inputTmpl = `
     <input type="{{ type }}" 
            id="{{ id }}"
            autocomplete="off"
            value="{{ value }}"
-           {{#if autofocus}}autofocus="true"{{/if}}
-           {{#if disabled}}disabled{{/if}}
            class="c-input__input {{ class }}"
            required
            />

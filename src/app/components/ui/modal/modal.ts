@@ -1,7 +1,7 @@
 import Block from '../../../services/block/block';
 import { tmpl } from './modal.tmpl';
 import { IChildrenModal, IPropsModal } from './modal.types';
-import { Button } from '../button';
+import { CButton } from '../c-button';
 
 export class Modal extends Block<IPropsModal, IChildrenModal> {
   constructor(props: IPropsModal) {
@@ -43,14 +43,14 @@ export class Modal extends Block<IPropsModal, IChildrenModal> {
   }
 
   initChildren(): void {
-    this.children.confirm = new Button({
+    this.children.confirm = new CButton({
       name: this.props.confirm,
       id: this.props.buttonId,
       size: 's',
       color: 'primary',
     });
 
-    this.children.cancel = new Button({
+    this.children.cancel = new CButton({
       name: this.props.cancel,
       id: 'modal-cancel',
       size: 's',

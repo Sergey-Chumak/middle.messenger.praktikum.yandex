@@ -61,7 +61,7 @@ export class AddUsersModal extends Block<{ }, IChildrenAddUsersModal> {
         },
         input: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          if (target.id === 'search-users-input') {
+          if (target.id === 'search-users-c-input') {
             if (target.value) {
               profileService.searchUsers(target.value)
                 .then((data) => {
@@ -93,12 +93,12 @@ export class AddUsersModal extends Block<{ }, IChildrenAddUsersModal> {
   open(): void {
     this.show();
     this.getContent().focus();
-    document.getElementById('search-users-input')?.focus();
+    document.getElementById('search-users-c-input')?.focus();
   }
 
   close(): void {
     this.hide();
-    (document.getElementById('search-users-input') as HTMLInputElement).value = '';
+    (document.getElementById('search-users-c-input') as HTMLInputElement).value = '';
     this.children.foundUserList.setProps({
       foundUsers: [],
     });

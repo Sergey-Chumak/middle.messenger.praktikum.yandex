@@ -1,8 +1,8 @@
-import { tmpl } from './button.tmpl';
-import { IPropsButton } from './button.types';
+import { tmpl } from './c-button.tmpl';
+import { IPropsButton } from './c-button.types';
 import Block from '../../../services/block/block';
 
-export class Button extends Block<IPropsButton, void> {
+export class CButton extends Block<IPropsButton, void> {
   constructor(props: IPropsButton) {
     super('div', props);
   }

@@ -1,8 +1,8 @@
-import { Input } from '../../../../components/ui/input';
-import { Button } from '../../../../components/ui/button';
+import { CInput } from '../../../../components/ui/c-input';
+import { CButton } from '../../../../components/ui/c-button';
 
 export interface IChildrenNewChatModal {
-    input: Input;
-    confirmBtn: Button;
-    cancelBtn: Button;
+    input: CInput;
+    confirmBtn: CButton;
+    cancelBtn: CButton;
 }

@@ -23,7 +23,7 @@ class Chat extends Block<IChatProps, IChatChildren> {
       disabled: true,
       events: {
         input: (event: Event) => {
-          if ((event.target as HTMLInputElement).id === 'new-user-name-input') {
+          if ((event.target as HTMLInputElement).id === 'new-user-name-c-input') {
             this.newUserName = (event.target as HTMLInputElement).value;
           }
           if ((event.target as HTMLInputElement).id === 'message') {

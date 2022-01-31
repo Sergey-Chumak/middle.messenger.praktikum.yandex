@@ -1,7 +1,7 @@
 import { signinTmpl } from './signin.tmpl';
-import { Button } from '../../../components/ui/button';
+import { CButton } from '../../../components/ui/c-button';
 import Block from '../../../services/block/block';
-import { Input } from '../../../components/ui/input';
+import { CInput } from '../../../components/ui/c-input';
 import { isValidLogin, isValidPassword } from '../../../utils/validate';
 import {
   ESigninChildren, ESigninFormFields, ISigninChildren, ISigninFormValue,
@@ -9,6 +9,8 @@ import {
 import { IEvents } from '../../../services/types';
 import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
+import { snackbar } from '../../../components/ui/c-snackbar';
+import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 
 export class Signin extends Block<{}, ISigninChildren> {
   signinFormValue: ISigninFormValue = {
@@ -35,7 +37,7 @@ export class Signin extends Block<{}, ISigninChildren> {
   }
 
   initChildren(): void {
-    this.children.loginInput = new Input({
+    this.children.loginInput = new CInput({
       value: this.signinFormValue.login,
       id: 'signin-login',
       labelName: 'Login',
@@ -43,7 +45,7 @@ export class Signin extends Block<{}, ISigninChildren> {
       errorMessage: 'Login is invalid',
     });
 
-    this.children.passwordInput = new Input({
+    this.children.passwordInput = new CInput({
       value: this.signinFormValue.password,
       id: 'signin-password',
       labelName: 'Password',
@@ -51,14 +53,14 @@ export class Signin extends Block<{}, ISigninChildren> {
       type: 'password',
     });
 
-    this.children.submitBtn = new Button({
+    this.children.submitBtn = new CButton({
       name: 'Sign in',
       color: 'primary',
       size: 'l',
       class: 'signin__button',
     });
 
-    this.children.linkBtn = new Button({
+    this.children.linkBtn = new CButton({
       name: 'Create account',
       color: 'secondary',
       size: 'l',
@@ -132,7 +134,8 @@ export class Signin extends Block<{}, ISigninChildren> {
         this.resetForm();
         router.go('/messenger');
       })
-      .catch(() => {
+      .catch((e) => {
+        snackbar.open(ucFirstLetter(e.reason || e.error));
       });
   }
 

@@ -36,7 +36,7 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.children.newChatModal = new NewChatModal({ });
     this.children.editUserModal = new EditUsersModal({ });
     this.children.changeAvatarModal = new ChangeAvatarModal({
-      inputId: 'change-chat-avatar-modal-input',
+      inputId: 'change-chat-avatar-modal-c-input',
       confirmBtnId: 'change-chat-avatar-modal-confirm',
     });
 
@@ -68,17 +68,17 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
     this.setProps({
       events: {
         change: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'change-chat-avatar-modal-input') {
+          if ((event.target as HTMLElement).id === 'change-chat-avatar-modal-c-input') {
             this.chatAvatar = (event.target as HTMLInputElement).files![0] as File;
           }
         },
         input: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
+          if ((event.target as HTMLElement).id === 'create-chat-modal-c-input') {
             this.newChatName = (event.target as HTMLInputElement).value;
           }
         },
         keydown: (event: KeyboardEvent) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
+          if ((event.target as HTMLElement).id === 'create-chat-modal-c-input') {
             if ((event.code === 'Enter' || event.code === 'NumpadEnter')) {
               chatsService.createChat(this.newChatName);
               this.children.newChatModal.close();
@@ -118,13 +118,13 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
               target: store.getState().currentChat,
               confirm: 'Delete',
               cancel: 'Cancel',
-              buttonId: 'delete-chat-button',
+              buttonId: 'delete-chat-c-button',
             });
 
             this.children.modal.open();
           }
 
-          if (eventTarget.id === 'delete-chat-button') {
+          if (eventTarget.id === 'delete-chat-c-button') {
             chatsService.deleteChat(+last(document.location.pathname.split('/')))
               .then(() => {
                 this.children.modal.close();
@@ -136,13 +136,13 @@ class ChatPage extends Block<IChatPageProps, IChatPageChildren> {
               target: undefined,
               confirm: 'Leave',
               cancel: 'Cancel',
-              buttonId: 'leave-chat-button',
+              buttonId: 'leave-chat-c-button',
             });
 
             this.children.modal.open();
           }
 
-          if (eventTarget.id === 'leave-chat-button') {
+          if (eventTarget.id === 'leave-chat-c-button') {
             chatsService.deleteUser(+last(document.location.pathname.split('/')), store.getState().user?.id!)
               .then(() => {
                 this.children.modal.close();

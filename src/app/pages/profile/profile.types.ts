@@ -1,7 +1,6 @@
-import { Input } from '../../components/ui/input';
-import { Button } from '../../components/ui/button';
+import { CInput } from '../../components/ui/c-input';
+import { CButton } from '../../components/ui/c-button';
 import { IUserData } from '../../services/auth/auth.types';
-import { Snackbar } from '../../components/ui/snackbar';
 import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
 
 export enum EUserDataKeys {
@@ -32,32 +31,31 @@ export interface IPropsProfile {
     userName?: string;
     userData?: IUserData;
     nonAvailableChangeData?: boolean;
-    emailInput?: Input;
-    loginInput?: Input;
-    nameInput?: Input;
-    lastNameInput?: Input;
-    nicknameInput?: Input;
-    phoneInput?: Input;
-    oldPasswordInput?: Input;
-    newPasswordInput?: Input;
-    newPasswordRepeatInput?: Input;
-    saveDataBtn?: Button;
-    savePassBtn?: Button;
+    emailInput?: CInput;
+    loginInput?: CInput;
+    nameInput?: CInput;
+    lastNameInput?: CInput;
+    nicknameInput?: CInput;
+    phoneInput?: CInput;
+    oldPasswordInput?: CInput;
+    newPasswordInput?: CInput;
+    newPasswordRepeatInput?: CInput;
+    saveDataBtn?: CButton;
+    savePassBtn?: CButton;
     avatar?: string;
 }
 
 export interface IChildrenProfile {
-    emailInput: Input;
-    loginInput: Input;
-    nameInput: Input;
-    lastNameInput: Input;
-    nicknameInput: Input;
-    phoneInput: Input;
-    oldPasswordInput: Input;
-    newPasswordInput: Input;
-    newPasswordRepeatInput: Input;
-    saveDataBtn: Button;
-    savePassBtn: Button;
-    snackbar: Snackbar;
+    emailInput: CInput;
+    loginInput: CInput;
+    nameInput: CInput;
+    lastNameInput: CInput;
+    nicknameInput: CInput;
+    phoneInput: CInput;
+    oldPasswordInput: CInput;
+    newPasswordInput: CInput;
+    newPasswordRepeatInput: CInput;
+    saveDataBtn: CButton;
+    savePassBtn: CButton;
     changeAvatarModal: ChangeAvatarModal;
 }

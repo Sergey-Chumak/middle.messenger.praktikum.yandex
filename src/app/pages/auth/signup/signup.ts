@@ -1,6 +1,6 @@
 import { tmpl } from './signup.tmpl';
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
+import { CInput } from '../../../components/ui/c-input';
+import { CButton } from '../../../components/ui/c-button';
 import Block from '../../../services/block/block';
 import {
   isValidEmail,
@@ -16,9 +16,11 @@ import {
 import { IEvents } from '../../../services/types';
 import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
+import { snackbar } from '../../../components/ui/c-snackbar';
+import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 
 export class Signup extends Block<{}, IChildrenSignup> {
-  inputs: Input[];
+  inputs: CInput[];
   signupFormValue: ISignupFormValue = {
     [ESignupFormFields.Login]: '',
     [ESignupFormFields.Email]: '',
@@ -67,15 +69,15 @@ export class Signup extends Block<{}, IChildrenSignup> {
   }
 
   initChildren(): void {
-    this.children[ESignupChildren.EmailInput] = new Input({
+    this.children[ESignupChildren.EmailInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Email],
       id: 'email',
       labelName: 'Email',
-      type: 'email',
+      type: 'text',
       errorMessage: 'Email is invalid',
     });
 
-    this.children[ESignupChildren.LoginInput] = new Input({
+    this.children[ESignupChildren.LoginInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Login],
       id: 'login',
       labelName: 'Login',
@@ -83,7 +85,7 @@ export class Signup extends Block<{}, IChildrenSignup> {
       errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
     });
 
-    this.children[ESignupChildren.NameInput] = new Input({
+    this.children[ESignupChildren.NameInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Name],
       id: 'first_name',
       labelName: 'Name',
@@ -91,7 +93,7 @@ export class Signup extends Block<{}, IChildrenSignup> {
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
-    this.children[ESignupChildren.LastNameInput] = new Input({
+    this.children[ESignupChildren.LastNameInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.LastName],
       id: 'last_name',
       labelName: 'Last name',
@@ -99,7 +101,7 @@ export class Signup extends Block<{}, IChildrenSignup> {
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
-    this.children[ESignupChildren.PhoneInput] = new Input({
+    this.children[ESignupChildren.PhoneInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Phone],
       id: 'phone',
       labelName: 'Phone',
@@ -107,7 +109,7 @@ export class Signup extends Block<{}, IChildrenSignup> {
       errorMessage: 'Phone is invalid',
     });
 
-    this.children[ESignupChildren.PasswordInput] = new Input({
+    this.children[ESignupChildren.PasswordInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Password],
       id: 'password',
       labelName: 'Password',
@@ -115,7 +117,7 @@ export class Signup extends Block<{}, IChildrenSignup> {
       errorMessage: 'Must contain 1 number and 1 capital letter. 8 to 40 characters.',
     });
 
-    this.children[ESignupChildren.PasswordRepeatInput] = new Input({
+    this.children[ESignupChildren.PasswordRepeatInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
       id: 'password_repeat',
       labelName: 'Password (repeat)',
@@ -123,14 +125,14 @@ export class Signup extends Block<{}, IChildrenSignup> {
       errorMessage: 'Password mismatch',
     });
 
-    this.children[ESignupChildren.SubmitBtn] = new Button({
+    this.children[ESignupChildren.SubmitBtn] = new CButton({
       name: 'Sign up',
       color: 'primary',
       size: 'l',
       class: 'signup__button',
     });
 
-    this.children[ESignupChildren.LinkBtn] = new Button({
+    this.children[ESignupChildren.LinkBtn] = new CButton({
       name: 'I have a profile',
       color: 'secondary',
       size: 'l',
@@ -290,7 +292,8 @@ export class Signup extends Block<{}, IChildrenSignup> {
       .then(() => {
         this.resetForm();
         router.go('/messenger');
-      }).catch(() => {
+      }).catch((e) => {
+        snackbar.open(ucFirstLetter(e.reason || e.error));
       });
   }
 

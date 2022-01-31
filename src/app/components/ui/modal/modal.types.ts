@@ -1,4 +1,4 @@
-import { Button } from '../button';
+import { CButton } from '../c-button';
 
 export interface IPropsModal {
     target?: string;
@@ -9,6 +9,6 @@ export interface IPropsModal {
 }
 
 export interface IChildrenModal {
-    confirm: Button;
-    cancel: Button;
+    confirm: CButton;
+    cancel: CButton;
 }
