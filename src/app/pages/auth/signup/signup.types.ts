@@ -1,5 +1,5 @@
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
+import { CInput } from '../../../components/ui/c-input';
+import { CButton } from '../../../components/ui/c-button';
 
 export enum ESignupFormFields {
     Email = 'email',
@@ -34,13 +34,13 @@ export enum ESignupChildren {
 }
 
 export interface IChildrenSignup {
-    [ESignupChildren.EmailInput]: Input;
-    [ESignupChildren.LoginInput]: Input;
-    [ESignupChildren.NameInput]: Input;
-    [ESignupChildren.LastNameInput]: Input;
-    [ESignupChildren.PhoneInput]: Input;
-    [ESignupChildren.PasswordInput]: Input;
-    [ESignupChildren.PasswordRepeatInput]: Input;
-    [ESignupChildren.SubmitBtn]: Button;
-    [ESignupChildren.LinkBtn]: Button;
+    [ESignupChildren.EmailInput]: CInput;
+    [ESignupChildren.LoginInput]: CInput;
+    [ESignupChildren.NameInput]: CInput;
+    [ESignupChildren.LastNameInput]: CInput;
+    [ESignupChildren.PhoneInput]: CInput;
+    [ESignupChildren.PasswordInput]: CInput;
+    [ESignupChildren.PasswordRepeatInput]: CInput;
+    [ESignupChildren.SubmitBtn]: CButton;
+    [ESignupChildren.LinkBtn]: CButton;
 }

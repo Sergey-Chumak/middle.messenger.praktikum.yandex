@@ -1,5 +1,5 @@
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
+import { CInput } from '../../../components/ui/c-input';
+import { CButton } from '../../../components/ui/c-button';
 
 export enum ESigninFormFields {
     Login = 'login',
@@ -19,8 +19,8 @@ export enum ESigninChildren {
 }
 
 export interface ISigninChildren {
-    [ESigninChildren.LoginInput]: Input;
-    [ESigninChildren.PasswordInput]: Input;
-    [ESigninChildren.SubmitBtn]: Button;
-    [ESigninChildren.LinkBtn]: Button;
+    [ESigninChildren.LoginInput]: CInput;
+    [ESigninChildren.PasswordInput]: CInput;
+    [ESigninChildren.SubmitBtn]: CButton;
+    [ESigninChildren.LinkBtn]: CButton;
 }

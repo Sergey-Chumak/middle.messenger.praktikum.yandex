@@ -1,8 +1,8 @@
 import { tmpl } from './profile.tmpl';
 import Block from '../../services/block/block';
 import { IEvents } from '../../services/types';
-import { Input } from '../../components/ui/input';
-import { Button } from '../../components/ui/button';
+import { CInput } from '../../components/ui/c-input';
+import { CButton } from '../../components/ui/c-button';
 import {
   isValidEmail,
   isValidEqualPasswords,
@@ -18,8 +18,6 @@ import store from '../../store/store';
 import { IUserData } from '../../services/auth/auth.types';
 import { profileService } from '../../services/profile/profile.service';
 import connect from '../../utils/hoc/connect';
-import { Snackbar } from '../../components/ui/snackbar';
-import { ucFirstLetter } from '../../utils/ucFirstLetter';
 import { authService } from '../../services/auth/auth.service';
 import isEqual from '../../utils/isEqual';
 import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
@@ -27,8 +25,8 @@ import { router } from '../../services/router/router';
 
 export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   avatar: File | null;
-  userDataInputs: Input[] = [];
-  userPasswordInputs: Input[] = [];
+  userDataInputs: CInput[] = [];
+  userPasswordInputs: CInput[] = [];
   userData: IUserData = store.getState().user!;
   userDataFormValue: IUserDataFormValue = {
     [EUserDataKeys.Email]: this.userData.email,
@@ -116,7 +114,6 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
       nonAvailableChangeData: this.props.nonAvailableChangeData,
       saveDataBtn: this.children.saveDataBtn,
       savePassBtn: this.children.savePassBtn,
-      snackbar: this.children.snackbar,
       changeAvatarModal: this.children.changeAvatarModal,
       avatar: this.props.avatar,
     });
@@ -184,112 +181,90 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   }
 
   initChildren() {
-    this.children.snackbar = new Snackbar({
-      text: '',
-    });
-
     this.children.changeAvatarModal = new ChangeAvatarModal({
-      inputId: 'change-user-avatar-modal-input',
+      inputId: 'change-user-avatar-modal-c-input',
       confirmBtnId: 'change-user-avatar-modal-confirm',
     });
 
-    this.children.emailInput = new Input({
+    this.children.emailInput = new CInput({
       value: this.userDataFormValue[EUserDataKeys.Email],
       id: 'profile-email',
       type: 'email',
       labelName: 'Email',
-      from: 'profile',
-      disabled: true,
       errorMessage: 'Email is invalid',
     });
 
-    this.children.loginInput = new Input({
+    this.children.loginInput = new CInput({
       value: this.userDataFormValue[EUserDataKeys.Login],
       id: 'profile-login',
       type: 'text',
       labelName: 'Login',
-      from: 'profile',
-      disabled: true,
       errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
     });
 
-    this.children.nameInput = new Input({
+    this.children.nameInput = new CInput({
       value: this.userDataFormValue[EUserDataKeys.FirstName],
       id: 'profile-first_name',
       type: 'text',
       labelName: 'Name',
-      from: 'profile',
-      disabled: true,
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
-    this.children.lastNameInput = new Input({
+    this.children.lastNameInput = new CInput({
       value: this.userDataFormValue[EUserDataKeys.SecondName],
       id: 'profile-last_name',
       type: 'text',
       labelName: 'Last name',
-      from: 'profile',
-      disabled: true,
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
-    this.children.nicknameInput = new Input({
+    this.children.nicknameInput = new CInput({
       value: this.userDataFormValue[EUserDataKeys.DisplayName],
       id: 'profile-nickname',
       type: 'text',
       labelName: 'Nickname',
-      from: 'profile',
-      disabled: true,
       errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
     });
 
-    this.children.phoneInput = new Input({
+    this.children.phoneInput = new CInput({
       value: this.userDataFormValue[EUserDataKeys.Phone],
       id: 'profile-phone',
       type: 'text',
       labelName: 'Phone',
-      from: 'profile',
-      disabled: true,
       errorMessage: 'Phone is invalid',
     });
 
-    this.children.oldPasswordInput = new Input({
+    this.children.oldPasswordInput = new CInput({
       value: '',
       id: 'profile-old-pass',
       type: 'password',
       labelName: 'Old password',
-      from: 'profile',
-      placeholder: 'Enter old password',
       errorMessage: 'Password incorrect',
     });
 
-    this.children.newPasswordInput = new Input({
+    this.children.newPasswordInput = new CInput({
       value: '',
       id: 'profile-new-pass',
       type: 'password',
       labelName: 'New password',
-      from: 'profile',
-      placeholder: 'Enter new password',
       errorMessage: 'Must contain 1 number and 1 capital letter. 8 to 40 characters.',
     });
 
-    this.children.newPasswordRepeatInput = new Input({
+    this.children.newPasswordRepeatInput = new CInput({
       value: '',
       id: 'profile-new-pass-repeat',
       type: 'password',
       labelName: 'New password (repeat)',
-      from: 'profile',
-      placeholder: 'Enter new password',
       errorMessage: 'Password mismatch',
     });
 
-    this.children.saveDataBtn = new Button({
+    this.children.saveDataBtn = new CButton({
       name: 'Save',
       color: 'secondary',
       size: 'l',
     });
 
-    this.children.savePassBtn = new Button({
+    this.children.savePassBtn = new CButton({
       name: 'Save',
       color: 'secondary',
       size: 'l',
@@ -404,7 +379,7 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     this.children.changeAvatarModal.setProps({
       events: {
         change: (event:Event) => {
-          if ((event.target as HTMLInputElement).id === 'change-user-avatar-modal-input') {
+          if ((event.target as HTMLInputElement).id === 'change-user-avatar-modal-c-input') {
             this.avatar = ((event.target as HTMLInputElement)?.files!)[0] as File;
           }
         },
@@ -450,17 +425,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
           this.userDataProfile = { ...this.userDataFormValue } as IUserData;
 
           this.children.saveDataBtn.hide();
-
-          this.children.snackbar.setProps({
-            text: 'Profile updated successfully',
-            color: 'success',
-          });
         })
-        .catch((e) => {
-          this.children.snackbar.setProps({
-            text: ucFirstLetter(e.reason || e.error),
-            color: 'error',
-          });
+        .catch(() => {
         });
     }
   }
@@ -499,17 +465,8 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
           this.userDataInputs.forEach((input) => input.show());
 
           this.userPasswordInputs.forEach((input) => input.getContent().classList.remove('ui-input__profile_invalid'));
-
-          this.children.snackbar.setProps({
-            text: 'Password updated successfully',
-            color: 'success',
-          });
         })
-        .catch((e) => {
-          this.children.snackbar.setProps({
-            text: ucFirstLetter(e.reason || e.error),
-            color: 'error',
-          });
+        .catch(() => {
         });
     }
   }

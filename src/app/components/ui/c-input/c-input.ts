@@ -1,8 +1,8 @@
-import { tmpl } from './input.tmpl';
-import { IPropsInput } from './input.types';
+import { inputTmpl } from './c-input.tmpl';
+import { IPropsInput } from './c-input.types';
 import Block from '../../../services/block/block';
 
-export class Input extends Block<IPropsInput, void> {
+export class CInput extends Block<IPropsInput, void> {
   constructor(props: IPropsInput) {
     super('div', props);
   }
@@ -20,6 +20,6 @@ export class Input extends Block<IPropsInput, void> {
   }
 
   render(): DocumentFragment {
-    return this.compile(tmpl);
+    return this.compile(inputTmpl);
   }
 }

@@ -130,7 +130,7 @@ class ChatList extends Block<IChatListProps, IChatListChildren> {
             });
         },
         input: (event: Event) => {
-          if ((event.target as HTMLElement).id !== 'input-search') return;
+          if ((event.target as HTMLElement).id !== 'c-input-search') return;
           this.searchValue = (event.target as HTMLInputElement).value.toLowerCase();
           const filteredChatCards = this.chatCards.filter((item) => item.title.toLowerCase()
             .includes(this.searchValue));

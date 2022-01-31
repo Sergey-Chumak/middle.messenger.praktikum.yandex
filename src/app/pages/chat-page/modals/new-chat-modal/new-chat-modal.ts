@@ -1,6 +1,6 @@
 import Block from '../../../../services/block/block';
-import { Button } from '../../../../components/ui/button';
-import { Input } from '../../../../components/ui/input';
+import { CButton } from '../../../../components/ui/c-button';
+import { CInput } from '../../../../components/ui/c-input';
 import { IChildrenNewChatModal } from './new-chat-modal.types';
 import { tmpl } from './new-chat-modal.tmpl';
 
@@ -9,22 +9,22 @@ export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
     super('div', props);
     this.hide();
 
-    this.children.confirmBtn = new Button({
+    this.children.confirmBtn = new CButton({
       name: 'Create',
       id: 'create-chat-modal-confirm',
       size: 's',
       color: 'primary',
     });
 
-    this.children.cancelBtn = new Button({
+    this.children.cancelBtn = new CButton({
       name: 'Cancel',
       id: 'create-chat-modal-cancel',
       size: 's',
       color: 'primary',
     });
 
-    this.children.input = new Input({
-      id: 'create-chat-modal-input',
+    this.children.input = new CInput({
+      id: 'create-chat-modal-c-input',
       type: 'text',
       labelName: 'Title chat',
       value: '',
@@ -34,7 +34,7 @@ export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
 
   open() {
     this.show();
-    document.getElementById('create-chat-modal-input')!.focus();
+    document.getElementById('create-chat-modal-c-input')!.focus();
   }
 
   close() {
@@ -48,7 +48,7 @@ export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
     this.setProps({
       events: {
         keydown: (event: KeyboardEvent) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
+          if ((event.target as HTMLElement).id === 'create-chat-modal-c-input') {
             if ((event.code === 'Escape')) {
               this.close();
             }

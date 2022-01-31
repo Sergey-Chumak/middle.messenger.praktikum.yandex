@@ -1,21 +1,21 @@
 import Block from '../../../services/block/block';
 import { tmpl } from './change-avatar-modal.tmpl';
 import { IChildrenChangeAvatarModal, IPropsChangeAvatarModal } from './change-avatar-modal.types';
-import { Button } from '../button';
+import { CButton } from '../c-button';
 
 export class ChangeAvatarModal extends Block<IPropsChangeAvatarModal, IChildrenChangeAvatarModal> {
   constructor(props: IPropsChangeAvatarModal) {
     super('div', props);
     this.hide();
 
-    this.children.confirmBtn = new Button({
+    this.children.confirmBtn = new CButton({
       name: 'Change',
       id: this.props.confirmBtnId,
       size: 's',
       color: 'primary',
     });
 
-    this.children.cancelBtn = new Button({
+    this.children.cancelBtn = new CButton({
       name: 'Cancel',
       id: 'change-avatar-modal-cancel',
       size: 's',

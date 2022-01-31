@@ -1,4 +1,4 @@
-import { Button } from '../button';
+import { CButton } from '../c-button';
 
 export interface IPropsChangeAvatarModal {
     inputId: string;
@@ -6,6 +6,6 @@ export interface IPropsChangeAvatarModal {
 }
 
 export interface IChildrenChangeAvatarModal {
-    confirmBtn: Button;
-    cancelBtn: Button;
+    confirmBtn: CButton;
+    cancelBtn: CButton;
 }
