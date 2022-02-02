@@ -6,6 +6,6 @@ export interface IRoute {
 export interface IPropsRoute {
     rootQuery: string;
     canActivate: () => Promise<boolean>;
-    redirectTo?: string;
+    redirectTo: string;
     withId?: boolean;
 }

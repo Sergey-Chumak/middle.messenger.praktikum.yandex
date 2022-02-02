@@ -1,4 +1,4 @@
-export const tmpl = `
+export const addUsersModalTmpl = `
     <div class="add-users-modal-wrapper"> 
         <div class="add-users-modal">
             <div id="add-users-modal-close" class="add-users-modal__close-modal-icon"></div>

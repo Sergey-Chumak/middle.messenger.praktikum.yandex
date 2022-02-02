@@ -14,15 +14,16 @@
 
 .add-users-modal {
   @include modal;
+
   position: relative;
   display: flex;
   flex-direction: column;
-
   height: 530px;
   padding: 32px 0 0 0;
 
   &__close-modal-icon {
     @include close-modal;
+
     background: url("../../../../../../assets/images/i_close.svg") round;
 
     &:hover {

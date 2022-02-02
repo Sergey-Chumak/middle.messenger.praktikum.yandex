@@ -1,8 +1,8 @@
-import { tmpl } from './plug-dialog.tmpl';
-import Block from '../../../services/block/block';
-import { loader } from '../../../components/loader';
+import { plugDialogTmpl } from './plug-dialog.tmpl';
+import View from '../../../services/view/view';
+import { loader } from '../../../components/c-loader';
 
-export class PlugDialog extends Block<{}, void> {
+export class PlugDialog extends View<{}, void> {
   constructor(props: {}) {
     super('div', props);
   }
@@ -12,6 +12,6 @@ export class PlugDialog extends Block<{}, void> {
   }
 
   render(): DocumentFragment {
-    return this.compile(tmpl, {});
+    return this.compile(plugDialogTmpl);
   }
 }

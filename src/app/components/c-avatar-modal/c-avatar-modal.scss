@@ -1,7 +1,7 @@
-@import "../../../../styles/mixins/modal";
-@import "../../../../styles/mixins/backdrop";
+@import "../../../styles/mixins/modal";
+@import "../../../styles/mixins/backdrop";
 
-.change-avatar-modal-wrapper {
+.c-avatar-modal-wrapper {
   @include modal-wrapper;
 
   &__backdrop {
@@ -9,7 +9,7 @@
   }
 }
 
-.change-avatar-modal {
+.c-avatar-modal {
   @include modal;
 
   text-align: center;

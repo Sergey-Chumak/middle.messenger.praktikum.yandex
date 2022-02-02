@@ -36,6 +36,7 @@
 
   &__close-modal-icon {
     @include close-modal;
+
     background: url("../../../../../assets/images/i_close.svg") round;
 
     &:hover {
@@ -104,6 +105,14 @@
 
     &:hover {
       background: url("../../../../../assets/images/i_close-hover.svg") round;
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .user-card {
+    .user-card__remove-user {
+      visibility: visible;
     }
   }
 }

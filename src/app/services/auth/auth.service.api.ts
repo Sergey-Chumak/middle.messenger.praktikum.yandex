@@ -13,19 +13,19 @@ export default class AuthServiceApi extends BaseAPI {
     this.authAPIInstance = new HTTPTransport(`${BASE_URL}/auth`);
   }
 
-  registration(data: ISignupFormValue): Promise<IRegistrationResp> {
+  public registration(data: ISignupFormValue): Promise<IRegistrationResp> {
     return this.authAPIInstance.post('/signup', { data });
   }
 
-  login(data: ISigninFormValue): Promise<'OK'> {
+  public login(data: ISigninFormValue): Promise<'OK'> {
     return this.authAPIInstance.post('/signin', { data });
   }
 
-  getUserData(): Promise<IUserData> {
+  public getUserData(): Promise<IUserData> {
     return this.authAPIInstance.get('/user');
   }
 
-  logout(): Promise<'OK'> {
+  public logout(): Promise<'OK'> {
     return this.authAPIInstance.post('/logout');
   }
 }

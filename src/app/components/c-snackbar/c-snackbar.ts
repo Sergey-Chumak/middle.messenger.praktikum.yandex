@@ -1,17 +1,17 @@
-import Block from '../../../services/block/block';
+import View from '../../services/view/view';
 import { snackbarTmpl } from './c-snackbar.tmpl';
 import { IPropsSnackbar } from './c-snackbar.types';
-import { render } from '../../../utils/renderDOM';
+import { render } from '../../utils/renderDOM';
 
-class CSnackbar extends Block<IPropsSnackbar, { }> {
+class CSnackbar extends View<IPropsSnackbar, { }> {
   isOpen: boolean;
 
   constructor(props: IPropsSnackbar) {
     super('div', props);
+    this.hide();
   }
 
   componentDidMount() {
-    this.hide();
     this.getContent().classList.add('c-snackbar');
   }
 

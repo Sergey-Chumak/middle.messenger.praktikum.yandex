@@ -10,7 +10,7 @@ export class ChatsServiceApi extends BaseAPI {
   private chatApiInstance: HTTPTransport = new HTTPTransport(`${BASE_URL}/chats`);
 
   getChats() {
-    return this.chatApiInstance.get<IChatCard[]>('');
+    return this.chatApiInstance.get<IChatCard[]>('', { data: { limit: 999 } });
   }
 
   createChat(data: ITitleChat) {

@@ -1,6 +1,6 @@
-import { tmpl } from './chat.tmpl';
-import Block from '../../../services/block/block';
-import { Dialogues, IDialog } from './dialogues';
+import { chatTmpl } from './chat.tmpl';
+import View from '../../../services/view/view';
+import { Dialogues, IDialog, IMessage } from './dialogues';
 import { IChatChildren, IChatProps } from './chat.types';
 import connect from '../../../utils/hoc/connect';
 import { webSocketApi } from '../../../services/web-socket/web-socket';
@@ -8,19 +8,34 @@ import store from '../../../store/store';
 import { getDateCustomFormat, getTimeCustomFormat } from '../../../utils/date';
 import isEqual from '../../../utils/isEqual';
 
-class Chat extends Block<IChatProps, IChatChildren> {
+class Chat extends View<IChatProps, IChatChildren> {
   dialogues: IDialog[] = this.props.dialogues || [];
   newUserName: string = '';
   message: string;
 
   constructor(props: IChatProps) {
     super('div', { ...props, disabled: true });
-    this.children.dialogues = new Dialogues({ dialogues: this.dialogues });
   }
 
   componentDidMount() {
+    this.children.dialogues = new Dialogues({ dialogues: this.dialogues });
+    this.initEvents();
+  }
+
+  componentDidUpdate(oldProps: IChatProps, newProps: IChatProps): boolean {
+    this.changeDataFormat(newProps.currentMessages);
+
+    if (isEqual(oldProps, newProps)) return false;
+    if (this.message) return false;
+    return true;
+  }
+
+  render(): DocumentFragment {
+    return this.compile(chatTmpl);
+  }
+
+  initEvents(): void {
     this.setProps({
-      disabled: true,
       events: {
         input: (event: Event) => {
           if ((event.target as HTMLInputElement).id === 'new-user-name-c-input') {
@@ -60,13 +75,13 @@ class Chat extends Block<IChatProps, IChatChildren> {
     });
   }
 
-  componentDidUpdate(oldProps: IChatProps, newProps: IChatProps): boolean {
+  changeDataFormat(messages: IMessage[] | undefined): void {
     const dialogues: IDialog[] = [];
 
-    newProps.currentMessages?.forEach((message) => {
+    messages?.forEach((message) => {
       const user = store.getState()?.chatUsers?.find((user) => user.id === message.user_id);
-      message.from = store.getState()?.user?.id !== message.user_id ? 'me' : undefined;
-      message.name = user?.display_name || user?.first_name!;
+      message.from = store.getState()?.user?.id === message.user_id ? 'me' : undefined;
+      message.name = user?.first_name!;
       message.userAvatar = user?.avatar;
       message.timeCustomFormat = getTimeCustomFormat(message.time);
 
@@ -84,21 +99,6 @@ class Chat extends Block<IChatProps, IChatChildren> {
     this.children.dialogues?.setProps({
       dialogues,
     });
-
-    if (isEqual(oldProps, newProps)) return false;
-    if (this.message) return false;
-    return true;
-  }
-
-  render(): DocumentFragment {
-    return this.compile(tmpl, {
-      dialogues: this.props.dialogues,
-      name: this.props.name,
-      value: this.props.value,
-      users: this.props.users,
-      chatUsers: this.props.chatUsers,
-      currentMessages: this.props.currentMessages,
-    });
   }
 }
 
@@ -106,4 +106,4 @@ export const ChatWrap = connect((state) => ({
   name: state.currentChat,
   users: state.chatUserNames,
   currentMessages: state.currentMessages,
-}))(Chat as unknown as typeof Block);
+}))(Chat as unknown as typeof View);

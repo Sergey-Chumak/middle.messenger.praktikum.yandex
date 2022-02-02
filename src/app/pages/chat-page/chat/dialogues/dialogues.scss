@@ -22,6 +22,7 @@
 	&__avatar {
 		@include avatar;
 
+		background: #999999;
 		height: 45px;
 		width: 45px;
 	}
@@ -45,17 +46,9 @@
 	}
 }
 
-@media (max-width: 800px) {
-	.dialogues {
-		&__more-messages {
-			position: static;
-		}
-	}
-}
-
 .message {
 	text-align: left;
-	background: var(--color-background-my-message);
+	background: #c7c7c7;
 	box-sizing: border-box;
 	padding: 8px 11px;
 	max-width: 40%;
@@ -69,7 +62,7 @@
 	border-radius: 16px 16px 16px 4px;
 
 	&_me {
-		background: var(--color-background-message);
+		background: var(--color-background-my-message);
 	}
 
 	&__name {
@@ -95,7 +88,19 @@
 	&__date {
 		text-align: center;
 		margin: 10px 0;
-		font-size: 14px;
-		color: var(--color-text-time);
+		font-size: 16px;
+		color: var(--color-text-content);
+	}
+}
+
+@media (max-width: 820px) {
+	.message {
+		max-width: 70% !important;
+	}
+}
+
+@media (max-width: 1200px) {
+	.message {
+		max-width: 60%;
 	}
 }

@@ -1,7 +1,7 @@
-import { CInput } from '../../components/ui/c-input';
-import { CButton } from '../../components/ui/c-button';
+import { CInput } from '../../components/c-input';
+import { CButton } from '../../components/c-button';
 import { IUserData } from '../../services/auth/auth.types';
-import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
+import { CAvatarModal } from '../../components/c-avatar-modal';
 
 export enum EUserDataKeys {
     FirstName = 'first_name',
@@ -57,5 +57,5 @@ export interface IChildrenProfile {
     newPasswordRepeatInput: CInput;
     saveDataBtn: CButton;
     savePassBtn: CButton;
-    changeAvatarModal: ChangeAvatarModal;
+    changeAvatarModal: CAvatarModal;
 }

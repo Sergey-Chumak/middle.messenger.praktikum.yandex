@@ -1,8 +1,8 @@
-import Block from '../../../../../../services/block/block';
-import { tmpl } from './found-users.tmpl';
+import View from '../../../../../../services/view/view';
+import { foundUsersTmpl } from './found-users.tmpl';
 import { IPropsFoundUsers } from './found-users.types';
 
-export class FoundUsers extends Block<IPropsFoundUsers, void> {
+export class FoundUsers extends View<IPropsFoundUsers, void> {
   constructor(props: IPropsFoundUsers) {
     super('div', props);
 
@@ -10,8 +10,6 @@ export class FoundUsers extends Block<IPropsFoundUsers, void> {
   }
 
   render() {
-    return this.compile(tmpl, {
-      foundUsers: this.props.foundUsers,
-    });
+    return this.compile(foundUsersTmpl);
   }
 }

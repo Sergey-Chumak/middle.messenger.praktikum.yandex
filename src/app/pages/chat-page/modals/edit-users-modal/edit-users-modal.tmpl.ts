@@ -1,4 +1,4 @@
-export const tmpl = `
+export const editUsersModalTmpl = `
     <div class="edit-users-modal-wrapper">
         <div class="edit-users-modal">
             <div id="add-users-icon" class="edit-users-modal__add-user-icon"></div>
@@ -14,10 +14,12 @@ export const tmpl = `
                             <img src="https://ya-praktikum.tech/api/v2/resources{{ avatar }}" alt="">
                             {{/if}}
                         </div>
+                        
                         <div>
                             <div class="user-card__name">{{ first_name }} {{ second_name }}</div>
                             <div class="user-card__login">{{ login }}</div>
                         </div>
+                        
                         <div id="chat-remove-user" class="user-card__remove-user"></div>
                     </div>
                 {{/each}}

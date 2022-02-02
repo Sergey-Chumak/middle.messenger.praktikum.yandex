@@ -1,5 +1,5 @@
-import { CInput } from '../../../components/ui/c-input';
-import { CButton } from '../../../components/ui/c-button';
+import { CInput } from '../../../components/c-input';
+import { CButton } from '../../../components/c-button';
 
 export enum ESignupFormFields {
     Email = 'email',

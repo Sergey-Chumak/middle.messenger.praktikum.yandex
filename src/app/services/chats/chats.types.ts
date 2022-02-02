@@ -15,7 +15,8 @@ export interface IChatCard {
         time: string;
         content: string;
     }
-    status?: 'active' | 'passive'
+    status?: 'active' | 'passive';
+    initials?: string;
 }
 
 export interface ITitleChat {

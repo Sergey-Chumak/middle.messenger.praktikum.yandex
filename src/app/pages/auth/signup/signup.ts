@@ -1,7 +1,7 @@
-import { tmpl } from './signup.tmpl';
-import { CInput } from '../../../components/ui/c-input';
-import { CButton } from '../../../components/ui/c-button';
-import Block from '../../../services/block/block';
+import { signUpTmpl } from './signup.tmpl';
+import { CInput } from '../../../components/c-input';
+import { CButton } from '../../../components/c-button';
+import View from '../../../services/view/view';
 import {
   isValidEmail,
   isValidEqualPasswords,
@@ -16,10 +16,10 @@ import {
 import { IEvents } from '../../../services/types';
 import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
-import { snackbar } from '../../../components/ui/c-snackbar';
+import { snackbar } from '../../../components/c-snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 
-export class Signup extends Block<{}, IChildrenSignup> {
+export class Signup extends View<{}, IChildrenSignup> {
   inputs: CInput[];
   signupFormValue: ISignupFormValue = {
     [ESignupFormFields.Login]: '',
@@ -65,7 +65,7 @@ export class Signup extends Block<{}, IChildrenSignup> {
   }
 
   render(): DocumentFragment {
-    return this.compile(tmpl);
+    return this.compile(signUpTmpl);
   }
 
   initChildren(): void {
@@ -251,6 +251,22 @@ export class Signup extends Block<{}, IChildrenSignup> {
   }
 
   submit(): void {
+    this.validationInputs();
+
+    if (!this.isValidSignUpForm) return;
+    const form: ISignupFormValue = { ...this.signupFormValue };
+    delete form.passwordRepeat;
+
+    authService.registration(form)
+      .then(() => {
+        this.resetForm();
+        router.go('/messenger');
+      }).catch((e) => {
+        snackbar.open(ucFirstLetter(e.reason || e.error));
+      });
+  }
+
+  validationInputs(): void {
     if (!isValidEmail(this.signupFormValue[ESignupFormFields.Email])) {
       this.children.emailInput.getContent().classList.add('c-input_invalid');
     }
@@ -278,23 +294,11 @@ export class Signup extends Block<{}, IChildrenSignup> {
     if (
       !isValidEqualPasswords(
         this.signupFormValue[ESignupFormFields.Password],
-        this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
+            this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
       )
     ) {
       this.children.passwordRepeatInput.getContent().classList.add('c-input_invalid');
     }
-
-    if (!this.isValidSignUpForm) return;
-    const form: ISignupFormValue = { ...this.signupFormValue };
-    delete form.passwordRepeat;
-
-    authService.registration(form)
-      .then(() => {
-        this.resetForm();
-        router.go('/messenger');
-      }).catch((e) => {
-        snackbar.open(ucFirstLetter(e.reason || e.error));
-      });
   }
 
   resetForm(): void {

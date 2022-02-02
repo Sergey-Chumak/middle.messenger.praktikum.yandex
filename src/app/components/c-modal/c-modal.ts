@@ -1,23 +1,17 @@
-import Block from '../../../services/block/block';
-import { tmpl } from './modal.tmpl';
-import { IChildrenModal, IPropsModal } from './modal.types';
+import View from '../../services/view/view';
+import { modalTmpl } from './c-modal.tmpl';
+import { IChildrenModal, IPropsModal } from './c-modal.types';
 import { CButton } from '../c-button';
 
-export class Modal extends Block<IPropsModal, IChildrenModal> {
+export class CModal extends View<IPropsModal, IChildrenModal> {
   constructor(props: IPropsModal) {
     super('div', props);
     this.hide();
-    this.initChildren();
   }
 
   componentDidMount(): void {
-    this.setProps({
-      events: {
-        click: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'modal-cancel') this.close();
-        },
-      },
-    });
+    this.initChildren();
+    this.initEvents();
   }
 
   componentDidUpdate(oldProps: IPropsModal, newProps: IPropsModal): boolean {
@@ -33,13 +27,7 @@ export class Modal extends Block<IPropsModal, IChildrenModal> {
   }
 
   render(): DocumentFragment {
-    return this.compile(tmpl, {
-      target: this.props.target,
-      message: this.props.message,
-      confirm: this.props.confirm,
-      cancel: this.props.cancel,
-      buttonId: this.props.confirmId,
-    });
+    return this.compile(modalTmpl);
   }
 
   initChildren(): void {
@@ -47,14 +35,22 @@ export class Modal extends Block<IPropsModal, IChildrenModal> {
       name: this.props.confirm,
       id: this.props.buttonId,
       size: 's',
-      color: 'primary',
     });
 
     this.children.cancel = new CButton({
       name: this.props.cancel,
-      id: 'modal-cancel',
+      id: 'c-modal-cancel',
       size: 's',
-      color: 'primary',
+    });
+  }
+
+  initEvents(): void {
+    this.setProps({
+      events: {
+        click: (event: Event) => {
+          if ((event.target as HTMLElement).id === 'c-modal-cancel') this.close();
+        },
+      },
     });
   }
 

@@ -1,7 +1,7 @@
 import { signinTmpl } from './signin.tmpl';
-import { CButton } from '../../../components/ui/c-button';
-import Block from '../../../services/block/block';
-import { CInput } from '../../../components/ui/c-input';
+import { CButton } from '../../../components/c-button';
+import View from '../../../services/view/view';
+import { CInput } from '../../../components/c-input';
 import { isValidLogin, isValidPassword } from '../../../utils/validate';
 import {
   ESigninChildren, ESigninFormFields, ISigninChildren, ISigninFormValue,
@@ -9,10 +9,10 @@ import {
 import { IEvents } from '../../../services/types';
 import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
-import { snackbar } from '../../../components/ui/c-snackbar';
+import { snackbar } from '../../../components/c-snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 
-export class Signin extends Block<{}, ISigninChildren> {
+export class Signin extends View<{}, ISigninChildren> {
   signinFormValue: ISigninFormValue = {
     [ESigninFormFields.Login]: '',
     [ESigninFormFields.Password]: '',

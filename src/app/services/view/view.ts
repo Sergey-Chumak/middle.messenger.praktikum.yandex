@@ -7,7 +7,7 @@ import {
 } from '../types';
 import { IState } from '../../store/store.types';
 
-export default class Block<TProps, TChildren> {
+export default class View<TProps, TChildren> {
   protected props: TPropsAndChildren<TProps>;
   protected children: TChildrenBlock<TChildren>;
 
@@ -78,7 +78,7 @@ export default class Block<TProps, TChildren> {
     const props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
-      if (value instanceof Block) {
+      if (value instanceof View) {
         // @ts-ignore
         children[key] = value;
       } else {
@@ -94,12 +94,12 @@ export default class Block<TProps, TChildren> {
 
     Object.entries(this.children).forEach(([key, child]) => {
       // @ts-ignore
-      propsAndStubs[key] = `<div data-id="${(child as Block<TProps, unknown>).id}"></div>`;
+      propsAndStubs[key] = `<div data-id="${(child as View<TProps, unknown>).id}"></div>`;
     });
     const fragment = this.createDocumentElement('template') as HTMLTemplateElement;
     fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
 
-    Object.values(this.children).forEach((child: Block<TProps, unknown>) => {
+    Object.values(this.children).forEach((child: View<TProps, unknown>) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`) as Element;
       stub.replaceWith(child.getContent());
     });
@@ -109,7 +109,7 @@ export default class Block<TProps, TChildren> {
 
   private _componentDidMount() {
     this.componentDidMount();
-    Object.values(this.children).forEach((child: Block<TProps, unknown>) => {
+    Object.values(this.children).forEach((child: View<TProps, unknown>) => {
       child.dispatchComponentDidMount();
     });
   }
