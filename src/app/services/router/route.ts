@@ -1,4 +1,4 @@
-import Block from '../block/block';
+import View from '../view/view';
 import isEqual from '../../utils/isEqual';
 import { render } from '../../utils/renderDOM';
 import { IPropsRoute } from './router.types';
@@ -8,7 +8,7 @@ export default class Route {
   private readonly component: any;
   private readonly path: string;
 
-  private block: Block<unknown, unknown> | null;
+  private block: View<unknown, unknown> | null;
   private props: IPropsRoute;
 
   constructor(path: string, component: Function, props: IPropsRoute) {
@@ -23,12 +23,14 @@ export default class Route {
       if (data) {
         if (!this.block) {
           this.block = new this.component({});
-          render(this.props.rootQuery, this.block as Block<unknown, unknown>);
+          render(this.props.rootQuery, this.block as View<unknown, unknown>);
           return;
         }
 
         this.block.show();
-      } else if (this.props.redirectTo) router.go(this.props.redirectTo);
+      } else {
+        router.go(this.props.redirectTo);
+      }
     });
   }
 

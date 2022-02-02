@@ -1,8 +1,8 @@
 import { inputTmpl } from './c-input.tmpl';
 import { IPropsInput } from './c-input.types';
-import Block from '../../../services/block/block';
+import View from '../../services/view/view';
 
-export class CInput extends Block<IPropsInput, void> {
+export class CInput extends View<IPropsInput, void> {
   constructor(props: IPropsInput) {
     super('div', props);
   }
@@ -10,6 +10,14 @@ export class CInput extends Block<IPropsInput, void> {
   componentDidMount() {
     this.getContent().classList.add('c-input');
 
+    this.initEvents();
+  }
+
+  render(): DocumentFragment {
+    return this.compile(inputTmpl);
+  }
+
+  initEvents(): void {
     this.setProps({
       events: {
         click: () => {
@@ -17,9 +25,5 @@ export class CInput extends Block<IPropsInput, void> {
         },
       },
     });
-  }
-
-  render(): DocumentFragment {
-    return this.compile(inputTmpl);
   }
 }

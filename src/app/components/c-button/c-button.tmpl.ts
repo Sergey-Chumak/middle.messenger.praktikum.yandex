@@ -1,4 +1,4 @@
-export const tmpl = `
+export const buttonTmpl = `
     <button id="{{ id }}"
             type="button"
             class="c-button__button">

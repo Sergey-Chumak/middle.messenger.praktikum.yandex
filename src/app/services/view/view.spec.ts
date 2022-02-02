@@ -1,9 +1,9 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
-import Block from './block';
+import View from './view';
 
-class Component extends Block<{id: string}, void> {
+class Component extends View<{id: string}, void> {
   constructor(props: {id: string}) {
     super('div', props);
   }
@@ -15,7 +15,7 @@ class Component extends Block<{id: string}, void> {
   }
 }
 
-describe('Block', () => {
+describe('View', () => {
   beforeEach(() => {
     const dom = new JSDOM('<!DOCTYPE html><head></head><body><div id="app"></div></body>', {
       url: 'http://localhost:3000',

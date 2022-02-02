@@ -1,6 +1,8 @@
-export const tmpl = `
+export const chatTmpl = `
     <div class="chat">
         <div class="chat__header">
+            <div id="chat-arrow-back" class="chat__back"></div>
+        
             <div class="chat__chat-info">
                 <div class="chat__name">{{ name }}</div>
                 <div class="chat__users">{{ users }}</div>

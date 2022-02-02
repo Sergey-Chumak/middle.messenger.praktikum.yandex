@@ -1,7 +1,7 @@
-import { Modal } from '../../../../../components/ui/modal';
+import { CModal } from '../../../../../components/c-modal';
 import { FoundUsers } from './found-users';
 
 export interface IChildrenAddUsersModal {
-    confirmModal: Modal;
+    confirmModal: CModal;
     foundUserList: FoundUsers;
 }

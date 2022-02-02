@@ -66,3 +66,11 @@
     }
   }
 }
+
+@media (max-width: 820px) {
+  .found-user-card {
+    .found-user-card__add-user {
+      visibility: visible;
+    }
+  }
+}

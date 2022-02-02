@@ -1,4 +1,4 @@
-export const tmpl = `
+export const modalTmpl = `
     <div class="modal-wrapper">
         <div class="modal">
             <div class="modal__message">

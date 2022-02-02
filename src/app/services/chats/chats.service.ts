@@ -32,6 +32,8 @@ class ChatsService {
             }
           }
 
+          item.initials = this.getInitials(item.title);
+
           return item;
         });
       store.set('chats', copyData);
@@ -85,7 +87,7 @@ class ChatsService {
     }
     return this.chatsApi.getChatUsers(id).then((data) => {
       const userNames = data.reduce(
-        (acc, cur) => `${acc + (cur.display_name || `${cur.first_name} ${cur.second_name}`)}, `,
+        (acc, cur) => `${acc}${cur.first_name}, `,
         '',
       ).slice(0, -2);
 
@@ -97,6 +99,16 @@ class ChatsService {
 
   getChatToken(chatId: number) {
     return this.chatsApi.getChatToken(chatId);
+  }
+
+  getInitials(str: string) {
+    if (str.trim().includes(' ')) {
+      const words = str.split(' ');
+
+      return `${words[0][0] + words[1][0]}`.toUpperCase();
+    }
+
+    return str[0].toUpperCase();
   }
 }
 

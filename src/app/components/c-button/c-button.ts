@@ -1,8 +1,8 @@
-import { tmpl } from './c-button.tmpl';
+import { buttonTmpl } from './c-button.tmpl';
 import { IPropsButton } from './c-button.types';
-import Block from '../../../services/block/block';
+import View from '../../services/view/view';
 
-export class CButton extends Block<IPropsButton, void> {
+export class CButton extends View<IPropsButton, void> {
   constructor(props: IPropsButton) {
     super('div', props);
   }
@@ -13,15 +13,19 @@ export class CButton extends Block<IPropsButton, void> {
     if (this.props?.size) this.getContent().classList.add(`c-button_${this.props.size}`);
     if (this.props?.color) this.getContent().classList.add(`c-button_${this.props.color}`);
 
+    this.initEvents();
+  }
+
+  render(): DocumentFragment {
+    return this.compile(buttonTmpl);
+  }
+
+  initEvents(): void {
     this.setProps({
       events: {
         click: this.pulseAnimation.bind(this),
       },
     });
-  }
-
-  render(): DocumentFragment {
-    return this.compile(tmpl, this.props);
   }
 
   pulseAnimation(event: MouseEvent): void {

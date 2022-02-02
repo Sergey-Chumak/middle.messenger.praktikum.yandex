@@ -1,5 +1,5 @@
-@import '../../../../styles/mixins/modal';
-@import '../../../../styles/mixins/backdrop';
+@import '../../../styles/mixins/modal';
+@import '../../../styles/mixins/backdrop';
 
 .modal-wrapper {
   @include modal-wrapper;

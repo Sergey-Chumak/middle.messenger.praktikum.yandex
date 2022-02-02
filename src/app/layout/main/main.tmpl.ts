@@ -1,5 +1,4 @@
-export const tmpl = `
-    {{{ modal }}}
+export const mainTmpl = `
     <main class="main" id="main">
     </main>
 `;

@@ -1,8 +1,6 @@
-import { CInput } from '../../../../components/ui/c-input';
-import { CButton } from '../../../../components/ui/c-button';
+import { CButton } from '../../../../components/c-button';
 
 export interface IChildrenNewChatModal {
-    input: CInput;
     confirmBtn: CButton;
     cancelBtn: CButton;
 }

@@ -8,8 +8,8 @@ import { IMessage } from './chat/dialogues';
 import { NewChatModal } from './modals/new-chat-modal';
 // @ts-ignore
 import { EditUsersModal } from './modals/edit-users-modal';
-import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
-import { Modal } from '../../components/ui/modal';
+import { CAvatarModal } from '../../components/c-avatar-modal';
+import { CModal } from '../../components/c-modal';
 
 export interface IChatPageProps {
     chats?: IChatCard[];
@@ -25,6 +25,6 @@ export interface IChatPageChildren {
     newChatModal: NewChatModal;
     // @ts-ignore
     editUserModal: EditUsersModal;
-    changeAvatarModal: ChangeAvatarModal;
-    modal: Modal;
+    changeAvatarModal: CAvatarModal;
+    modal: CModal;
 }

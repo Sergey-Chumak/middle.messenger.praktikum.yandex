@@ -1,4 +1,4 @@
-export const tmpl = `
+export const foundUsersTmpl = `
     {{#each foundUsers}}
         <div id="{{ id }}" class="found-user-card">
             <div class="found-user-card__info"> 
@@ -7,6 +7,7 @@ export const tmpl = `
                     <img src="https://ya-praktikum.tech/api/v2/resources{{ avatar }}" alt="">
                     {{/if}}
                 </div>
+                
                 <div>
                     <div class="found-user-card__name">{{ first_name }} {{ second_name }}</div>
                     <div class="found-user-card__login">{{ login }}</div>

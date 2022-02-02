@@ -1,4 +1,4 @@
-export const tmpl = `
+export const signUpTmpl = `
     <div class="signup__wrapper">
         <div class="signup" id="signup">
             <h1 class="signup__title">Sign up to Messenger</h1>

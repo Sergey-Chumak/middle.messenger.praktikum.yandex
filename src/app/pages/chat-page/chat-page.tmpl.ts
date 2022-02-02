@@ -1,7 +1,7 @@
-export const tmpl = `
-    <div class="chat-page">
+export const chatPageTmpl = `
+    <div id="chat-page" class="chat-page chat-list-hide">
         {{{ chatList }}}
-        <div class="chat-page__content">
+        <div id="chat-page-content" class="chat-page__content">
             {{{ chat }}}
             {{{ plug }}}
         </div>

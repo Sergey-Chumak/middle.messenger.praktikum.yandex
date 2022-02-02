@@ -3,7 +3,7 @@ import last from '../../utils/last';
 import { cloneDeep } from '../../utils/cloneDeep';
 import { IMessage } from '../../pages/chat-page/chat/dialogues';
 import { chatsService } from '../chats/chats.service';
-import { loader } from '../../components/loader';
+import { loader } from '../../components/c-loader';
 import audioFile from '../../../assets/audio/new-message.mp3';
 
 class WebSocketApi {
@@ -121,8 +121,6 @@ class WebSocketApi {
   }
 
   loadMoreMessages() {
-    loader.show();
-
     this.offsetMessages += 20;
 
     this.socket.send(JSON.stringify({

@@ -1,8 +1,8 @@
 import { tmpl } from './profile.tmpl';
-import Block from '../../services/block/block';
+import View from '../../services/view/view';
 import { IEvents } from '../../services/types';
-import { CInput } from '../../components/ui/c-input';
-import { CButton } from '../../components/ui/c-button';
+import { CInput } from '../../components/c-input';
+import { CButton } from '../../components/c-button';
 import {
   isValidEmail,
   isValidEqualPasswords,
@@ -20,10 +20,10 @@ import { profileService } from '../../services/profile/profile.service';
 import connect from '../../utils/hoc/connect';
 import { authService } from '../../services/auth/auth.service';
 import isEqual from '../../utils/isEqual';
-import { ChangeAvatarModal } from '../../components/ui/change-avatar-modal';
+import { CAvatarModal } from '../../components/c-avatar-modal';
 import { router } from '../../services/router/router';
 
-export class Profile extends Block<IPropsProfile, IChildrenProfile> {
+export class Profile extends View<IPropsProfile, IChildrenProfile> {
   avatar: File | null;
   userDataInputs: CInput[] = [];
   userPasswordInputs: CInput[] = [];
@@ -181,9 +181,9 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
   }
 
   initChildren() {
-    this.children.changeAvatarModal = new ChangeAvatarModal({
-      inputId: 'change-user-avatar-modal-c-input',
-      confirmBtnId: 'change-user-avatar-modal-confirm',
+    this.children.changeAvatarModal = new CAvatarModal({
+      inputId: 'change-user-c-avatar-c-modal-c-input',
+      confirmBtnId: 'change-user-c-avatar-c-modal-confirm',
     });
 
     this.children.emailInput = new CInput({
@@ -379,12 +379,12 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
     this.children.changeAvatarModal.setProps({
       events: {
         change: (event:Event) => {
-          if ((event.target as HTMLInputElement).id === 'change-user-avatar-modal-c-input') {
+          if ((event.target as HTMLInputElement).id === 'change-user-c-avatar-c-modal-c-input') {
             this.avatar = ((event.target as HTMLInputElement)?.files!)[0] as File;
           }
         },
         click: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'change-user-avatar-modal-confirm') {
+          if ((event.target as HTMLElement).id === 'change-user-c-avatar-c-modal-confirm') {
             if (!this.avatar) return;
             profileService.changeUserAvatar(this.avatar).then(() => {
               this.avatar = null;
@@ -500,4 +500,4 @@ export class Profile extends Block<IPropsProfile, IChildrenProfile> {
 
 export const ProfileWrap = connect<IPropsProfile, IChildrenProfile>((state) => ({
   userData: state?.user,
-}))(Profile as typeof Block);
+}))(Profile as typeof View);

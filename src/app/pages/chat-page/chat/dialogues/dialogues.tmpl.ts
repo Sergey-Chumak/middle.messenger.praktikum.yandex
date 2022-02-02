@@ -1,4 +1,4 @@
-export const tmplDialogues = `
+export const dialoguesTmpl = `
     <div class="dialogues" id="dialogues">
         {{#each dialogues as | dialog |}}
         {{#with dialog}}
@@ -10,8 +10,13 @@ export const tmplDialogues = `
                     <img class="dialogues__img" src="https://ya-praktikum.tech/api/v2/resources{{userAvatar}}" alt="">
                     {{/if}}
                 </div>
+                
                 <div class="message message_{{ from }}">
+                    {{#if name}}
                     <div class="message__name">{{ name }}</div>
+                    {{else}}
+                    <div class="message__name">Anonymous</div>
+                    {{/if}}
                     {{ content }}
                     <div class="message__time">
                         {{ timeCustomFormat }}
@@ -23,6 +28,5 @@ export const tmplDialogues = `
             <div class="message__date">{{ date }}</div>
         {{/with}}
         {{/each}}
-        <p id="load-more-messages" class="dialogues__more-messages">Load more messages</p>
     </div>
 `;
