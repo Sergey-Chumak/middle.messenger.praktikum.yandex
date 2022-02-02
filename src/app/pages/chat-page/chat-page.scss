@@ -6,10 +6,6 @@
   background-image: url("../../../assets/images/chat-background.avif");
   background-size: cover;
 
-  & > div:first-child {
-    width: 100%;
-  }
-
   &__content {
     display: flex;
     flex-direction: column;
@@ -27,6 +23,18 @@
 }
 
 @media (max-width: 820px) {
+  .chat-page {
+    & > div:first-child {
+      width: 100%;
+    }
+
+    &__content {
+      & > div {
+        display: none;
+      }
+    }
+  }
+
   .chat-page.chat-list-hide {
       & > div:first-child {
         display: none !important;

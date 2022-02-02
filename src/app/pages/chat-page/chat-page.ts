@@ -39,6 +39,10 @@ class ChatPage extends View<IChatPageProps, IChatPageChildren> {
     window.addEventListener('resize', (event) => {
       this.initAdaptive(event.target as Window);
     }, false);
+
+    chatsService.getChats().then(() => {
+      this.initAdaptive(window);
+    });
   }
 
   componentDidUpdate(oldProps:IChatPageProps, newProps: IChatPageProps): boolean {
