@@ -1,3 +1,5 @@
+@import '../../../../styles/mixins/avatar';
+
 .chat {
   display: flex;
   flex-direction: column;
@@ -16,6 +18,24 @@
     justify-content: space-between;
   }
 
+  &__avatar {
+    @include avatar;
+
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    margin-right: 7px;
+    height: 40px;
+    width: 40px;
+  }
+
+  &__avatar-initials {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
   &__back {
     background: url("../../../../assets/images/i_arrow-back.svg") no-repeat center;
     height: 36px;
@@ -31,7 +51,7 @@
     }
   }
 
-  &__info-wrapper {
+  &__chat-info-wrapper {
     display: flex;
     flex-direction: row;
   }
@@ -184,8 +204,12 @@
       display: block;
     }
 
+    &__avatar {
+      display: flex;
+    }
+
     &__chat-info {
-      text-align: center;
+      margin-left: 0;
     }
 
     &__users {

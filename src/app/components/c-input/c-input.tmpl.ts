@@ -3,7 +3,7 @@ export const inputTmpl = `
            id="{{ id }}"
            autocomplete="off"
            value="{{ value }}"
-           class="c-input__input {{ class }}"
+           class="c-input__input"
            required
            />
     <label class="c-input__message c-input__label" for="{{ id }}">{{ labelName }}</label>

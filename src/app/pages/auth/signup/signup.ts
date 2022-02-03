@@ -71,7 +71,7 @@ export class Signup extends View<{}, IChildrenSignup> {
   initChildren(): void {
     this.children[ESignupChildren.EmailInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Email],
-      id: 'email',
+      id: 'signup-email',
       labelName: 'Email',
       type: 'text',
       errorMessage: 'Email is invalid',
@@ -79,7 +79,7 @@ export class Signup extends View<{}, IChildrenSignup> {
 
     this.children[ESignupChildren.LoginInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Login],
-      id: 'login',
+      id: 'signup-login',
       labelName: 'Login',
       type: 'text',
       errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
@@ -87,7 +87,7 @@ export class Signup extends View<{}, IChildrenSignup> {
 
     this.children[ESignupChildren.NameInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Name],
-      id: 'first_name',
+      id: 'signup-first-name',
       labelName: 'Name',
       type: 'text',
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
@@ -95,7 +95,7 @@ export class Signup extends View<{}, IChildrenSignup> {
 
     this.children[ESignupChildren.LastNameInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.LastName],
-      id: 'last_name',
+      id: 'signup-last-name',
       labelName: 'Last name',
       type: 'text',
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
@@ -103,7 +103,7 @@ export class Signup extends View<{}, IChildrenSignup> {
 
     this.children[ESignupChildren.PhoneInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Phone],
-      id: 'phone',
+      id: 'signup-phone',
       labelName: 'Phone',
       type: 'text',
       errorMessage: 'Phone is invalid',
@@ -111,7 +111,7 @@ export class Signup extends View<{}, IChildrenSignup> {
 
     this.children[ESignupChildren.PasswordInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.Password],
-      id: 'password',
+      id: 'signup-password',
       labelName: 'Password',
       type: 'password',
       errorMessage: 'Must contain 1 number and 1 capital letter. 8 to 40 characters.',
@@ -119,7 +119,7 @@ export class Signup extends View<{}, IChildrenSignup> {
 
     this.children[ESignupChildren.PasswordRepeatInput] = new CInput({
       value: this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
-      id: 'password_repeat',
+      id: 'signup-password-repeat',
       labelName: 'Password (repeat)',
       type: 'password',
       errorMessage: 'Password mismatch',

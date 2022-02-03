@@ -46,11 +46,19 @@
     color: var(--color-text-chat-name);
     font-size: 16px;
     margin-bottom: 3px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   &__login {
     color: var(--color-text-content);
     font-size: 14px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   &__add-user {

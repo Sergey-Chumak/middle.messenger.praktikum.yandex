@@ -106,4 +106,6 @@ export const ChatWrap = connect((state) => ({
   name: state.currentChat,
   users: state.chatUserNames,
   currentMessages: state.currentMessages,
+  initials: state.chats?.find((i) => i.status === 'active')?.initials,
+  avatar: state.chats?.find((i) => i.status === 'active')?.avatar,
 }))(Chat as unknown as typeof View);
