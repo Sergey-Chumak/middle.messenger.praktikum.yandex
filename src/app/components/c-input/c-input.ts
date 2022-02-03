@@ -10,6 +10,10 @@ export class CInput extends View<IPropsInput, void> {
   componentDidMount() {
     this.getContent().classList.add('c-input');
 
+    if (this.props.class) {
+      this.getContent().classList.add(this.props.class);
+    }
+
     this.initEvents();
   }
 

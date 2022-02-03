@@ -20,6 +20,9 @@ class CSnackbar extends View<IPropsSnackbar, { }> {
     this.getContent().style.left = `${leftMargin}px`;
 
     if (this.props.color) {
+      this.getContent().classList.remove('c-snackbar_error');
+      this.getContent().classList.remove('c-snackbar_success');
+
       this.getContent().classList.add(`c-snackbar_${this.props.color}`);
     }
 

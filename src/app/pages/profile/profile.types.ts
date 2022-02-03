@@ -1,61 +1,14 @@
-import { CInput } from '../../components/c-input';
-import { CButton } from '../../components/c-button';
 import { IUserData } from '../../services/auth/auth.types';
 import { CAvatarModal } from '../../components/c-avatar-modal';
-
-export enum EUserDataKeys {
-    FirstName = 'first_name',
-    SecondName = 'second_name',
-    DisplayName = 'display_name',
-    Login = 'login',
-    Email = 'email',
-    Phone = 'phone',
-}
-
-export interface IUserPassFormValue {
-    oldPassword: string;
-    newPassword: string;
-    newRepeatPassword?: string;
-}
-
-export interface IUserDataFormValue {
-    [EUserDataKeys.Email]: string;
-    [EUserDataKeys.Login]: string;
-    [EUserDataKeys.FirstName]: string;
-    [EUserDataKeys.SecondName]: string;
-    [EUserDataKeys.Phone]: string;
-    [EUserDataKeys.DisplayName]: string;
-}
+import { ChangeDataModal } from './change-data-modal';
+import { ChangePasswordModal } from './change-password-modal';
 
 export interface IPropsProfile {
-    userName?: string;
     userData?: IUserData;
-    nonAvailableChangeData?: boolean;
-    emailInput?: CInput;
-    loginInput?: CInput;
-    nameInput?: CInput;
-    lastNameInput?: CInput;
-    nicknameInput?: CInput;
-    phoneInput?: CInput;
-    oldPasswordInput?: CInput;
-    newPasswordInput?: CInput;
-    newPasswordRepeatInput?: CInput;
-    saveDataBtn?: CButton;
-    savePassBtn?: CButton;
-    avatar?: string;
 }
 
 export interface IChildrenProfile {
-    emailInput: CInput;
-    loginInput: CInput;
-    nameInput: CInput;
-    lastNameInput: CInput;
-    nicknameInput: CInput;
-    phoneInput: CInput;
-    oldPasswordInput: CInput;
-    newPasswordInput: CInput;
-    newPasswordRepeatInput: CInput;
-    saveDataBtn: CButton;
-    savePassBtn: CButton;
     changeAvatarModal: CAvatarModal;
+    changeDataModal: ChangeDataModal;
+    changePasswordModal: ChangePasswordModal;
 }
