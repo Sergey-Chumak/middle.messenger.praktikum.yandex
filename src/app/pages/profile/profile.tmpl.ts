@@ -24,27 +24,27 @@ export const tmpl = `
             <div class="profile__user-info">
                 <div>
                     <span class="profile__label">Email</span>
-                    <span class="profile__user-info-content">{{ email }}</span>
+                    {{ email }}
                 </div> 
                 <div>
                     <span class="profile__label">Login</span>
-                    <span>{{ login }}</span>
+                    {{ login }}
                 </div> 
                 <div>
                     <span class="profile__label">First name</span>
-                    <span>{{ first_name }}</span>
+                    {{ first_name }}
                 </div> 
                 <div>
                     <span class="profile__label">Second name</span>
-                    <span>{{ second_name }}</span>
+                    {{ second_name }}
                 </div> 
                 <div>
                     <span class="profile__label">Display name</span>
-                    <span>{{ display_name }}</span>
+                    {{ display_name }}
                 </div> 
                 <div>
                     <span class="profile__label">Phone</span>
-                    <span>{{ phone }}</span>
+                    {{ phone }}
                 </div> 
             </div>
             

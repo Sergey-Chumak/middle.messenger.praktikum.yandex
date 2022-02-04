@@ -9,8 +9,8 @@
   height: fit-content !important;
   position: fixed;
   border-radius: 4px;
-  background: #b12f18;
-  color: white;
+  background: var(--color-background-snackbar-error);
+  color: var(--color-text-secondary);
   font-size: 20px;
   margin-top: 24px;
   z-index: 20;
@@ -26,11 +26,11 @@
   }
 
   &_success {
-    background: #97CB55;
+    background: var(--color-background-snackbar-success);
   }
 
   &_error {
-    background: #D74A2B;
+    background: var(--color-background-snackbar-error);
   }
 }
 

@@ -17,6 +17,7 @@ export interface IMessage {
     type: 'message';
     user_id: number;
     name: string;
+    initials: string;
     userAvatar?: string;
     timeCustomFormat?: string;
     from?: 'me';

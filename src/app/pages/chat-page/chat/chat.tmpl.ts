@@ -13,7 +13,7 @@ export const chatTmpl = `
                 </div>
                 <div class="chat__chat-info">
                     <div class="chat__name">{{ name }}</div>
-                    <div class="chat__users">{{ users }}</div>
+                    <div id="chat-users" class="chat__users">{{ users }}</div>
                 </div>
             </div>
             

@@ -1,7 +1,7 @@
 import { addUsersModalTmpl } from './add-users-modal.tmpl';
 import View from '../../../../../services/view/view';
 import { IChildrenAddUsersModal } from './add-users-modal.types';
-import { profileService } from '../../../../../services/profile/profile.service';
+import { usersService } from '../../../../../services/users/users.service';
 import { FoundUsers } from './found-users';
 import { CModal } from '../../../../../components/c-modal';
 import { IUserData } from '../../../../../services/auth/auth.types';
@@ -81,7 +81,7 @@ export class AddUsersModal extends View<{ }, IChildrenAddUsersModal> {
     const target = event.target as HTMLInputElement;
     if (target.id === 'search-users-input') {
       if (target.value) {
-        profileService.searchUsers(target.value)
+        usersService.searchUsers(target.value)
           .then((data) => {
             this.foundUsers = data;
 

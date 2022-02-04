@@ -3,7 +3,7 @@ import View from '../../services/view/view';
 import { IChildrenProfile, IPropsProfile } from './profile.types';
 import store from '../../store/store';
 import { IUserData } from '../../services/auth/auth.types';
-import { profileService } from '../../services/profile/profile.service';
+import { usersService } from '../../services/users/users.service';
 import connect from '../../utils/hoc/connect';
 import { authService } from '../../services/auth/auth.service';
 import isEqual from '../../utils/isEqual';
@@ -11,6 +11,8 @@ import { CAvatarModal } from '../../components/c-avatar-modal';
 import { router } from '../../services/router/router';
 import { ChangeDataModal } from './change-data-modal';
 import { ChangePasswordModal } from './change-password-modal';
+import { chatsService } from '../../services/chats/chats.service';
+import { loader } from '../../components/c-loader';
 
 export class Profile extends View<IPropsProfile, IChildrenProfile> {
   avatar: File | null;
@@ -75,6 +77,12 @@ export class Profile extends View<IPropsProfile, IChildrenProfile> {
 
           if ((event.target as HTMLElement).id === 'back-to-chats-icon') {
             router.go('/messenger');
+
+            loader.show();
+            chatsService.getChats()
+              .then(() => {
+                loader.hide();
+              });
           }
         },
       },
@@ -107,7 +115,7 @@ export class Profile extends View<IPropsProfile, IChildrenProfile> {
         click: (event: Event) => {
           if ((event.target as HTMLElement).id === 'change-user-avatar-modal-confirm') {
             if (!this.avatar) return;
-            profileService.changeUserAvatar(this.avatar).then(() => {
+            usersService.changeUserAvatar(this.avatar).then(() => {
               this.avatar = null;
               this.children.changeAvatarModal.close();
               this.setProps({

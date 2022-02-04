@@ -20,19 +20,19 @@
   &__logo {
     height: 90px;
     width: 100%;
-    background: url("../../../../assets/images/logo.svg") no-repeat center;
+    background: url("../../../../assets/images/i_logo.svg") no-repeat center;
     background-size: contain;
     margin-bottom: 40px;
   }
 
   &__title {
-    color: white;
+    color: var(--color-text-secondary);
     margin-bottom: 16px;
   }
 
   &__info {
     font-size: 16px;
-    color: gray;
+    color: var(--color-text-primary);
     margin-bottom: 50px;
   }
 
@@ -47,7 +47,7 @@
 
   &__signature {
     font-size: 16px;
-    color: gray;
+    color: var(--color-text-primary);
     margin-bottom: 16px;
   }
 }

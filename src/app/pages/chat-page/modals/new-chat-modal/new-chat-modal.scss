@@ -22,22 +22,22 @@
   &__header {
     font-size: 26px;
     margin-bottom: 12px;
-    color: var(--color-text-chat-name);
+    color: var(--color-text-secondary);
     text-align: center;
   }
 
   &__label {
     font-size: 12px;
-    color: gray;
+    color: var(--color-text-primary);
     align-self: flex-start;
   }
 
   &__input {
     width: 100%;
     border: none;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border-secondary);
     background: transparent;
-    color: white;
+    color: var(--color-text-secondary);
     margin-bottom: 36px;
     font-size: 16px;
 

@@ -30,7 +30,7 @@
     width: 150px;
     height: 150px;
     margin: 0 auto 21px;
-    background: #b389ee;
+    background: var(--color-background-avatar);
     border-radius: 50%;
     position: relative;
     cursor: pointer;
@@ -78,7 +78,7 @@
   &__user-name {
     text-align: center;
     font-weight: 600;
-    color: #b389ee;
+    color: var(--color-text-user-name);
     margin-bottom: 60px;
     font-size: 24px;
   }
@@ -95,7 +95,7 @@
       margin-bottom: 10px;
       font-weight: 500;
       font-size: 16px;
-      border-bottom: 1px solid #b389ee;
+      border-bottom: 1px solid var(--color-border-primary);
 
       &:last-child {
         border-bottom: none;
@@ -104,13 +104,13 @@
   }
 
   &__label {
-    color: white;
+    color: var(--color-text-secondary);
   }
 
   &__option-field {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #b389ee;
+    border-bottom: 1px solid var(--color-border-primary);
     padding-bottom: 10px;
     margin-bottom: 10px;
 
@@ -126,14 +126,14 @@
     transition: color 0.2s ease-out;
 
     &:hover {
-      color: white;
+      color: var(--color-text-secondary);
     }
 
     &_logout {
-      color: var(--color-link-secondary);
+      color: var(--color-text-secondary);
 
       &:hover {
-        color: #b389ee;
+        color: var(--color-text-user-name);
       }
     }
   }

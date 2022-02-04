@@ -11,6 +11,8 @@ import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
 import { snackbar } from '../../../components/c-snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
+import { loader } from '../../../components/c-loader';
+import { chatsService } from '../../../services/chats/chats.service';
 
 export class Signin extends View<{}, ISigninChildren> {
   signinFormValue: ISigninFormValue = {
@@ -133,6 +135,12 @@ export class Signin extends View<{}, ISigninChildren> {
       .then(() => {
         this.resetForm();
         router.go('/messenger');
+
+        loader.show();
+        chatsService.getChats()
+          .then(() => {
+            loader.hide();
+          });
       })
       .catch((e) => {
         snackbar.open(ucFirstLetter(e.reason || e.error));

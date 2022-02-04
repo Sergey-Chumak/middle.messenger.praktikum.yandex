@@ -3,7 +3,7 @@ import View from '../../../services/view/view';
 import { IChatListChildren, IChatListProps } from './chat-list.types';
 import { ChatCards } from './chat-cards';
 import { IChatCard } from '../../../services/chats/chats.types';
-import { getElementId } from '../../../utils/get-element-id';
+import { getElementId } from '../../../utils/getElementId';
 import { chatsService } from '../../../services/chats/chats.service';
 import last from '../../../utils/last';
 import store from '../../../store/store';

@@ -9,6 +9,7 @@ export const chatPageTmpl = `
        {{{ newChatModal }}}
        {{{ editUserModal }}}
        {{{ changeAvatarModal }}}
+       {{{ userInfoModal }}}
        {{{ modal }}}
     </div>
 `;

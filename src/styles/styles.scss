@@ -25,12 +25,6 @@ body {
   }
 }
 
-a {
-  text-decoration: none;
-  font-size: 13px;
-  color: var(--color-link-secondary);
-}
-
 * {
   &::-webkit-scrollbar-button {
     display: none;
