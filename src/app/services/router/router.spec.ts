@@ -30,10 +30,6 @@ describe('Router', () => {
     });
   });
 
-  describe('.start', () => {
-
-  });
-
   describe('.go', () => {
     beforeEach(() => {
       class MyBlock extends View<{}, void> {
