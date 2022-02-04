@@ -19,6 +19,9 @@ import { webSocketApi } from '../../services/web-socket/web-socket';
 import { snackbar } from '../../components/c-snackbar';
 import { ucFirstLetter } from '../../utils/ucFirstLetter';
 import { router } from '../../services/router/router';
+import { usersService } from '../../services/users/users.service';
+import { UserInfoModal } from './modals/user-info-modal';
+import { getElementId } from '../../utils/getElementId';
 
 class ChatPage extends View<IChatPageProps, IChatPageChildren> {
   newChatName = '';
@@ -85,6 +88,8 @@ class ChatPage extends View<IChatPageProps, IChatPageChildren> {
       message: '',
     });
 
+    this.children.userInfoModal = new UserInfoModal({});
+
     this.children.plug = new PlugDialog({});
     this.children.plug.hide();
     this.children.chatList = new ChatList({ chatCards: [] });
@@ -113,6 +118,20 @@ class ChatPage extends View<IChatPageProps, IChatPageChildren> {
         click: (event: Event) => {
           const eventTarget = event.target as HTMLElement;
 
+          const messageUsersId = store.getState().currentMessages
+            ?.find((i) => i.id === +getElementId(eventTarget)!)?.user_id;
+
+          if (messageUsersId) {
+            loader.show();
+            usersService.getUser(messageUsersId!).then((data) => {
+              loader.hide();
+              this.children.userInfoModal.setProps({
+                userData: data,
+              });
+              this.children.userInfoModal.open();
+            });
+          }
+
           if (eventTarget.id === 'chat-arrow-back') {
             router.go('/messenger');
             this.children.chatList.setProps({
@@ -122,6 +141,10 @@ class ChatPage extends View<IChatPageProps, IChatPageChildren> {
           }
 
           if (eventTarget.id === 'chat-edit-users') {
+            this.children.editUserModal.open();
+          }
+
+          if (eventTarget.id === 'chat-users') {
             this.children.editUserModal.open();
           }
 

@@ -33,7 +33,7 @@
 
   &__header {
     text-align: center;
-    color: var(--color-text-chat-name);
+    color: var(--color-text-secondary);
     font-size: 24px;
     margin-bottom: 20px;
   }
@@ -45,7 +45,7 @@
   }
 
   &__input {
-    background: var(--color-background-secondary);
+    background: var(--color-background-modal);
   }
 
   &__button {
@@ -61,8 +61,12 @@
     border-radius: 0;
     background: var(--color-background-app);
 
+    &__header {
+      margin-bottom: 40px;
+    }
+
     &__input {
-      background: #212121;
+      background: var(--color-background-app);
     }
   }
 }

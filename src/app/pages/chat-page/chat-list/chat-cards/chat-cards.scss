@@ -31,7 +31,7 @@
   }
 
   &__initials {
-    color: white;
+    color: var(--color-text-secondary);
     font-size: 32px;
     font-weight: bold;
   }
@@ -55,7 +55,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--color-text-chat-name);
+    color: var(--color-text-secondary);
   }
 
   &__last-message{
@@ -70,7 +70,7 @@
   }
 
   &__user-name {
-    color: #b389ee;
+    color: var(--color-text-user-name);
   }
 
   &__info {

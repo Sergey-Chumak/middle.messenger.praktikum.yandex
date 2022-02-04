@@ -16,7 +16,7 @@ import {
 import { IEvents } from '../../../services/types';
 import { snackbar } from '../../../components/c-snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
-import { profileService } from '../../../services/profile/profile.service';
+import { usersService } from '../../../services/users/users.service';
 
 export class ChangeDataModal extends View<IPropsChangeDataModal, IChildrenChangeDataModal> {
   inputs: CInput[];
@@ -219,7 +219,7 @@ export class ChangeDataModal extends View<IPropsChangeDataModal, IChildrenChange
 
     if (!this.isValidSignUpForm) return;
 
-    profileService.changeUserData(this.changeDataFormValue)
+    usersService.changeUserData(this.changeDataFormValue)
       .then(() => {
         this.close();
         snackbar.open('Data updated successfully', 'success');

@@ -13,7 +13,7 @@ import { snackbar } from '../../../components/c-snackbar';
 import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 import { CInput } from '../../../components/c-input';
 import { CButton } from '../../../components/c-button';
-import { profileService } from '../../../services/profile/profile.service';
+import { usersService } from '../../../services/users/users.service';
 
 export class ChangePasswordModal extends View<IPropsChangePasswordModal, IChildrenChangePasswordModal> {
   changePassFormValue: IChangePasswordFormValue = {
@@ -192,7 +192,7 @@ export class ChangePasswordModal extends View<IPropsChangePasswordModal, IChildr
     const form: IChangePasswordFormValue = { ...this.changePassFormValue };
     delete form.passwordRepeat;
 
-    profileService.changeUserPassword(form)
+    usersService.changeUserPassword(form)
       .then(() => {
         this.close();
         snackbar.open('Password updated successfully', 'success');

@@ -22,9 +22,18 @@
 	&__avatar {
 		@include avatar;
 
-		background: #999999;
 		height: 45px;
 		width: 45px;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__initials {
+		color: var(--color-text-secondary);
+		font-size: 20px;
+		font-weight: bold;
 	}
 
 	&__more-messages {
@@ -37,7 +46,7 @@
 		visibility: hidden;
 
 		&:hover {
-			color: var(--color-text-chat-name);
+			color: var(--color-text-secondary);
 		}
 
 		&_visible {
@@ -48,7 +57,7 @@
 
 .message {
 	text-align: left;
-	background: #c7c7c7;
+	background: var(--color-background-message);
 	box-sizing: border-box;
 	padding: 8px 11px;
 	max-width: 40%;
@@ -69,6 +78,7 @@
 		font-weight: 600;
 		margin-bottom: 5px;
 		font-size: 15px;
+		cursor: pointer;
 	}
 
 	&__time {

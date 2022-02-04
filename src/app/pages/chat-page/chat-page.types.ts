@@ -10,6 +10,7 @@ import { NewChatModal } from './modals/new-chat-modal';
 import { EditUsersModal } from './modals/edit-users-modal';
 import { CAvatarModal } from '../../components/c-avatar-modal';
 import { CModal } from '../../components/c-modal';
+import { UserInfoModal } from './modals/user-info-modal';
 
 export interface IChatPageProps {
     chats?: IChatCard[];
@@ -25,6 +26,7 @@ export interface IChatPageChildren {
     newChatModal: NewChatModal;
     // @ts-ignore
     editUserModal: EditUsersModal;
+    userInfoModal: UserInfoModal;
     changeAvatarModal: CAvatarModal;
     modal: CModal;
 }

@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #212121;
+  background-color: var(--color-background-app);
   margin-bottom: 12px;
 
   &__input {
@@ -13,35 +13,35 @@
     justify-content: flex-end;
     border-radius: 8px;
     background-color: inherit;
-    border: 1px solid gray;
+    border: 1px solid var(--color-border-input);
     padding: 15px;
-    color: white;
+    color: var(--color-border-input-hover);
     font-size: 16px;
     transition: border-color 0.2s ease-out;
 
     &:hover {
-      border: 1px solid white;
+      border: 1px solid var(--color-border-input-hover);
 
       & ~ .c-input__message {
-        color: white;
+        color: var(--color-border-input-hover);
       }
     }
 
     &:focus {
       outline: none;
-      border: 2px solid #b389ee;
+      border: 2px solid var(--color-border-primary);
 
       & ~ .c-input__label {
-        color: #b389ee;
+        color: var(--color-border-primary);
       }
     }
 
     &:valid {
       outline: none;
-      border: 2px solid #b389ee;
+      border: 2px solid var(--color-border-primary);
 
       & ~ .c-input__label {
-        color: #b389ee;
+        color: var(--color-border-primary);
       }
     }
 
@@ -54,7 +54,7 @@
   }
 
   &__message {
-    color: gray;
+    color: var(--color-border-input);
     position: absolute;
     top: 16px;
     left: 12px;

@@ -84,6 +84,7 @@ class Chat extends View<IChatProps, IChatChildren> {
       message.name = user?.first_name!;
       message.userAvatar = user?.avatar;
       message.timeCustomFormat = getTimeCustomFormat(message.time);
+      message.initials = `${user?.first_name[0]!}${user?.second_name[0]!}`;
 
       if (dialogues.find((i) => i.date === getDateCustomFormat(message.time))) {
         dialogues.find((i) => i.date === getDateCustomFormat(message.time))?.messages.push(message);

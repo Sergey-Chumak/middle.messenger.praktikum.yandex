@@ -1,42 +1,39 @@
 *{
   --color-background-app: #212121;
-  --color-background-primary: #222;
-  --color-background-secondary: rgba(57, 57, 57, 0.95);
+  --color-background-modal: rgba(57, 57, 57, 0.95);
   --color-background-active-chat: #606060;
   --color-background-hover-chat: rgba(199, 199, 199, 0.05);
   --color-background-hover-modal: rgba(31, 31, 31, 0.5);
   --color-background-hover-context-menu: #3e3e3e;
-  --color-background-message: #CECECE;
   --color-background-my-message: #FFF;
+  --color-background-message: #e0dfdf;
   --color-background-input: #545453;
+  --color-background-snackbar-error: #D74A2B;
+  --color-background-snackbar-success:#97CB55;
+  --color-background-avatar: #b389ee;
 
   --color-no-read-notification: #F44A25;
 
   --color-button: #1e1e1e;
 
-  --color-empty-avatar: #cacaca;
-
-  --color-border: #000;
+  --color-border-secondary: #151515;
+  --color-border-primary: #b389ee;
+  --color-border-input: gray;
+  --color-border-input-hover: white;
 
   --color-spiner: rgb(191, 226, 255);
 
-  --snackbar-success: rgba(116, 250, 95, 0.3);
-  --snackbar-error: rgba(255, 77, 77, 0.5);
-
   --color-text-default: #1e1e1e;
-  --color-text-primary: #999;
+  --color-text-primary: gray;
   --color-text-secondary: #fff;
   --color-text-error: #f44336;
   --color-link-primary: #C8C8C8;
-  --color-link-secondary: #fff;
   --color-text-time: #939292;
-  --color-text-chat-name: #fff;
   --color-text-content: #c8c8c8;
-  --color-text-snackbar-success: #2d950a;
-  --color-text-snackbar-error: red;
+  --color-text-user-name: #b389ee;
 
-  --shadow-primary:0 7px 5px -3px rgba(24, 24, 24, 0.5);
-  --shadow-secondary:0 7px 5px -3px rgba(95, 95, 95, 0.5);
+  --shadow-primary: 0 7px 5px -3px rgba(24, 24, 24, 0.5);
+  --shadow-secondary:0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
 
   --color-backdrop: rgba(0, 0, 0, 0.5);
 }
