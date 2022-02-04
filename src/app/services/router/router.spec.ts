@@ -59,31 +59,4 @@ describe('Router', () => {
       expect(document.location.pathname).to.eq('/');
     });
   });
-
-  describe('.back', () => {
-    it('should back to last pathname', () => {
-      router.use('view-first', class {} as any);
-      router.use('view-second', class {} as any);
-
-      router.go('/view-first');
-      router.go('/view-second');
-
-      router.back();
-
-      expect(document.location.pathname).to.eq('/view-first');
-    });
-  });
-
-  describe('.forward', () => {
-    it('should go to the next path', () => {
-      router.start();
-      router.go('/signin');
-      router.go('/signup');
-
-      router.back();
-      router.forward();
-
-      expect(document.location.pathname).to.eq('/signup ');
-    });
-  });
 });
