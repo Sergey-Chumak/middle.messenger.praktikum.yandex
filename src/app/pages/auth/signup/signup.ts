@@ -64,6 +64,7 @@ export class Signup extends View<{}, IChildrenSignup> {
     ];
 
     this.initChildrenEvents();
+    this.initEvents();
   }
 
   render(): DocumentFragment {
@@ -223,6 +224,18 @@ export class Signup extends View<{}, IChildrenSignup> {
         click: () => {
           this.resetForm();
           router.go('/signin');
+        },
+      },
+    });
+  }
+
+  initEvents(): void {
+    this.setProps({
+      events: {
+        keydown: (event: KeyboardEvent) => {
+          if ((event.code === 'Enter' || event.code === 'NumpadEnter')) {
+            this.submit();
+          }
         },
       },
     });

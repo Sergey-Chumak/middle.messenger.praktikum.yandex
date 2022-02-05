@@ -11,7 +11,6 @@ export class NewChatModal extends View<{ }, IChildrenNewChatModal> {
 
   componentDidMount() {
     this.initChildren();
-    this.initEvents();
   }
 
   render(): DocumentFragment {
@@ -29,25 +28,6 @@ export class NewChatModal extends View<{ }, IChildrenNewChatModal> {
       name: 'Cancel',
       id: 'create-chat-modal-cancel',
       size: 's',
-    });
-  }
-
-  initEvents(): void {
-    this.setProps({
-      events: {
-        keydown: (event: KeyboardEvent) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
-            if ((event.code === 'Escape')) {
-              this.close();
-            }
-          }
-        },
-        click: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-cancel') {
-            this.close();
-          }
-        },
-      },
     });
   }
 

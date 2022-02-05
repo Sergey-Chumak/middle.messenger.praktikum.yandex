@@ -110,6 +110,12 @@ class ChatPage extends View<IChatPageProps, IChatPageChildren> {
         },
         keydown: (event: KeyboardEvent) => {
           if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
+            if ((event.code === 'Escape')) {
+              this.children.newChatModal.close();
+            }
+          }
+
+          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
             if ((event.code === 'Enter' || event.code === 'NumpadEnter')) {
               this.createChat();
             }
@@ -130,6 +136,10 @@ class ChatPage extends View<IChatPageProps, IChatPageChildren> {
               });
               this.children.userInfoModal.open();
             });
+          }
+
+          if ((event.target as HTMLElement).id === 'create-chat-modal-cancel') {
+            this.children.newChatModal.close();
           }
 
           if (eventTarget.id === 'chat-arrow-back') {

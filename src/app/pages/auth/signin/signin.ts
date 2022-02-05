@@ -32,6 +32,7 @@ export class Signin extends View<{}, ISigninChildren> {
   componentDidMount(): void {
     this.initChildren();
     this.initChildrenEvents();
+    this.initEvents();
   }
 
   render(): DocumentFragment {
@@ -91,6 +92,18 @@ export class Signin extends View<{}, ISigninChildren> {
         click: () => {
           this.resetForm();
           router.go('/signup');
+        },
+      },
+    });
+  }
+
+  initEvents(): void {
+    this.setProps({
+      events: {
+        keydown: (event: KeyboardEvent) => {
+          if ((event.code === 'Enter' || event.code === 'NumpadEnter')) {
+            this.submit();
+          }
         },
       },
     });

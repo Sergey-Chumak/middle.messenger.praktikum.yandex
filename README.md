@@ -14,4 +14,4 @@ Webpack,
 Mocha
 
 Ссылка на развернутый проект на Heroku: https://ancient-wildwood-72618.herokuapp.com/  
-Ссылка на Figma: https://www.figma.com/file/npZeA9IYIhLa50VaA6Y8dh/Messanger?node-id=308%3A2
+Ссылка на Figma: https://www.figma.com/file/npZeA9IYIhLa50VaA6Y8dh/Messanger?node-id=0%3A1
