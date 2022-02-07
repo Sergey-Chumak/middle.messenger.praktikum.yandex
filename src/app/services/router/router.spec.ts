@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { describe, it, beforeEach } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { router } from './router';
-import Block from '../block/block';
+import View from '../view/view';
 
 describe('Router', () => {
   describe('.use', () => {
@@ -30,13 +30,9 @@ describe('Router', () => {
     });
   });
 
-  describe('.start', () => {
-
-  });
-
   describe('.go', () => {
     beforeEach(() => {
-      class MyBlock extends Block<{}, void> {
+      class MyBlock extends View<{}, void> {
         constructor(props: {}) {
           super('div', props);
         }
@@ -46,44 +42,17 @@ describe('Router', () => {
         }
       }
 
-      router.use('/my-block', MyBlock);
+      router.use('/my-view', MyBlock);
 
-      router.go('/my-block');
+      router.go('/my-view');
     });
 
-    it('should render new block', () => {
+    it('should render new view', () => {
       expect(document.getElementById('test-id')).not.to.be.undefined;
     });
 
     it('should change location pathname', () => {
       expect(document.location.pathname).to.eq('/');
-    });
-  });
-
-  describe('.back', () => {
-    it('should back to last pathname', () => {
-      router.use('block-first', class {} as any);
-      router.use('block-second', class {} as any);
-
-      router.go('/block-first');
-      router.go('/block-second');
-
-      router.back();
-
-      expect(document.location.pathname).to.eq('/block-first');
-    });
-  });
-
-  describe('.forward', () => {
-    it('should go to the next path', () => {
-      router.start();
-      router.go('/signin');
-      router.go('/signup');
-
-      router.back();
-      router.forward();
-
-      expect(document.location.pathname).to.eq('/signup ');
     });
   });
 });

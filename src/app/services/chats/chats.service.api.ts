@@ -1,4 +1,3 @@
-import BaseAPI from '../api/base-api';
 import HTTPTransport from '../api/http-transport';
 import {
   IAddUsersData, IChatCard, ITitleChat,
@@ -6,11 +5,11 @@ import {
 import { IUserData } from '../auth/auth.types';
 import { BASE_URL } from '../constants';
 
-export class ChatsServiceApi extends BaseAPI {
+export class ChatsServiceApi {
   private chatApiInstance: HTTPTransport = new HTTPTransport(`${BASE_URL}/chats`);
 
   getChats() {
-    return this.chatApiInstance.get<IChatCard[]>('');
+    return this.chatApiInstance.get<IChatCard[]>('', { data: { limit: 999 } });
   }
 
   createChat(data: ITitleChat) {

@@ -1,6 +1,6 @@
-import Block from '../services/block/block';
+import View from '../services/view/view';
 
-export function render(query: string, block: Block<unknown, unknown>) {
+export function render(query: string, block: View<unknown, unknown>) {
   const root = document.querySelector(query);
 
   root?.appendChild(block.getContent());

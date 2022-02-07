@@ -1,0 +1,35 @@
+@import "../../../styles/mixins/modal";
+@import "../../../styles/mixins/backdrop";
+
+.c-avatar-modal-wrapper {
+  @include modal-wrapper;
+
+  &__backdrop {
+    @include backdrop;
+  }
+}
+
+.c-avatar-modal {
+  @include modal;
+
+  text-align: center;
+
+  &__buttons {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  &__header {
+    font-size: 26px;
+    margin-bottom: 27px;
+    color: var(--color-text-secondary);
+  }
+
+  &__input {
+    font-size: 16px;
+    text-align: center;
+    width: 80%;
+  }
+}

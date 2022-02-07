@@ -1,12 +1,12 @@
-@import '../../../../styles/mixins/search';
+@import "../../../../styles/mixins/search";
 
 .chat-list {
   box-sizing: border-box;
   flex-shrink: 0;
   width: 380px;
   height: 100%;
-  background: var(--color-background-primary);
-  border-right: 1px solid var(--color-border);
+  background: var(--color-background-app);
+  border-right: 1px solid var(--color-border-secondary);
   display: flex;
   flex-direction: column;
 
@@ -43,11 +43,17 @@
   }
 
   &__search {
-   @include search;
+    @include search;
   }
 
   &__available-chats {
     flex-grow: 1;
     overflow: auto;
+  }
+}
+
+@media (max-width: 820px) {
+  .chat-list {
+    width: 100%;
   }
 }

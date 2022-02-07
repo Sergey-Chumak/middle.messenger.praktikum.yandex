@@ -1,0 +1,114 @@
+.c-input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background-app);
+  margin-bottom: 12px;
+
+  &__input {
+    box-sizing: border-box;
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-radius: 8px;
+    background-color: inherit;
+    border: 1px solid var(--color-border-input);
+    padding: 15px;
+    color: var(--color-border-input-hover);
+    font-size: 16px;
+    transition: border-color 0.2s ease-out;
+
+    &:hover {
+      border: 1px solid var(--color-border-input-hover);
+
+      & ~ .c-input__message {
+        color: var(--color-border-input-hover);
+      }
+    }
+
+    &:focus {
+      outline: none;
+      border: 2px solid var(--color-border-primary);
+
+      & ~ .c-input__label {
+        color: var(--color-border-primary);
+      }
+    }
+
+    &:valid {
+      outline: none;
+      border: 2px solid var(--color-border-primary);
+
+      & ~ .c-input__label {
+        color: var(--color-border-primary);
+      }
+    }
+
+    &:valid ~ .c-input__message, &:focus ~ .c-input__message, {
+      position: absolute;
+      top: -7px;
+      left: 12px;
+      font-size: 11px;
+    }
+  }
+
+  &__message {
+    color: var(--color-border-input);
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    font-size: 16px;
+    background-color: inherit;
+    transition: top 0.2s ease-out, font-size 0.2s ease-out, color 0.2s ease-out;
+    padding: 0 3px;
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 30px);
+  }
+
+  &__error {
+    visibility: hidden;
+  }
+
+  .c-input__label {
+    visibility: visible;
+  }
+
+  &_invalid {
+    .c-input__label {
+      visibility: hidden;
+    }
+
+    .c-input__error {
+      cursor: text;
+      visibility: visible;
+    }
+
+    & > input {
+      border: 2px solid var(--color-text-error) !important;
+
+      & ~ .c-input__message {
+        color: var(--color-text-error) !important;
+      }
+    }
+
+    & > input:focus {
+      border: 2px solid var(--color-text-error) !important;
+
+      & ~ .c-input__message {
+        color: var(--color-text-error) !important;
+      }
+    }
+
+    & > input:hover {
+      border: 2px solid var(--color-text-error) !important;
+
+      & ~ .c-input__message {
+        color: var(--color-text-error) !important;
+      }
+    }
+  }
+}

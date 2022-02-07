@@ -1,7 +1,7 @@
-import { tmpl } from './signup.tmpl';
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
-import Block from '../../../services/block/block';
+import { signUpTmpl } from './signup.tmpl';
+import { CInput } from '../../../components/c-input';
+import { CButton } from '../../../components/c-button';
+import View from '../../../services/view/view';
 import {
   isValidEmail,
   isValidEqualPasswords,
@@ -11,205 +11,182 @@ import {
   isValidPhone,
 } from '../../../utils/validate';
 import {
-  EChildrenSignupKeys,
-  IChildrenSignup,
-  IPropsSignup,
-  ISignupFormValue,
-  ESignupFormKeys,
+  ESignupChildren, ESignupFormFields, IChildrenSignup, ISignupFormValue,
 } from './signup.types';
 import { IEvents } from '../../../services/types';
-import { Snackbar } from '../../../components/ui/snackbar';
-import { ucFirstLetter } from '../../../utils/ucFirstLetter';
 import { authService } from '../../../services/auth/auth.service';
 import { router } from '../../../services/router/router';
+import { snackbar } from '../../../components/c-snackbar';
+import { ucFirstLetter } from '../../../utils/ucFirstLetter';
+import { loader } from '../../../components/c-loader';
+import { chatsService } from '../../../services/chats/chats.service';
 
-export class Signup extends Block<IPropsSignup, IChildrenSignup> {
-  inputs: Input[];
+export class Signup extends View<{}, IChildrenSignup> {
+  inputs: CInput[];
   signupFormValue: ISignupFormValue = {
-    [ESignupFormKeys.Login]: '',
-    [ESignupFormKeys.Email]: '',
-    [ESignupFormKeys.Password]: '',
-    [ESignupFormKeys.Name]: '',
-    [ESignupFormKeys.LastName]: '',
-    [ESignupFormKeys.PasswordRepeat]: '',
-    [ESignupFormKeys.Phone]: '',
+    [ESignupFormFields.Login]: '',
+    [ESignupFormFields.Email]: '',
+    [ESignupFormFields.Password]: '',
+    [ESignupFormFields.Name]: '',
+    [ESignupFormFields.LastName]: '',
+    [ESignupFormFields.PasswordRepeat]: '',
+    [ESignupFormFields.Phone]: '',
   };
 
   get isValidSignUpForm(): boolean {
-    return isValidLogin(this.signupFormValue[ESignupFormKeys.Login])
-        && isValidEmail(this.signupFormValue[ESignupFormKeys.Email])
-        && isValidPassword(this.signupFormValue[ESignupFormKeys.Password])
-        && isValidPhone(this.signupFormValue[ESignupFormKeys.Phone])
-        && isValidName(this.signupFormValue[ESignupFormKeys.Name])
-        && isValidName(this.signupFormValue[ESignupFormKeys.LastName])
+    return isValidLogin(this.signupFormValue[ESignupFormFields.Login])
+        && isValidEmail(this.signupFormValue[ESignupFormFields.Email])
+        && isValidPassword(this.signupFormValue[ESignupFormFields.Password])
+        && isValidPhone(this.signupFormValue[ESignupFormFields.Phone])
+        && isValidName(this.signupFormValue[ESignupFormFields.Name])
+        && isValidName(this.signupFormValue[ESignupFormFields.LastName])
         && isValidEqualPasswords(
-          this.signupFormValue[ESignupFormKeys.Password],
-            this.signupFormValue[ESignupFormKeys.PasswordRepeat] as string,
+          this.signupFormValue[ESignupFormFields.Password],
+            this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
         );
   }
 
-  constructor(props: IPropsSignup) {
+  constructor(props: {}) {
     super('div', props);
-    this.initChildren();
-    this.inputs = [
-      this.children.loginInput,
-      this.children.lastNameInput,
-      this.children.nameInput,
-      this.children.emailInput,
-      this.children.passwordInput,
-      this.children.passwordRepeatInput,
-      this.children.phoneInput,
-    ];
   }
 
-  componentDidMount() {
-    this.initComponentEvents();
+  componentDidMount(): void {
+    this.initChildren();
+
+    this.inputs = [
+      this.children[ESignupChildren.LoginInput],
+      this.children[ESignupChildren.LastNameInput],
+      this.children[ESignupChildren.NameInput],
+      this.children[ESignupChildren.EmailInput],
+      this.children[ESignupChildren.PasswordInput],
+      this.children[ESignupChildren.PasswordRepeatInput],
+      this.children[ESignupChildren.PhoneInput],
+    ];
+
     this.initChildrenEvents();
+    this.initEvents();
   }
 
   render(): DocumentFragment {
-    return this.compile(tmpl, {
-      emailInput: this.children.emailInput,
-      loginInput: this.children.loginInput,
-      nameInput: this.children.nameInput,
-      lastNameInput: this.children.lastNameInput,
-      phoneInput: this.children.phoneInput,
-      passwordInput: this.children.passwordInput,
-      passwordRepeatInput: this.children.passwordRepeatInput,
-      submitBtn: this.children.submitBtn,
-    });
+    return this.compile(signUpTmpl);
   }
 
-  initChildren() {
-    this.children.snackbar = new Snackbar({
-      text: '',
-    });
-
-    this.children.emailInput = new Input({
-      value: this.signupFormValue.email,
-      id: 'email',
+  initChildren(): void {
+    this.children[ESignupChildren.EmailInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.Email],
+      id: 'signup-email',
       labelName: 'Email',
-      type: 'email',
+      type: 'text',
       errorMessage: 'Email is invalid',
     });
 
-    this.children.loginInput = new Input({
-      value: this.signupFormValue[ESignupFormKeys.Login],
-      id: 'login',
+    this.children[ESignupChildren.LoginInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.Login],
+      id: 'signup-login',
       labelName: 'Login',
       type: 'text',
       errorMessage: 'Сan contain only Latin letters and numbers. 3 to 20 characters.',
     });
 
-    this.children.nameInput = new Input({
-      value: this.signupFormValue[ESignupFormKeys.Name],
-      id: 'first_name',
+    this.children[ESignupChildren.NameInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.Name],
+      id: 'signup-first-name',
       labelName: 'Name',
       type: 'text',
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
-    this.children.lastNameInput = new Input({
-      value: this.signupFormValue[ESignupFormKeys.LastName],
-      id: 'last_name',
+    this.children[ESignupChildren.LastNameInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.LastName],
+      id: 'signup-last-name',
       labelName: 'Last name',
       type: 'text',
       errorMessage: 'Must contain only letters and begin with an uppercase letter',
     });
 
-    this.children.phoneInput = new Input({
-      value: this.signupFormValue[ESignupFormKeys.Phone],
-      id: 'phone',
+    this.children[ESignupChildren.PhoneInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.Phone],
+      id: 'signup-phone',
       labelName: 'Phone',
       type: 'text',
       errorMessage: 'Phone is invalid',
     });
 
-    this.children.passwordInput = new Input({
-      value: this.signupFormValue[ESignupFormKeys.Password],
-      id: 'password',
+    this.children[ESignupChildren.PasswordInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.Password],
+      id: 'signup-password',
       labelName: 'Password',
       type: 'password',
       errorMessage: 'Must contain 1 number and 1 capital letter. 8 to 40 characters.',
     });
 
-    this.children.passwordRepeatInput = new Input({
-      value: this.signupFormValue[ESignupFormKeys.PasswordRepeat] as string,
-      id: 'password_repeat',
+    this.children[ESignupChildren.PasswordRepeatInput] = new CInput({
+      value: this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
+      id: 'signup-password-repeat',
       labelName: 'Password (repeat)',
       type: 'password',
       errorMessage: 'Password mismatch',
     });
 
-    this.children.submitBtn = new Button({
+    this.children[ESignupChildren.SubmitBtn] = new CButton({
       name: 'Sign up',
+      color: 'primary',
+      size: 'l',
+      class: 'signup__button',
+    });
+
+    this.children[ESignupChildren.LinkBtn] = new CButton({
+      name: 'I have a profile',
       color: 'secondary',
       size: 'l',
       class: 'signup__button',
-      type: 'button',
-    });
-  }
-
-  initComponentEvents(): void {
-    this.setProps({
-      events: {
-        click: (event: Event) => {
-          if ((event.target as HTMLElement).id !== 'signup-link') return;
-          this.resetForm();
-          router.go('/signin');
-        },
-      },
+      id: 'signup-link',
     });
   }
 
   initChildrenEvents(): void {
     this.children.emailInput.setProps({
-      events: this.initInputEvents(EChildrenSignupKeys.EmailInput, ESignupFormKeys.Email, isValidEmail),
+      events: this.initInputEvents(ESignupChildren.EmailInput, ESignupFormFields.Email, isValidEmail),
     });
 
     this.children.loginInput.setProps({
-      events: this.initInputEvents(EChildrenSignupKeys.LoginInput, ESignupFormKeys.Login, isValidLogin),
+      events: this.initInputEvents(ESignupChildren.LoginInput, ESignupFormFields.Login, isValidLogin),
     });
 
     this.children.nameInput.setProps({
-      events: this.initInputEvents(EChildrenSignupKeys.NameInput, ESignupFormKeys.Name, isValidName),
+      events: this.initInputEvents(ESignupChildren.NameInput, ESignupFormFields.Name, isValidName),
     });
 
     this.children.lastNameInput.setProps({
-      events: this.initInputEvents(EChildrenSignupKeys.LastNameInput, ESignupFormKeys.LastName, isValidName),
+      events: this.initInputEvents(ESignupChildren.LastNameInput, ESignupFormFields.LastName, isValidName),
     });
 
     this.children.phoneInput.setProps({
-      events: this.initInputEvents(EChildrenSignupKeys.PhoneInput, ESignupFormKeys.Phone, isValidPhone),
+      events: this.initInputEvents(ESignupChildren.PhoneInput, ESignupFormFields.Phone, isValidPhone),
     });
 
     this.children.passwordInput.setProps({
       events: {
-        ...this.initInputEvents(EChildrenSignupKeys.PasswordInput, ESignupFormKeys.Password, isValidPassword),
-        focusout: (event: Event) => {
-          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidPassword(this.signupFormValue.password)) {
-            this.children.passwordInput.getContent().classList.remove('ui-input_invalid');
+        input: (event: Event) => {
+          const target = event.target as HTMLInputElement;
+          this.signupFormValue[ESignupFormFields.Password] = target.value;
+
+          if (isValidPassword(this.signupFormValue.password)
+              || this.signupFormValue[ESignupFormFields.Password] === '') {
+            this.children.passwordInput.getContent().classList.remove('c-input_invalid');
           } else {
-            this.children.passwordInput.getContent().classList.add('ui-input_invalid');
+            this.children.passwordInput.getContent().classList.add('c-input_invalid');
           }
-          if (isValidEqualPasswords(this.signupFormValue.password, this.signupFormValue.passwordRepeat as string)) {
-            this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
+          if (isValidEqualPasswords(this.signupFormValue.password, this.signupFormValue.passwordRepeat as string)
+              || this.signupFormValue[ESignupFormFields.PasswordRepeat] === '') {
+            this.children.passwordRepeatInput.getContent().classList.remove('c-input_invalid');
           } else {
-            this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
+            this.children.passwordRepeatInput.getContent().classList.add('c-input_invalid');
           }
         },
-        focusin: (event: Event) => {
-          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidPassword(this.signupFormValue.password)) {
-            this.children.passwordInput.getContent().classList.remove('ui-input_invalid');
-          } else {
-            this.children.passwordInput.getContent().classList.add('ui-input_invalid');
-          }
-          if (isValidEqualPasswords(this.signupFormValue.password, this.signupFormValue.passwordRepeat as string)) {
-            this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
-          } else {
-            this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
+        focusin: () => {
+          if (this.signupFormValue[ESignupFormFields.Password] === '') {
+            this.children[ESignupChildren.PasswordInput].getContent().classList.remove('c-input_invalid');
           }
         },
       },
@@ -219,23 +196,18 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
       events: {
         input: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          if (target.tagName !== 'INPUT') return;
-          this.signupFormValue.passwordRepeat = target.value;
-        },
-        focusout: (event: Event) => {
-          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidEqualPasswords(this.signupFormValue.password, this.signupFormValue.passwordRepeat as string)) {
-            this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
+          this.signupFormValue[ESignupFormFields.PasswordRepeat] = target.value;
+
+          if (isValidEqualPasswords(this.signupFormValue.password, this.signupFormValue.passwordRepeat as string)
+              || this.signupFormValue.passwordRepeat === '') {
+            this.children.passwordRepeatInput.getContent().classList.remove('c-input_invalid');
           } else {
-            this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
+            this.children.passwordRepeatInput.getContent().classList.add('c-input_invalid');
           }
         },
-        focusin: (event: Event) => {
-          if ((event.target as HTMLElement).tagName !== 'INPUT') return;
-          if (isValidEqualPasswords(this.signupFormValue.password, this.signupFormValue.passwordRepeat as string)) {
-            this.children.passwordRepeatInput.getContent().classList.remove('ui-input_invalid');
-          } else {
-            this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
+        focusin: () => {
+          if (this.signupFormValue[ESignupFormFields.PasswordRepeat] === '') {
+            this.children[ESignupChildren.PasswordRepeatInput].getContent().classList.remove('c-input_invalid');
           }
         },
       },
@@ -243,70 +215,58 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
 
     this.children.submitBtn.setProps({
       events: {
+        click: this.submit.bind(this),
+      },
+    });
+
+    this.children.linkBtn.setProps({
+      events: {
         click: () => {
-          this.submit();
+          this.resetForm();
+          router.go('/signin');
+        },
+      },
+    });
+  }
+
+  initEvents(): void {
+    this.setProps({
+      events: {
+        keydown: (event: KeyboardEvent) => {
+          if ((event.code === 'Enter' || event.code === 'NumpadEnter')) {
+            this.submit();
+          }
         },
       },
     });
   }
 
   initInputEvents(
-    inputName: EChildrenSignupKeys,
-    formField: ESignupFormKeys,
+    inputName: ESignupChildren,
+    formField: ESignupFormFields,
     validator: (text: string) => boolean,
   ): IEvents {
     return {
       input: (event) => {
         const target = event?.target as HTMLInputElement;
-        if (target.tagName !== 'INPUT') return;
         this.signupFormValue[formField] = target.value;
-      },
-      focusout: (event) => {
-        if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
-        if (validator(this.signupFormValue[formField] as string)) {
-          this.children[inputName].getContent().classList.remove('ui-input_invalid');
+
+        if (validator(this.signupFormValue[formField] as string) || this.signupFormValue[formField] === '') {
+          this.children[inputName].getContent().classList.remove('c-input_invalid');
         } else {
-          this.children[inputName].getContent().classList.add('ui-input_invalid');
+          this.children[inputName].getContent().classList.add('c-input_invalid');
         }
       },
-      focusin: (event) => {
-        if ((event?.target as HTMLElement).tagName !== 'INPUT') return;
-        if (validator(this.signupFormValue[formField] as string)) {
-          this.children[inputName].getContent().classList.remove('ui-input_invalid');
-        } else {
-          this.children[inputName].getContent().classList.add('ui-input_invalid');
+      focusin: () => {
+        if (this.signupFormValue[formField] === '') {
+          this.children[inputName].getContent().classList.remove('c-input_invalid');
         }
       },
     };
   }
 
   submit(): void {
-    if (!isValidEmail(this.signupFormValue[ESignupFormKeys.Email])) {
-      this.children.emailInput.getContent().classList.add('ui-input_invalid');
-    }
-    if (!isValidLogin(this.signupFormValue[ESignupFormKeys.Login])) {
-      this.children.loginInput.getContent().classList.add('ui-input_invalid');
-    }
-    if (!isValidName(this.signupFormValue[ESignupFormKeys.Name])) {
-      this.children.nameInput.getContent().classList.add('ui-input_invalid');
-    }
-    if (!isValidName(this.signupFormValue[ESignupFormKeys.LastName])) {
-      this.children.lastNameInput.getContent().classList.add('ui-input_invalid');
-    }
-    if (!isValidPhone(this.signupFormValue[ESignupFormKeys.Phone])) {
-      this.children.phoneInput.getContent().classList.add('ui-input_invalid');
-    }
-    if (!isValidPassword(this.signupFormValue[ESignupFormKeys.Password])) {
-      this.children.passwordInput.getContent().classList.add('ui-input_invalid');
-    }
-    if (
-      !isValidEqualPasswords(
-        this.signupFormValue[ESignupFormKeys.Password],
-        this.signupFormValue[ESignupFormKeys.PasswordRepeat] as string,
-      )
-    ) {
-      this.children.passwordRepeatInput.getContent().classList.add('ui-input_invalid');
-    }
+    this.validationInputs();
 
     if (!this.isValidSignUpForm) return;
     const form: ISignupFormValue = { ...this.signupFormValue };
@@ -316,26 +276,64 @@ export class Signup extends Block<IPropsSignup, IChildrenSignup> {
       .then(() => {
         this.resetForm();
         router.go('/messenger');
+
+        loader.show();
+        chatsService.getChats()
+          .then(() => {
+            loader.hide();
+          });
       }).catch((e) => {
-        this.children.snackbar.setProps({
-          text: ucFirstLetter(e.reason || e.error),
-          color: 'error',
-        });
+        snackbar.open(ucFirstLetter(e.reason || e.error));
       });
+  }
+
+  validationInputs(): void {
+    if (!isValidEmail(this.signupFormValue[ESignupFormFields.Email])) {
+      this.children.emailInput.getContent().classList.add('c-input_invalid');
+    }
+
+    if (!isValidLogin(this.signupFormValue[ESignupFormFields.Login])) {
+      this.children.loginInput.getContent().classList.add('c-input_invalid');
+    }
+
+    if (!isValidName(this.signupFormValue[ESignupFormFields.Name])) {
+      this.children.nameInput.getContent().classList.add('c-input_invalid');
+    }
+
+    if (!isValidName(this.signupFormValue[ESignupFormFields.LastName])) {
+      this.children.lastNameInput.getContent().classList.add('c-input_invalid');
+    }
+
+    if (!isValidPhone(this.signupFormValue[ESignupFormFields.Phone])) {
+      this.children.phoneInput.getContent().classList.add('c-input_invalid');
+    }
+
+    if (!isValidPassword(this.signupFormValue[ESignupFormFields.Password])) {
+      this.children.passwordInput.getContent().classList.add('c-input_invalid');
+    }
+
+    if (
+      !isValidEqualPasswords(
+        this.signupFormValue[ESignupFormFields.Password],
+            this.signupFormValue[ESignupFormFields.PasswordRepeat] as string,
+      )
+    ) {
+      this.children.passwordRepeatInput.getContent().classList.add('c-input_invalid');
+    }
   }
 
   resetForm(): void {
     this.inputs.forEach((input) => {
       input.setProps({ value: '' });
-      input.getContent().classList.remove('ui-input_invalid');
+      input.getContent().classList.remove('c-input_invalid');
     });
 
-    this.signupFormValue[ESignupFormKeys.Email] = '';
-    this.signupFormValue[ESignupFormKeys.Login] = '';
-    this.signupFormValue[ESignupFormKeys.Name] = '';
-    this.signupFormValue[ESignupFormKeys.Phone] = '';
-    this.signupFormValue[ESignupFormKeys.LastName] = '';
-    this.signupFormValue[ESignupFormKeys.PasswordRepeat] = '';
-    this.signupFormValue[ESignupFormKeys.Password] = '';
+    this.signupFormValue[ESignupFormFields.Email] = '';
+    this.signupFormValue[ESignupFormFields.Login] = '';
+    this.signupFormValue[ESignupFormFields.Name] = '';
+    this.signupFormValue[ESignupFormFields.Phone] = '';
+    this.signupFormValue[ESignupFormFields.LastName] = '';
+    this.signupFormValue[ESignupFormFields.PasswordRepeat] = '';
+    this.signupFormValue[ESignupFormFields.Password] = '';
   }
 }

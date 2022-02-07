@@ -1,34 +1,33 @@
-import Block from '../../../../services/block/block';
-import { Button } from '../../../../components/ui/button';
-import { Input } from '../../../../components/ui/input';
+import View from '../../../../services/view/view';
+import { CButton } from '../../../../components/c-button';
 import { IChildrenNewChatModal } from './new-chat-modal.types';
-import { tmpl } from './new-chat-modal.tmpl';
+import { newChatModalTmpl } from './new-chat-modal.tmpl';
 
-export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
+export class NewChatModal extends View<{ }, IChildrenNewChatModal> {
   constructor(props: { }) {
     super('div', props);
     this.hide();
+  }
 
-    this.children.confirmBtn = new Button({
+  componentDidMount() {
+    this.initChildren();
+  }
+
+  render(): DocumentFragment {
+    return this.compile(newChatModalTmpl);
+  }
+
+  initChildren(): void {
+    this.children.confirmBtn = new CButton({
       name: 'Create',
       id: 'create-chat-modal-confirm',
       size: 's',
-      color: 'primary',
     });
 
-    this.children.cancelBtn = new Button({
+    this.children.cancelBtn = new CButton({
       name: 'Cancel',
       id: 'create-chat-modal-cancel',
       size: 's',
-      color: 'primary',
-    });
-
-    this.children.input = new Input({
-      id: 'create-chat-modal-input',
-      type: 'text',
-      labelName: 'Title chat',
-      value: '',
-      class: 'new-chat-modal__input',
     });
   }
 
@@ -38,36 +37,7 @@ export class NewChatModal extends Block<{ }, IChildrenNewChatModal> {
   }
 
   close() {
+    (document.getElementById('create-chat-modal-input') as HTMLInputElement).value = '';
     this.hide();
-    this.children.input.setProps({
-      value: '',
-    });
-  }
-
-  componentDidMount() {
-    this.setProps({
-      events: {
-        keydown: (event: KeyboardEvent) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-input') {
-            if ((event.code === 'Escape')) {
-              this.close();
-            }
-          }
-        },
-        click: (event: Event) => {
-          if ((event.target as HTMLElement).id === 'create-chat-modal-cancel') {
-            this.close();
-          }
-        },
-      },
-    });
-  }
-
-  render(): DocumentFragment {
-    return this.compile(tmpl, {
-      confirm: this.children.confirmBtn,
-      cancel: this.children.cancelBtn,
-      input: this.children.input,
-    });
   }
 }

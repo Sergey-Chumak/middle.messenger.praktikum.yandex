@@ -8,10 +8,10 @@
 .new-chat-modal {
  @include modal;
 
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  text-align: center;
 
   &__buttons {
     display: flex;
@@ -21,13 +21,30 @@
 
   &__header {
     font-size: 26px;
-    margin-bottom: 27px;
-    color: var(--color-text-chat-name)
+    margin-bottom: 12px;
+    color: var(--color-text-secondary);
+    text-align: center;
   }
 
-  &__input > input {
+  &__label {
+    font-size: 12px;
+    color: var(--color-text-primary);
+    align-self: flex-start;
+  }
+
+  &__input {
     width: 100%;
-    border-color: var(--color-border);
+    border: none;
+    border-bottom: 1px solid var(--color-border-secondary);
+    background: transparent;
+    color: var(--color-text-secondary);
+    margin-bottom: 36px;
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+      box-shadow: var(--shadow-primary);
+    }
   }
 }
 

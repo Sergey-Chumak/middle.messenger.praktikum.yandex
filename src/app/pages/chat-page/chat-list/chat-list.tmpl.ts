@@ -1,4 +1,4 @@
-export const tmpl = `
+export const chatListTmpl = `
     <div class="chat-list">
         <div class="chat-list__header">
             <div id="setting-icon" class="chat-list__icon setting"></div>
@@ -8,8 +8,9 @@ export const tmpl = `
                    placeholder="Search" 
                    class="chat-list__search">
         </div>
+        
         <div class="chat-list__available-chats">
-        {{{ chatCards }}}
+            {{{ chatCards }}}
         </div>
     </div>
 `;

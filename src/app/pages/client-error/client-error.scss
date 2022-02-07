@@ -4,35 +4,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
+  padding: 32px;
 }
 
 .client-error {
-  width: 160px;
+  width: fit-content;
   align-self: center;
   margin: auto;
   text-align: center;
 
   &__title {
-    font-size: 48px;
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-weight: 600;
+    font-size: 72px;
+    margin-bottom: 12px;
+    color: var(--color-text-secondary);
   }
 
   &__info {
     font-size: 24px;
-    margin-bottom: 49px;
-    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--color-text-primary);
   }
 
-  &__link {
-    cursor: pointer;
-    color: var(--color-text-content);
-    font-size: 14px;
-    transition: color 0.2s;
+  &__smile {
+    white-space: nowrap;
+  }
+}
 
-    &:hover {
-      color: var(--color-text-chat-name)
+@media (max-width: 500px) {
+  .client-error {
+    &__button {
+      width: 100% !important;
     }
   }
 }

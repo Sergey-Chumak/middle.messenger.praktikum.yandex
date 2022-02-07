@@ -1,5 +1,5 @@
 import { IUserData } from '../../../../services/auth/auth.types';
-import { Modal } from '../../../../components/ui/modal';
+import { CModal } from '../../../../components/c-modal';
 import { AddUsersModal } from './add-users-modal';
 
 export interface IPropsEditUsersModal {
@@ -7,6 +7,6 @@ export interface IPropsEditUsersModal {
 }
 
 export interface IChildrenEditUsersModal {
-    confirmModal: Modal;
+    confirmModal: CModal;
     addUsersModal: AddUsersModal;
 }

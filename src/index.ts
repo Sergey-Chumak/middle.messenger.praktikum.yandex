@@ -16,14 +16,20 @@ async function hasAuthentication() {
   if (store.getState()?.user) return true;
   return authService.getUserData()
     .then(() => true)
-    .catch(() => false);
+    .catch((e) => {
+      console.log(e.reason || e.error);
+      return false;
+    });
 }
 
 async function hasLogout() {
   if (store.getState()?.user) return false;
   return authService.getUserData()
     .then(() => false)
-    .catch(() => true);
+    .catch((e) => {
+      console.log(e.reason || e.error);
+      return true;
+    });
 }
 
 router

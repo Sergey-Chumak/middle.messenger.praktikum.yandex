@@ -1,9 +1,20 @@
-export const tmpl = `
+export const chatTmpl = `
     <div class="chat">
         <div class="chat__header">
-            <div class="chat__chat-info">
-                <div class="chat__name">{{ name }}</div>
-                <div class="chat__users">{{ users }}</div>
+            <div id="chat-arrow-back" class="chat__back"></div>
+        
+            <div class="chat__chat-info-wrapper"> 
+                <div class="chat__avatar">
+                    {{#if avatar}}
+                    <img src="https://ya-praktikum.tech/api/v2/resources{{ avatar }}" alt="">
+                    {{else}}
+                    <div class="chat__avatar-initials">{{ initials }}</div>
+                    {{/if}}
+                </div>
+                <div class="chat__chat-info">
+                    <div class="chat__name">{{ name }}</div>
+                    <div id="chat-users" class="chat__users">{{ users }}</div>
+                </div>
             </div>
             
            <div class="chat__actions">

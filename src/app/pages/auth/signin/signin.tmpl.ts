@@ -1,18 +1,18 @@
-export const tmpl = `
+export const signinTmpl = `
     <div class="signin-wrapper">
-        {{{ snackbar }}}
         <div class="signin">
-            <form id="sign-in-form">
+            <div class="signin__logo"></div>
+            <h1 class="signin__title">Sign in to Messenger</h1>
+            <p class="signin__info">Please enter your login and password.</p>
+        
+            <form class="signin__form">
                 {{{ loginInput }}}
                 {{{ passwordInput }}}
-                <div class="signin__submit-btn">
-                    {{{ submitBtn }}}
-                </div>
+                {{{ submitBtn }}}
             </form>
-            <a id="create-account-link" 
-               class="signin__link">
-               Create account
-            </a>
+            
+            {{{ linkBtn }}}
         </div>
+        <p class="signin__signature">Developed by Sergey Chumak</p>
     </div>
 `;

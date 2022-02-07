@@ -22,9 +22,18 @@
   &__avatar {
    @include avatar;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     align-self: center;
     width: 67px;
     height: 67px;
+  }
+
+  &__initials {
+    color: var(--color-text-secondary);
+    font-size: 32px;
+    font-weight: bold;
   }
 
   &__content-wrapper {
@@ -42,12 +51,11 @@
 
   &__name {
     font-size: 16px;
-    font-weight: 600;
     margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--color-text-chat-name);
+    color: var(--color-text-secondary);
   }
 
   &__last-message{
@@ -59,7 +67,10 @@
     -webkit-box-orient: vertical;
     word-break: break-word;
     color: var(--color-text-content);
+  }
 
+  &__user-name {
+    color: var(--color-text-user-name);
   }
 
   &__info {

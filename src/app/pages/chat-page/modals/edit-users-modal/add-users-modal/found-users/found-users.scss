@@ -1,4 +1,4 @@
-@import '../../../../../../../styles/mixins/avatar';
+@import "../../../../../../../styles/mixins/avatar";
 
 .found-users {
   overflow: auto;
@@ -43,14 +43,22 @@
   }
 
   &__name {
-    color: var(--color-text-chat-name);
+    color: var(--color-text-secondary);
     font-size: 16px;
     margin-bottom: 3px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   &__login {
     color: var(--color-text-content);
     font-size: 14px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   &__add-user {
@@ -63,6 +71,14 @@
 
     &:hover {
       background: url("../../../../../../../assets/images/i_add-user-hover.svg") round;
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .found-user-card {
+    .found-user-card__add-user {
+      visibility: visible;
     }
   }
 }

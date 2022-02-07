@@ -1,0 +1,38 @@
+@import '../../../styles/mixins/modal';
+@import '../../../styles/mixins/backdrop';
+
+.modal-wrapper {
+  @include modal-wrapper;
+  z-index: 10;
+
+  &__backdrop {
+    @include backdrop;
+  }
+}
+
+.modal {
+  @include modal;
+  z-index: 10;
+  width: 360px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+
+  &__message {
+    color: var(--color-text-content);
+    margin-bottom: 25px;
+  }
+
+  &__target {
+    color: var(--color-text-secondary);
+    word-break: break-word;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+  }
+}

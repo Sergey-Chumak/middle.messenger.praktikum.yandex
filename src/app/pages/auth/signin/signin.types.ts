@@ -1,34 +1,26 @@
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
-import { Snackbar } from '../../../components/ui/snackbar';
+import { CInput } from '../../../components/c-input';
+import { CButton } from '../../../components/c-button';
 
-export enum ESigninFormKeys {
+export enum ESigninFormFields {
     Login = 'login',
     Password = 'password'
 }
 
-export enum EChildrenSigninKeys {
+export interface ISigninFormValue {
+    [ESigninFormFields.Login]: string;
+    [ESigninFormFields.Password]: string;
+}
+
+export enum ESigninChildren {
     LoginInput = 'loginInput',
     PasswordInput = 'passwordInput',
     SubmitBtn = 'submitBtn',
-    Snackbar = 'snackbar'
+    LinkBtn = 'linkBtn',
 }
 
-export interface ISigninFormValue {
-    [ESigninFormKeys.Login]: string;
-    [ESigninFormKeys.Password]: string;
-}
-
-export interface IChildrenSignin {
-    [EChildrenSigninKeys.LoginInput]: Input;
-    [EChildrenSigninKeys.PasswordInput]: Input;
-    [EChildrenSigninKeys.SubmitBtn]: Button;
-    [EChildrenSigninKeys.Snackbar]: Snackbar;
-}
-
-export interface IPropsSignin {
-    loginInput?: Input;
-    passwordInput?: Input;
-    submitBtn?: Button;
-    snackbar?: Snackbar;
+export interface ISigninChildren {
+    [ESigninChildren.LoginInput]: CInput;
+    [ESigninChildren.PasswordInput]: CInput;
+    [ESigninChildren.SubmitBtn]: CButton;
+    [ESigninChildren.LinkBtn]: CButton;
 }
